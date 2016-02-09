@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <title>Lan Music</title>
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+    <script src="/javascripts/jquery.min.js"></script>
+    <script src="/javascripts/index.js"></script>
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Arvo">
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Lato">
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Open+Sans">
+    <link rel='stylesheet' href='/stylesheets/artist.css' />
+    <link href='/stylesheets/jplayer.pink.flag.css' rel="stylesheet" />
+    <script type="text/javascript" src="/javascripts/jplayer.playlist.js"></script>
+    <script type="text/javascript" src="/javascripts/jquery.jplayer.min.js"></script>
+    <!--
+            <script src="/player/build/jquery.js"></script>
+            <script src="/player/build/mediaelement-and-player.min.js"></script>
+            <link rel="stylesheet" href="/player/build/mediaelementplayer.min.css" />
+    -->
+</head>
+<body>
+<div class="well ">
+    <div class="heading">Lan Music</div>
+</div>
+
+<div id="search_bar">
+    Search Area
+</div>
+<div id="exTab1" class="container">
+
+    <div class="album_description">
+        <div class="album_image">
+            <img src="<%=songs[0].album_art%>">
+        </div>
+        <div class="album_name">
+            <%=artist%>
+        </div>
+    </div>
+
+    <ul  class="nav nav-pills nav-stacked">
+        <li class="active">
+            <a  href="#1a" data-toggle="tab">Songs</a>
+        </li>
+        <li>
+            <a href="#2a" data-toggle="tab">Albums</a>
+        </li>
+    </ul>
+
+    <div class="tab-content clearfix">
+        <div class="tab-pane active" id="1a">
+            <div class="main_content">
+                <table class="table">
+                    <% for (var i in songs){%>
+                    <tr>
+                        <td>
+                            <img src="<%=songs[i].album_art_small%>" alt="Image">
+                            </img>
+                        </td>
+                        <td>
+                            <li> <a href="" onclick="play('<%=songs[i].path%>'); return false;"> <%=songs[i].title%> </a> </li>
+                        </td>
+                        <td>
+                            <a href="/artist/<%=songs[i].artist%>"> <%=songs[i].artist%> </a>
+                        </td>
+                    </tr>
+                    <%} %>
+                </table>
+            </div>
+        </div>
+        <div class="tab-pane" id="2a">
+            <div class="main_content">
+                <table class="table">
+                    <% for (var i in albums){%>
+                    <tr>
+                        <td>
+                            <li> <a href="/album/<%=albums[i]%>"> <%console.log(i)%> <%=albums[i]%> </a> </li>
+                        </td>
+                    </tr>
+                    <%} %>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="jquery_jplayer_1" class="jp-jplayer"></div>
+<div id="jp_container_1" class="jp-audio" role="application" aria-label="media player">
+    <div class="jp-type-single">
+        <div class="jp-gui jp-interface">
+            <div class="jp-volume-controls">
+                <button class="jp-mute" role="button" tabindex="0">mute</button>
+                <button class="jp-volume-max" role="button" tabindex="0">max volume</button>
+                <div class="jp-volume-bar">
+                    <div class="jp-volume-bar-value"></div>
+                </div>
+            </div>
+            <div class="jp-controls-holder">
+                <div class="jp-controls">
+                    <button class="jp-play" role="button" tabindex="0">play</button>
+                    <button class="jp-stop" role="button" tabindex="0">stop</button>
+                </div>
+                <div class="jp-progress">
+                    <div class="jp-seek-bar">
+                        <div class="jp-play-bar"></div>
+                    </div>
+                </div>
+                <div class="jp-current-time" role="timer" aria-label="time">&nbsp;</div>
+                <div class="jp-duration" role="timer" aria-label="duration">&nbsp;</div>
+                <div class="jp-toggles">
+                    <button class="jp-repeat" role="button" tabindex="0">repeat</button>
+                </div>
+            </div>
+        </div>
+        <div class="jp-details">
+            <div class="jp-title" aria-label="title">&nbsp;</div>
+        </div>
+        <div class="jp-no-solution">
+            <span>Update Required</span>
+            To play the media you will need to either update your browser to a recent version or update your <a href="http://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>.
+        </div>
+    </div>
+</div>
+</body>
+<script>
+//    location.reload();
+</script>
+</html>

@@ -1,0 +1,14 @@
+.now_playing_button{
+   position:fixed;
+}
+.now_playing_table{
+    background-color: white;
+   height: 68%;
+   //  right: 0%;
+   position: fixed;
+   overflow-y: scroll;
+   overflow-x: hidden;
+   margin-top: 3%;
+   margin-left: 0%;
+
+}

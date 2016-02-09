@@ -1,0 +1,66 @@
+.jp-audio{
+    width:100%; /*WIdth of audio player bar*/
+}
+
+/*Time Holder Start*/
+.jp-audio .jp-type-single .jp-time-holder {
+    left: 15%;
+    width: 60%;
+}
+
+.jp-audio .jp-time-holder {
+    position: absolute;
+    top: 45%;
+}
+
+.jp-current-time{
+    left:10%;
+}
+
+.jp-duration{
+    right:20%;
+}
+/*Time Holder End*/
+
+/*Progress Bar Start*/
+.jp-audio .jp-type-single .jp-progress {
+    left: 18%;
+    width: 54%;
+}
+.jp-audio .jp-progress {
+    top: 45%;
+    height: 16px;
+}
+/*Progress Bar End*/
+
+#jp-song-name{
+    width: 15%;
+}
+
+.jp-audio .jp-controls {
+    position: absolute;
+    margin-left: 75%;
+    top:5%;
+}
+
+.jp-play, .jp-previous, .jp-next {
+    margin-right: 1%;
+}
+
+.jp-volume-controls {
+    left: 90%;
+}
+
+.jp-playlist{
+    display:none;
+    visibility: hidden;
+}
+
+.audio_player_container{
+    height: 10%;
+}
+
+.audio_player{
+    position: fixed;
+    bottom: 0;
+}

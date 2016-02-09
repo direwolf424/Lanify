@@ -1,0 +1,40 @@
+
+.album_description{
+
+}
+.album_one{
+    border: solid;
+    border-radius: 1%;
+    background-color:#667467;
+    height:200px;
+    width:170px;
+}
+.album_image{
+    height:130px;
+    width:120px;
+    display: block;
+    margin-right: 1%;
+    margin-top: 1%;
+}
+
+.album_name{
+    display: block;
+    height: auto;
+    margin-right: 1%;
+}
+.album_click{
+    font-size: 14pt;
+    font-family: "Lato";
+}
+.album_one{
+
+}
+
+#album_songs{
+    margin-top: 2%;
+}
+
+.album_options{
+    font-size: 16pt;
+}
+

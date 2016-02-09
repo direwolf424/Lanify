@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta charset="utf-8">
+      <title>Lan Music</title>
+      <script src="/javascripts/jquery.min.js"></script>
+      <script src="/javascripts/index.js"></script>
+      <script src="/javascripts/album.js"></script>
+      <script src="/javascripts/artist.js"></script>
+      <script src="/javascripts/player.js"></script>
+      <script src="/bootstrap/js/bootstrap.min.js"></script>
+      <script src="/javascripts/jquery/jquery-ui.js"></script>
+      <link rel='stylesheet' href='/javascripts/jquery/jquery-ui.css' />
+      <script src="/javascripts/typeahead.min.js" type="text/javascript"></script>
+      <script type="text/javascript" src="/javascripts/jplayer.playlist.js"></script>
+      <script type="text/javascript" src="/javascripts/jquery.jplayer.min.js"></script>
+      <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+      <link href='/skin/blue.monday/css/jplayer.blue.monday.css' rel="stylesheet" />
+      <link rel='stylesheet' href='/stylesheets/style.css' />
+      <link rel='stylesheet' href='/stylesheets/album.css' />
+      <link rel='stylesheet' href='/stylesheets/player.css' />
+      <link rel='stylesheet' href='/stylesheets/song.css' />
+      <link rel='stylesheet' href='/slick/slick.css' />
+      <link rel='stylesheet' href='/slick/slick-theme.css' />
+      <script type="text/javascript" src="/slick/slick.min.js"></script>
+
+   </head>
+   <body>
+      <nav class="top_bar navbar-fixed-top">
+         <div>
+            <div class="heading_top"><a href="" onclick="load_home(); return false;">LANify<sup>beta</sup></a></div>
+         </div>
+         <div id="search_bar">
+            <input type="text" id="bar" class="form-control ui-autocomplete-input" placeholder="Search for Arijit Singh, Sunidhi Chauhan, 2 States..."/>
+         </div>
+         <div id="search_result" class="row">
+            <div id="search_song" class="ui-front ui-menu ui-widget ui-widget-content col-md-4"> </div>
+            <div id="search_album" class="ui-front ui-menu ui-widget ui-widget-content col-md-4"> </div>
+            <div id="search_artist" class="ui-front ui-menu ui-widget ui-widget-content col-md-4">  </div>
+         </div>
+      </nav>
+
+      <div class="content row area_content">
+
+         <div class="col-md-2 side_content">
+            <ul  class="nav nav-pills nav-stacked">
+               <li class="active">
+                  <a  href="#home" data-toggle="tab"> <span class='glyphicon glyphicon-home'></span> Home</a>
+               </li>
+               <li>
+                  <a href="#albums" data-toggle="tab"> <span class='glyphicon glyphicon-cd'></span> Albums</a>
+               </li>
+               <li>
+                  <a href="#artists" data-toggle="tab"> <span class='glyphicon glyphicon-user'></span> Artists </a>
+               </li>
+               <li>
+                  <a href="#songs" data-toggle="tab"> <span class='glyphicon glyphicon-music'></span> Songs</a>
+               </li>
+               <li style="visibility: hidden; display: none;">
+                  <a href="#album_single" data-toggle="tab"> <span class='glyphicon glyphicon-music'></span> Album Single</a>
+               </li>
+               <li style="visibility: hidden; display: none;">
+                  <a href="#artist_single" data-toggle="tab"> <span class='glyphicon glyphicon-music'></span> Artist Single</a>
+               </li>
+               <li>
+                  <a href="#now_playing" data-toggle="tab"> <span class='glyphicon glyphicon-signal'></span> Now Playing</a>
+               </li>
+            </ul>
+         </div>
+         <div class="col-md-10 main_content">
+            <div class="tab-content clearfix">
+               <div class="tab-pane active" id="home">
+                  <div class="new_releases">
+                     <h1 class="heading">
+                        New Releases
+                     </h1>
+                              <button class='prev1'>prev</button>
+                              <button class='next1'>next</button>
+                              <br>
+                     <div class="album_slick">
+                        <% for (var i in albums){%>
+                        <div>
+                           <img  src="<%=album_arts[i]%>" onerror="this.src='/image/image.jpg'" height ="130" width="120"/> 
+                           <div class="song_name">
+                              <a class="album_click" onclick="load_album('/album/<%=albums[i]%>')"> <%=albums[i]%> </a>
+                           </div>
+                        </div>
+                        <%} %>
+                     </div>
+                  </div>
+
+                  <div class="top_songs">
+                     <h1 class="heading">
+                        Top Songs
+                     </h1>
+                     <div class="tab-content clearfix">
+                        <div class="tab-pane active">
+                           <button class='prev2'>prev</button>
+                           <button class='next2'>next</button>
+                           <br>
+                           <div class="song_slick">
+                              <% for (var i in songs){%>
+                              <div class="item active">
+                                 <div class="col-md-3">
+                                    <div class="song_image">
+                                       <img height ="130" width="120" onerror="this.src='/image/image.jpg'" src="<%=songs[i].album_art_small%>">
+                                    </div>
+                                    <div class="song_name">
+                                       <a href="" onclick="play('<%=songs[i].path%>',' <%=songs[i].title%>',' <%=songs[i].artist%> ',' <%=songs[i].album%> '); return false;"> <%=songs[i].title%> </a>
+                                    </div>
+                                 </div>
+                              </div>
+                              <% if (i>=10) break;%>
+                              <%} %>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="featured_artist">
+                     <h1 class="heading">
+                        Featured Artist
+                     </h1>
+                  </div>
+                  <div class="tab-content clearfix">
+                     <div class="tab-pane active">
+                        <button class='prev3'>prev</button>
+                        <button class='next3'>next</button>
+                        <br>
+                        <div class="artist_slick">
+                           <% for (var i in songs){%>
+                           <div class="item active">
+                              <div class="col-md-3">
+                                 <div class="song_image">
+                                    <img src="<%=songs[i].album_art_small%>" onerror="this.src='/image/image.jpg'" height="120" width="100">
+                                 </div>
+                                 <div class="song_name">
+                                    <a href="" onclick="load_artist('/artist/'+'<%=artists[i]%>'); return false;"> <%=artists[i]%> </a>
+                                 </div>
+                              </div>
+                           </div>
+                           <% if (i>=10) break;%>
+                           <%} %>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+
+               <div class="tab-pane" id="albums">
+                  <div>
+                     <div class="album_all">
+                        <% for (var i in albums){%>
+                        <div class="album_one col-sm-3">
+                           <div>
+                              <img class="album_image" src="<%=album_arts[i]%>" onerror="this.src='/image/image.jpg'">
+                              </img>
+                           </div>
+                           <div class="album_name">
+                              <a class="album_click" onclick="load_album('/album/<%=albums[i]%>')"> <%=albums[i]%> </a>
+                           </div>
+                        </div>
+                        <%} %>
+                     </div>
+                  </div>
+               </div>
+
+               <div class="tab-pane" id="artist">
+                  <div>
+                     <h1>
+                        Artists
+                     </h1>
+                  </div>
+               </div>
+
+               <div class="tab-pane" id="songs">
+                  <div class="song_all">
+                     <ul>
+                        <table class=" table table-striped" id="table_songs">
+                           <script>
+array=[];
+var j = 0 ;
+                           </script>
+                           <% for (var i in songs){%>
+                           <tr>
+                              <td>
+                                 <a href='' onclick="play('<%=songs[i].path%>',' <%=songs[i].title%>',' <%=songs[i].artist%> ',' <%=songs[i].album%> '); return false;"> <span class='glyphicon glyphicon-play'></span> </a>
+                              </td>
+                              <td>
+                                 <a href="" onclick="play('<%=songs[i].path%>',' <%=songs[i].title%>',' <%=songs[i].artist%> ',' <%=songs[i].album%> '); return false;"> <%=songs[i].title%> </a>
+                              </td>
+                              <td>
+                                 <div><i><%=songs[i].length%></i></div>
+                              </td>
+                              <td>
+                                 <a class="album_click" onclick="load_album('/album/<%=songs[i].album%>')"> <%=songs[i].album%> </a>
+                              </td>
+                              <td>
+                                 <a href="" onclick="load_artist('/artist/<%=songs[i].artist%>'); return false;"> <%=songs[i].artist%> </a>
+                              </td>
+                              <script>
+array[j+1] = {
+   "title" : "<%=songs[i].title%>",
+   "artist" : "<%=songs[i].artist%>",
+   "album" : "<%=songs[i].album%>",
+   "album_art" : "<%=songs[i].album_art%>",
+   "album_art_small" : "<%=songs[i].album_art_small%>",
+   "views" : "<%=songs[i].views%>",
+   "rating" : "<%=songs[i].rating%>",
+   "genre" : "<%=songs[i].genre%>",
+   "path" : "<%=songs[i].path%>"
+}
+var rows = document.getElementById('table_songs').rows;
+rows[j].cells[5].innerHTML += "<a href='' onclick='add_to_queue(array["+j+"]);return false;'> <span class='glyphicon glyphicon-plus'></span> </a>"
+j += 1;
+                              </script>
+
+                              <td>
+                              </td>
+                              <td>
+                                 <span class='glyphicon glyphicon-heart'></span>
+                              </td>
+                           </tr>
+                           <%} %>
+                        </table>
+                     </ul>
+                  </div>
+               </div>
+
+               <div class="tab-pane" id="artists">
+                  <div id="exTab1" class="container">
+
+                     <div class="album_description">
+                        <div class="album_image" id="artist_single_image">
+                        </div>
+                        <div class="album_name" id="artist_single_name">
+                        </div>
+                     </div>
+
+                     <ul  class="nav nav-pills">
+                        <li class="active">
+                           <a  href="#artist_songs" data-toggle="tab">Songs</a>
+                        </li>
+                        <li>
+                           <a href="#artist_albums" data-toggle="tab">Albums</a>
+                        </li>
+                     </ul>
+
+                     <div class="tab-content clearfix">
+                        <div class="tab-pane active" id="artist_songs">
+                           <table class="table table-striped" id="artist_single_songs_table">
+                           </table>
+                        </div>
+                        <div class="tab-pane" id="artist_albums">
+                           <div id="artist_single_albums" class="row">
+                              <div class="song_all">
+                                 <div class="song col-sm-3">
+                                    <div class="song_image">
+                                       <img src="" onerror="this.src='/image/image.jpg'" height="120" width="120">
+                                       </img>
+                                    </div>
+                                    <div class="song_name">
+                                       <a class="album_click" onclick="load_album('/album/<%=albums[i]%>')"> <%=albums[i]%> </a>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <table class="table table-striped" id="artist_single_albums_table">
+                           </table>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div class="tab-pane" id="album_single">
+                  <div class="album_description">
+                     <div id="album_single_image" class="album_image">
+                     </div>
+                     <div class="album_name">
+                        <div id="album_single_name" >
+                        </div>
+                           <div class="album_options">
+                              <div id="play_album"></div>
+                              <div id="add_to_queue_album"></div>
+                           </div>
+                     </div>
+                  </div>
+                  <table class="table-striped table" id="album_single_songs">
+                  </table>
+               </div>
+               <div class="tab-pane" id="now_playing">
+                  <br>
+                  <div class="now_playing_button">>
+                     <button id="clear_queue"> Clear Queue </button>
+                  </div>
+                  <div class="now_playing_table">
+                  <table class="table table-striped" id="table_now_playing" >
+                  </table>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!--html for jplayer-->
+      <div class="audio_player_container">
+         <div id="jquery_jplayer_1" class="jp-jplayer"></div>
+         <div id="jp_container_1" class="jp-audio audio_player" role="application" aria-label="media player">
+            <div class="jp-type-single">
+               <div class="jp-gui jp-interface">
+                  <div id="jp-song-name">
+                  </div>
+                  <div class="jp-controls">
+                     <button class="jp-previous" role="button" tabindex="0">previous</button>
+                     <button class="jp-play" role="button" tabindex="0">play</button>
+                     <button class="jp-pause" role="button" tabindex="0">pause</button>
+                     <button class="jp-next" role="button" tabindex="0">next</button>
+                     <button class="jp-stop" role="button" tabindex="0">stop</button>
+                  </div>
+                  <div class="jp-progress">
+                     <div class="jp-seek-bar">
+                        <div class="jp-play-bar"></div>
+                     </div>
+                  </div>
+                  <div class="jp-volume-controls">
+                     <button class="jp-mute" role="button" tabindex="0">mute</button>
+                     <button class="jp-volume-max" role="button" tabindex="0">max volume</button>
+                     <div class="jp-volume-bar">
+                        <div class="jp-volume-bar-value"></div>
+                     </div>
+                  </div>
+                  <div class="jp-time-holder">
+                     <div class="jp-current-time" role="timer" aria-label="time">&nbsp;</div>
+                     <div class="jp-duration" role="timer" aria-label="duration">&nbsp;</div>
+                     <!--
+                        <div class="jp-toggles">
+                        <button class="jp-repeat" role="button" tabindex="0">repeat</button>
+                        </div>
+                     -->
+                  </div>
+               </div>
+               <div class="jp-details">
+                  <div class="jp-title" aria-label="title">&nbsp;</div>
+               </div>
+               <div class="jp-no-solution">
+                  <span>Update Required</span>
+                  To play the media you will need to either update your browser to a recent version or update your <a href="http://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>.
+               </div>
+            </div>
+         </div>
+      </div>
+   </body>
+</html>
