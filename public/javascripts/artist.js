@@ -44,7 +44,7 @@ function load_artist(url)
             var album = albums[i];
             var album_art = album_arts[i];
            var elem = document.getElementById("artist_single_albums");
-            elem.innerHTML += "<div class='col-md-3'> <div class='song_image'> <img src='"+album_art+"'> </img> </div> <div class='song_name'> <a onclick='load_album("+JSON.stringify('/album/'+album)+"); return false;'>"+album+"</a> </div> </div>";
+            elem.innerHTML += "<div class='col-md-3 song'> <div class='song_image'> <img src='"+album_art+"'> </img> </div> <div class='song_name'> <a onclick='load_album("+JSON.stringify('/album/'+album)+"); return false;'>"+album+"</a> </div> </div>";
         }
         $('.nav-stacked a[href="#artists"]').tab('show');
     });
