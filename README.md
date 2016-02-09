@@ -1,1 +1,1 @@
-# Lan-Music
+# Lanify
