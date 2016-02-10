@@ -72,7 +72,7 @@ $(document).ready(function(){
 
     });
     $('.nav-stacked').click(function() {
-        history.pushState(null, null, "http://192.168.159.28/db");
+        history.pushState(null, null, "http://192.168.159.28:3000/db");
     });
 
     $(document).click(function() {
@@ -89,7 +89,7 @@ $(function () {
    $("#bar").autocomplete({
       source: function (request, response) {
          $.ajax({
-            url: "http://192.168.159.28/search",
+            url: "http://192.168.159.28:3000/search",
             type: "GET",
             data: request,  // request is the value of search input
             success: function (data) {
