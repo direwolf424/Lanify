@@ -17,6 +17,12 @@
     margin-top: 1%;
 }
 
+.single_album_image{
+    height:auto;
+    display: block;
+    margin-right: 1%;
+    margin-top: 1%;
+}
 .album_name{
     display: block;
     height: auto;
