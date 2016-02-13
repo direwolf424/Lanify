@@ -47,7 +47,8 @@ $(document).ready(function(){
         swipeToSlide: true,
         prevArrow: $('.prev1'),
         nextArrow: $('.next1'),
-       focusOnSelect:true
+       focusOnSelect:true,
+       lazyload:'ondemand'
     });
 
     $('.song_slick').slick({
@@ -57,7 +58,8 @@ $(document).ready(function(){
         swipeToSlide: true,
         prevArrow: $('.prev2'),
         nextArrow: $('.next2'),
-        focusOnSelect:true
+        focusOnSelect:true,
+       lazyload:'ondemand'
 
     });
 
@@ -68,7 +70,8 @@ $(document).ready(function(){
         swipeToSlide: true,
         prevArrow: $('.prev3'),
         nextArrow: $('.next3'),
-        focusOnSelect:true
+        focusOnSelect:true,
+       lazyload:'ondemand'
 
     });
     $('.nav-stacked').click(function() {
