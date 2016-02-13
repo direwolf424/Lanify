@@ -2,38 +2,26 @@
 .album_description{
 
 }
-.album_one{
-    border: solid;
-    border-radius: 1%;
-    background-color:#667467;
-    height:200px;
-    width:170px;
+
+.image_size{
+   height:120px;
+   width:120px;
 }
 .album_image{
-    height:130px;
-    width:120px;
-    display: block;
+    display: inline-block;
+    height: 120px;
+    width: 120px;
     margin-right: 1%;
     margin-top: 1%;
+
 }
 
-.single_album_image{
-    height:auto;
-    display: block;
-    margin-right: 1%;
-    margin-top: 1%;
-}
 .album_name{
-    display: block;
+    display: inline-block;
     height: auto;
     margin-right: 1%;
-}
-.album_click{
-    font-size: 14pt;
+    font-size: 24pt;
     font-family: "Lato";
-}
-.album_one{
-
 }
 
 #album_songs{
@@ -44,3 +32,17 @@
     font-size: 16pt;
 }
 
+.albums_all{
+  height:80%;
+  float:left;
+}
+
+.album_name_list{
+  height:2px;
+  text-overflow: ellipsis;
+}
+
+.album{
+  margin-top:1%;
+  margin-bottom:5%;
+}
