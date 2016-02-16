@@ -9,7 +9,7 @@
 }
 
 .jp-audio .jp-time-holder {
-    position: absolute;
+    position: relative;
     top: 45%;
 }
 

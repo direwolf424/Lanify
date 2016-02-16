@@ -9,7 +9,7 @@ function load_more_album()
     var url="/users/album";
 
     $.get(url, function(data, status){
-        history.pushState(null, null, url);
+        //history.pushState(null, null, url);
 
 //        alert(data);
         var album = data[0];

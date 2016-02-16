@@ -241,3 +241,8 @@ td{
   margin-left:45%;
   margin-bottom: 2%;
 }
+.queue{
+   margin-top:1%;
+   margin-bottom:1%;
+   position:fixed;
+}

@@ -30,12 +30,12 @@ function load_album(url)
 //        history.pushState(null, null, url);
         var elem = document.getElementById("album_single_image");
         var pass = JSON.stringify(data[0].album_art);
-        elem.innerHTML = "<img src="+pass+">";
-        var elem = document.getElementById("album_single_name");
+        elem.innerHTML = "<img class ='image_size' onError='this.onerror=null;this.src='image/image.jpg';' src="+pass+">";
+        elem = document.getElementById("album_single_name");
         elem.innerHTML = data[0].album;
-        var elem = document.getElementById("play_album");
+        elem = document.getElementById("play_album");
         elem.innerHTML = " <a href='' onclick='play_album("+JSON.stringify(data)+"); return false;'> <span class='glyphicon glyphicon-play'></span> Play </a>";
-        var elem = document.getElementById("add_to_queue_album");
+        elem = document.getElementById("add_to_queue_album");
         elem.innerHTML = " <a href='' onclick='add_to_queue_album("+JSON.stringify(data)+"); return false;'> <span class='glyphicon glyphicon-play'></span> Add To Queue </a>";
         $("#album_single_songs tr").remove();
         for(var i in data)
@@ -45,19 +45,19 @@ function load_album(url)
             var row=table.insertRow(table.rows.length);
 
             var cell1=row.insertCell(0);
-            var pass = JSON.stringify("play('"+song.path+"',"+"'"+song.title+"',"+"'"+song.artist+"',"+"'"+song.album+"'); return false;");
+            pass = JSON.stringify("play('"+song.path+"',"+"'"+song.title+"',"+"'"+song.artist+"',"+"'"+song.album+"'); return false;");
             cell1.innerHTML = "<a href='' onclick="+pass+">  <span class='glyphicon glyphicon-play'> </span> </a>";
 
-            var cell1=row.insertCell(1);
-            var pass = JSON.stringify("play('"+song.path+"',"+"'"+song.title+"',"+"'"+song.artist+"',"+"'"+song.album+"'); return false;");
+            cell1=row.insertCell(1);
+            pass = JSON.stringify("play('"+song.path+"',"+"'"+song.title+"',"+"'"+song.artist+"',"+"'"+song.album+"'); return false;");
             cell1.innerHTML = "<a href='' onclick="+pass+">"+song.title+"</a>";
 
-            var cell1=row.insertCell(2);
+            cell1=row.insertCell(2);
             cell1.innerHTML = "<a href='' onclick='load_artist("+JSON.stringify('/artist/'+song.artist)+");return false;'>"+song.artist+"</a>";
 
-            var cell1=row.insertCell(3);
+            cell1=row.insertCell(3);
             var song_json = JSON.stringify(song);
-            cell1.innerHTML = "<a href='' onclick='add_to_queue("+song_json+"); return false;'>  <span class='glyphicon glyphicon-plus-sign'> </span> </a>";
+            cell1.innerHTML = "<a href='' onclick='add_to_queue("+song_json+"); return false;'>  <span class='glyphicon glyphicon-plus'> </span> </a>";
 
         }
         $('.nav-stacked a[href="#album_single"]').tab('show');

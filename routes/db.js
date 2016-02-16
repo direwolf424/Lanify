@@ -27,7 +27,7 @@ var Song = mongoose.model('Song',songScheme);
 var name;
 
 var path,songs_all,albums,album_arts;
-Song.find({}).limit(16).exec(function(err, songs) {
+Song.find({}).sort({views: -1}).limit(16).exec(function(err, songs) {
     if (err) throw err;
     songs_all = songs;
 });
@@ -54,6 +54,7 @@ var router = express.Router();
 /* GET home page. */
 router.get('/', function(req, res, next) {
     console.log(req.ip);
+    console.log('------------------------',req.username);
     res.render('db', {songs:songs_all, artists:artist ,dirname:__dirname,albums:albums,album_arts:album_arts });
 });
 
