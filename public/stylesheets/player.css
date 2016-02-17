@@ -3,22 +3,16 @@
 }
 
 /*Time Holder Start*/
-.jp-audio .jp-type-single .jp-time-holder {
-    left: 15%;
-    width: 60%;
-}
-
-.jp-audio .jp-time-holder {
-    position: relative;
-    top: 45%;
-}
-
 .jp-current-time{
-    left:10%;
+    margin-left:15%;
+    top: 92.5%;
+    position: fixed;
 }
 
 .jp-duration{
-    right:20%;
+    right:25%;
+    top: 92.5%;
+    position: fixed;
 }
 /*Time Holder End*/
 
@@ -27,14 +21,17 @@
     left: 18%;
     width: 54%;
 }
-.jp-audio .jp-progress {
+.jp-progress {
     top: 45%;
     height: 16px;
 }
 /*Progress Bar End*/
 
 #jp-song-name{
-    width: 15%;
+    width: 14%;
+    margin-left: 1%;
+    padding-top: 1%;
+    text-overflow: ellipsis;
 }
 
 .jp-audio .jp-controls {

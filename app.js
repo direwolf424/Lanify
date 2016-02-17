@@ -11,6 +11,7 @@ var db = require('./routes/db');
 var album = require('./routes/album');
 var artist = require('./routes/artist');
 var search = require('./routes/search');
+var update = require('./routes/update');
 var mongoose = require('mongoose');
 var app = express();
 var passport = require('passport');
@@ -75,6 +76,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(new RegExp('^\/update\/.*$'), update);
 
 app.use(express.static('public'));
 app.use(express.static('/myfile/dc/lanify'));

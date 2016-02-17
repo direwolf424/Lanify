@@ -38,7 +38,7 @@
    <body>
       <nav class="top_bar navbar-fixed-top">
          <div>
-            <div class="heading_top"><a href="" onclick="load_home()">LANify</a></div>
+            <div class="heading_top"><a href="" onclick="load_home()">LANify<sup>beta</sup></a></div>
          </div>
          <div id="search_bar">
             <input type="text" id="bar" class="form-control ui-autocomplete-input" placeholder="Search for Arijit Singh, Sunidhi Chauhan, 2 States..."/>
@@ -90,15 +90,6 @@
                         <br>
                      </div>
                      <div class="album_slick">
-                        <% for (var i in albums){%>
-                        <div class="slick_image">
-                           <img class="slick_image image_size" onError="this.onerror=null;this.src='image/image.jpg';" src="<%=album_arts[i]%>"> </img>
-                           <div class="song_name">
-                              <a class="album_click" onclick="load_album('/album/<%=albums[i]%>')"> <%=albums[i]%> </a>
-                           </div>
-                        </div>
-                        <% if (i>=20) break;%>
-                        <%} %>
                      </div>
                   </div>
 
@@ -112,19 +103,6 @@
                         <br>
                      </div>
                      <div class="song_slick">
-                        <% for (var i in songs){%>
-                        <div class="item active">
-                           <div class="col-md-3">
-                              <div class="slick_image">
-                                 <img class = 'image_size' onError="this.onerror=null;this.src='image/image.jpg';" src="<%=songs[i].album_art_small%>">
-                              </div>
-                              <div class="song_name">
-                                 <a href="" onclick="play('<%=songs[i].path%>',' <%=songs[i].title%>',' <%=songs[i].artist%> ',' <%=songs[i].album%> '); return false;"> <%=songs[i].title%> </a>
-                              </div>
-                           </div>
-                        </div>
-                        <% if (i>=20) break;%>
-                        <%} %>
                      </div>
                   </div>
                   <div class="featured_artist">
@@ -140,7 +118,7 @@
                         <% for (var i in artists){%>
                         <div class="item active">
                            <div class="col-md-2">
-                              <img class="slick_image1 image_size" src="image/image.jpg"> </img>
+                              <img class="slick_image1" src="image/image.jpg"> </img>
                               <div class="song_name">
                                  <a href="" onclick="load_artist('/artist/<%=artists[i]%>');return false;"> <%=artists[i]%> </a>
                               </div>
@@ -154,100 +132,25 @@
                </div>
                <div class="tab-pane" id="albums">
                   <div class="albums_all">
-                     <% for (var i in albums){%>
-                     <div class="album col-md-3">
-                        <div class="album_image">
-                           <img class = "image_size" onError="this.onerror=null;this.src='image/image.jpg';"src="<%=album_arts[i]%>">
-                           </img>
-                        </div>
-                        <div class="album_name_list">
-                            <a class="album_click" onclick="load_album('/album/<%=albums[i]%>')"> <%=albums[i]%> </a>
-                        </div>
-                     </div>
-                     <% if (i>=20) break;%>
-                     <%} %>
                   </div>
                   <div class="load_more">
                      <button class="btn-primary" onclick="load_more_album(); return false;"> Load More </button>
                   </div>
                </div>
-
                <div class="tab-pane" id="artist">
-                  <div>
-                     <div class="song_all">
-                        <% for (var i in artists){%>
-                        <div class="song col-sm-3">
-                           <div class="song_image">
-                              <img class = "image_size" src="/image/image.jpg"> </img>
-                           </div>
-                           <div class="song_name">
-                              <a class="album_click" onclick="load_artist('/artist/<%=artists[i]%>');return false;"> <%=artists[i]%> </a>
-                           </div>
-                        </div>
-                        <% if (i>=20) break;%>
-                        <%} %>
-                     </div>
-                     <div class="load_more">
-                        <button class="btn-primary" onclick="load_more_artist(); return false;"> Load More </button>
-                     </div>
+                  <div class="artists_all">
+                  </div>
+                  <div class="load_more">
+                     <button class="btn-primary" onclick="load_more_artist(); return false;"> Load More </button>
                   </div>
                </div>
-
                <div class="tab-pane" id="songs">
-                  <div>
-                     <table class="table table-striped" id="table_songs">
-                        <script>
-                           array=[];
-                           var j = 0 ;
-                        </script>
-                        <% for (var i=0;i<songs.length;i++){%>
-                           <tr>
-                              <td>
-                                 <a href='' onclick="play('<%=songs[i].path%>',' <%=songs[i].title%>',' <%=songs[i].artist%> ',' <%=songs[i].album%> '); return false;"> <span class='glyphicon glyphicon-play'></span> </a>
-                              </td>
-                              <td>
-                                 <a href="" onclick="play('<%=songs[i].path%>',' <%=songs[i].title%>',' <%=songs[i].artist%> ',' <%=songs[i].album%> '); return false;"> <%=songs[i].title%> </a>
-                              </td>
-                              <td>
-                                 <a class="album_click" onclick="load_album('/album/<%=songs[i].album%>')"> <%=songs[i].album%> </a>
-                              </td>
-                              <td>
-                                 <% for (var j=0;j< songs[i].artist.length;j++){%>
-                                    <a href="" onclick="load_artist('/artist/<%=songs[i].artist[j]%>'); return false;"> <%=songs[i].artist[j]%> </a>
-                                 <%} %>
-                              </td>
-                              <td>
-                                 <div><i><%=songs[i].length%></i></div>
-                              </td>
-                              <script>
-                                 array[j+1] = {
-                                    "title" : "<%=songs[i].title%>",
-                                    "artist" : "<%=songs[i].artist%>",
-                                    "album" : "<%=songs[i].album%>",
-                                    "album_art" : "<%=songs[i].album_art%>",
-                                    "album_art_small" : "<%=songs[i].album_art_small%>",
-                                    "views" : "<%=songs[i].views%>",
-                                    "rating" : "<%=songs[i].rating%>",
-                                    "genre" : "<%=songs[i].genre%>",
-                                    "path" : "<%=songs[i].path%>",
-                                    "length": "<%=songs[i].length%>"
-                                 }
-                                 var rows = document.getElementById('table_songs').rows;
-                                 rows[j].cells[5].innerHTML += "<a href='' onclick='add_to_queue(array["+j+"]);return false;'> <span class='glyphicon glyphicon-plus'></span> </a>"
-                                 j += 1;
-                              </script>
-
-                              <td>
-                              </td>
-                           </tr>
-                        <%} %>
-                        </table>
-                     <div class="load_more">
-                        <button class="btn-primary" onclick="load_more_song(); return false;"> Load More </button>
-                     </div>
+                  <table class="table table-striped" id="table_songs">
+                  </table>
+                  <div class="load_more">
+                     <button class="btn-primary" onclick="load_more_song(); return false;"> Load More </button>
                   </div>
                </div>
-
                <div class="tab-pane" id="artist_single">
                   <div id="exTab1" class="container">
 
@@ -277,7 +180,7 @@
                               <div class="">
                                  <div class="col-sm-3">
                                     <div class="song_image">
-                                       <img class ='image_size' src="">
+                                       <img src="">
                                        </img>
                                     </div>
                                     <div class="song_name">
@@ -292,7 +195,6 @@
                      </div>
                   </div>
                </div>
-
                <div class="tab-pane" id="album_single">
                   <div class="album_description">
                      <div id="album_single_image" class="album_image">
@@ -309,13 +211,21 @@
                   <table class="table-striped table" id="album_single_songs">
                   </table>
                </div>
-
                <div class="tab-pane" id="now_playing">
-                  <div>
-                     <button id="clear_queue"class='btn-primary queue'> Clear Queue </button>
+                  <div class="clear_queue">
+                     <button id="clear_queue"> Clear Queue </button>
                   </div>
+                  <div id="jp_container_1" >
+                     <div class="jp-playlist">
+                        <ul>
+                           <li></li> <!-- Empty <li> so your HTML conforms with the W3C spec -->
+                        </ul>
+                     </div>
+                  </div>
+                  <div class="now_playing_div">
                   <table class="table table-striped" id="table_now_playing">
                   </table>
+                  </div>
                </div>
             </div>
          </div>
@@ -326,8 +236,16 @@
          <div id="jp_container_1" class="jp-audio audio_player" role="application" aria-label="media player">
             <div class="jp-type-single">
                <div class="jp-gui jp-interface">
+                  <div class="jp-current-time" role="timer" aria-label="time">&nbsp;</div>
+                  <div class="jp-duration" role="timer" aria-label="duration">&nbsp;</div>
                   <div id="jp-song-name">
                   </div>
+                  <div class="jp-progress">
+                     <div class="jp-seek-bar">
+                        <div class="jp-play-bar"></div>
+                     </div>
+                  </div>
+
                   <div class="jp-controls">
                      <button class="jp-previous" role="button" tabindex="0">previous</button>
                      <button class="jp-play" role="button" tabindex="0">play</button>
@@ -335,26 +253,12 @@
                      <button class="jp-next" role="button" tabindex="0">next</button>
                      <button class="jp-stop" role="button" tabindex="0">stop</button>
                   </div>
-                  <div class="jp-progress">
-                     <div class="jp-seek-bar">
-                        <div class="jp-play-bar"></div>
-                     </div>
-                  </div>
                   <div class="jp-volume-controls">
                      <button class="jp-mute" role="button" tabindex="0">mute</button>
                      <button class="jp-volume-max" role="button" tabindex="0">max volume</button>
                      <div class="jp-volume-bar">
                         <div class="jp-volume-bar-value"></div>
                      </div>
-                  </div>
-                  <div class="jp-time-holder">
-                     <div class="jp-current-time" role="timer" aria-label="time">&nbsp;</div>
-                     <div class="jp-duration" role="timer" aria-label="duration">&nbsp;</div>
-<!--
-                     <div class="jp-toggles">
-                        <button class="jp-repeat" role="button" tabindex="0">repeat</button>
-                     </div>
--->
                   </div>
                </div>
                <div class="jp-details">

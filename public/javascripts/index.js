@@ -4,7 +4,17 @@ function load_home(){
 }
 
 $(document).ready(function(){
-
+    load_slick_song();
+    load_slick_album();
+    load_more_artist();
+    load_more_song();
+    load_more_album();
+    var img = document.getElementsByTagName('img');
+//    alert(img.length);
+    for(var i =0;i< img.length;i++)
+    {
+        img[i].setAttribute("onerror","this.src='/image/image.jpg'");
+    }
 
     document.getElementById('clear_queue').addEventListener('click',clear_queue);
 
@@ -34,46 +44,46 @@ $(document).ready(function(){
 
 
 
+/*
 
-    function disableF5(e) { if ((e.which || e.keyCode) == 116 )
-        e.preventDefault(); }
+    function disableF5(e) { if ((e.which || e.keyCode) == 116 || (e.which || e.keyCode) == 82)
+        e.preventDefault(); };
 
     $(document).on("keydown", disableF5);
+ */
 
     $('.album_slick').slick({
-//        infinite: true,
+        infinite: true,
+        lazyLoad: 'ondemand',
         slidesToShow: 8,
         slidesToScroll: 3,
         swipeToSlide: true,
         prevArrow: $('.prev1'),
         nextArrow: $('.next1'),
-       focusOnSelect:true,
-       lazyload:'ondemand'
+        focusOnSelect:true
+
     });
 
     $('.song_slick').slick({
-//        infinite: true,
+       infinite: true,
         slidesToShow: 8,
         slidesToScroll: 3,
-        swipeToSlide: true,
+        lazyLoad: 'ondemand',
         prevArrow: $('.prev2'),
         nextArrow: $('.next2'),
-        focusOnSelect:true,
-       lazyload:'ondemand'
-
+        focusOnSelect:true
     });
 
     $('.artist_slick').slick({
-//        infinite: true,
-        slidesToShow: 8,
+       infinite: true,
+       lazyLoad: 'ondemand',
+        slidesToShow: 6,
         slidesToScroll: 3,
-        swipeToSlide: true,
         prevArrow: $('.prev3'),
         nextArrow: $('.next3'),
-        focusOnSelect:true,
-       lazyload:'ondemand'
-
+        focusOnSelect:true
     });
+
     $('.nav-stacked').click(function() {
         history.pushState(null, null, "http://192.168.159.28:3000/db");
     });
@@ -86,6 +96,7 @@ $(document).ready(function(){
     });
 
 });
+
 
 $(function () {
 
@@ -108,8 +119,10 @@ $(function () {
                 res.innerHTML = "";
                 for(var i in songs)
                 {
-                    var pass = JSON.stringify("play('"+songs[i].path+"',"+"'"+songs[i].title+"',"+"'"+songs[i].artist+"',"+"'"+songs[i].album+"')");
-                    res.innerHTML += "<p class='ui-menu-item' onclick="+pass+">"+songs[i].title+"<p>";
+                    var song_json = JSON.stringify(songs[i]);
+
+                 //   var pass = JSON.stringify("play('"+songs[i].path+"',"+"'"+songs[i].title+"',"+"'"+songs[i].artist+"',"+"'"+songs[i].album+"')");
+                    res.innerHTML += "<p class='ui-menu-item' onclick='play1("+song_json+"); return false;'>"+songs[i].title+"<p>";
                     if(i>5)
                         break;
                 }
@@ -134,6 +147,7 @@ $(function () {
                 res.innerHTML = "";
                 for(var i in artists)
                 {
+                    console.log(artists[i].length);
                     res.innerHTML += "<p class='ui-menu-item' onclick='load_artist("+JSON.stringify('/artist/'+artists[i])+"); return false;'>"+artists[i]+"<p>";
                     if(i>5)
                         break;
@@ -165,10 +179,3 @@ $(function () {
          });
 
 
-$(document).ready(function()
-                  {
-                     $(".backup_picture").error(function(){
-                        //alert('hello');
-                        $(this).attr('src', '/image/image.jpg');
-                     });
-                  });

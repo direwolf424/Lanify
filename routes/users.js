@@ -4,13 +4,12 @@ var url = require('url');
 var mongoose = require('mongoose');
 var db = require('./db').Song;
 mongoose.createConnection('mongodb://localhost/music');
-var path,album,album_arts,artist,songs;
+var path,album,artist,songs;
 
 router.get('/',function(req,res,next){
 
   var x =decodeURIComponent(req.originalUrl);
   x= x.substr(7, x.length-7);
-  console.log(x);
 
     var result=[];
     var finishRequest = function() {
@@ -18,20 +17,21 @@ router.get('/',function(req,res,next){
     };
 
 
-
-    var q1 = function(fn) {
-      db.collection.distinct("album", function(err, results){
-        if (err) throw err;
-        album = results;
-        return fn && fn(null,album);
-      });
+    var group =  {
+      key:{'album':1,'album_art':1},
+      reduce : function (a) {},
+      initial : {},
+      cond: {},
+      finalise : {}
     };
 
-    var q2 = function(fn) {
-      db.collection.distinct("album_art", function(err, results){
+
+  var q1 = function(fn) {
+      db.collection.group(group.key,group.cond,group.initial,group.reduce,group.finalise,true,function(err,results) {
         if (err) throw err;
-        album_arts = results;
-        return fn && fn(null,album_arts);
+//        console.log(results);
+        album = results;
+        return fn && fn(null,album);
       });
     };
 
@@ -53,24 +53,13 @@ router.get('/',function(req,res,next){
 
     //Standard nested callbacks
 
-    /*
-      db.update({"title":x},{$inc:{views:1}}, function(err, songs) {
-        if (err) throw err;
-        console.log("Updated");
-      });
-    */
   if(x=="album")
   {
     q1(function (err, albums) {
       if (err)
         throw err;
       result.push(albums);
-      q2(function(err,album_art){
-        if(err)
-          throw err;
-        result.push(album_art);
         finishRequest(result);
-      });
     });
   }
   else if(x=="artists")

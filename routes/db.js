@@ -9,7 +9,7 @@ var Schema = mongoose.Schema;
 var songScheme = new Schema({
     title:String,
     path:String,
-    artist:String,
+    artist:Array,
     album:String,
     length:String,
     release_date: Date,
@@ -46,15 +46,15 @@ Song.collection.distinct("album", function(err, results){
 
 Song.collection.distinct("artist", function(err, results){
     if (err) throw err;
-//    console.log(results);
+   //console.log(results);
     artist = results;
 });
 var express = require('express');
 var router = express.Router();
 /* GET home page. */
 router.get('/', function(req, res, next) {
-    console.log(req.ip);
-    console.log('------------------------',req.username);
+    console.log('------------------------------------------>>>>>>>>',req.ip);
+    //console.log('------------------------',req.username);
     res.render('db', {songs:songs_all, artists:artist ,dirname:__dirname,albums:albums,album_arts:album_arts });
 });
 

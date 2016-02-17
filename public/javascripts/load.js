@@ -4,25 +4,61 @@
 /**
  * Created by Saurabh on 15-Jan-16.
  */
+
+function load_slick_album()
+{
+    var url="/users/album";
+    $.get(url, function(data, status){
+        var result = data[0];
+        var y = JSON.stringify("this.src='/image/image.jpg'");
+        for (var i=0;i<20 && i<result.length;i++)
+        {
+            var x = "<div class='slick_image'> <img class='slick_image' onerror="+y+" data-lazy='"+result[i].album_art+"'> </img> <div class='song_name'> <a href='' class='album_click' onclick='load_album("+JSON.stringify('/album/'+result[i].album)+"); return false;'> "+result[i].album+" </a> </div> </div>";
+            $('.album_slick').slick('slickAdd',x);
+        }
+    });
+
+    return false;
+}
+
+
+function load_slick_song()
+{
+    var url="/users/songs";
+
+    $.get(url, function(data, status){
+
+        var songs = data[0];
+        var y = JSON.stringify("this.src='/image/image.jpg'");
+        for (var i=0;i<20 && i<songs.length;i++)
+        {
+            var song_json = JSON.stringify(songs[i]);
+            var x ="<div class='item active'> <div class='col-md-3'> <div class='song_image'> <img onerror="+y+" data-lazy='"+songs[i].album_art_small+"'> </div> <div class='song_name'> <a href='' onclick='play1("+song_json+"); return false;'>"+ songs[i].title +"</a>  </div> </div> </div>";
+            $('.song_slick').slick('slickAdd',x);
+        }
+    });
+    return false;
+
+}
+
+
 function load_more_album()
 {
     var url="/users/album";
 
     $.get(url, function(data, status){
-        //history.pushState(null, null, url);
-
-//        alert(data);
-        var album = data[0];
-        var album_art = data[1];
+        var result = data[0];
         var elem = document.getElementsByClassName("albums_all")[0];
         var count = document.getElementsByClassName("album").length;
-        for (var i=count+1;i<count+20 && i<album.length;i++)
+        var x = JSON.stringify("this.src='/image/image.jpg'");
+        for (var i=count+1;i<count+31 && i<result.length;i++)
         {
-            elem.innerHTML += "<div class='album col-md-3'> <div class='song_image'> <img class ='image_size' src='"+album_art[i]+"'> </img> </div> <div class='album_name_list'> <a class='album_click' onclick='load_album("+JSON.stringify('/album/'+album[i])+"); return false;' > "+album[i]+" </a> </div> </div> ";
+            elem.innerHTML += "<div class='album col-md-5ths'> <div class='song_image'> <img onerror="+x+" src='"+result[i].album_art+"'> </img> </div> <div class='album_name_list'> <a class='album_click' onclick='load_album("+JSON.stringify('/album/'+result[i].album)+"); return false;' > "+result[i].album+" </a> </div> </div> ";
         }
     });
     return false;
 }
+
 
 function load_more_artist()
 {
@@ -30,13 +66,15 @@ function load_more_artist()
 
     $.get(url, function(data, status){
         var artist = data[0];
-        var elem = document.getElementsByClassName("song_all")[0];
+        var elem = document.getElementsByClassName("artists_all")[0];
         var count = document.getElementsByClassName("song").length;
-        for (var i=count+1;i<count+20 && i<artist.length;i++)
+        var x = JSON.stringify("this.src='/image/image.jpg'");
+        for (var i=count+1;i<count+31 && i<artist.length;i++)
         {
-            elem.innerHTML += "<div class='song col-md-3'> <div class='song_image'> <img class ='image_size' src='/image/image.jpg'> </img> </div> <div class='song_name'> <a class='album_click' onclick='load_artist("+JSON.stringify('/artist/'+artist[i])+"); return false;' > "+artist[i]+" </a> </div> </div> ";
+            elem.innerHTML += "<div class='song col-md-5ths'> <div class='song_image'> <img onerror="+x+" src='/image/image.jpg'> </img> </div> <div class='song_name'> <a class='album_click' onclick='load_artist("+JSON.stringify('/artist/'+artist[i])+"); return false;' > "+artist[i]+" </a> </div> </div> ";
         }
     });
+
     return false;
 }
 
@@ -53,16 +91,16 @@ function load_more_song()
         {
             var row=table.insertRow(table.rows.length);
             var song = songs[i];
+
             var cell1=row.insertCell(0);
-            var pass = JSON.stringify("play('"+song.path+"',"+"'"+song.title+"',"+"'"+song.artist+"',"+"'"+song.album+"'); return false;");
-            cell1.innerHTML = "<a href='' onclick="+pass+">  <span class='glyphicon glyphicon-play'> </span> </a>";
+            var song_json = JSON.stringify(song);
+            cell1.innerHTML = "<a href='' onclick='play1("+song_json+"); return false;'>  <span class='glyphicon glyphicon-play'> </span> </a>";
 
             cell1=row.insertCell(1);
-            pass = JSON.stringify("play('"+song.path+"',"+"'"+song.title+"',"+"'"+song.artist+"',"+"'"+song.album+"'); return false;");
-            cell1.innerHTML = "<a href='' onclick="+pass+">"+song.title+"</a>";
+            cell1.innerHTML = "<a href='' onclick='play1("+song_json+"); return false;'>"+song.title+"</a>";
 
             cell1=row.insertCell(2);
-            pass = JSON.stringify("load_album('/album/"+song.album+"'); return false;");
+            var pass = JSON.stringify("load_album('/album/"+song.album+"'); return false;");
             cell1.innerHTML = "<a class='album_click' href='' onclick="+pass+">"+song.album+"</a>";
 
             cell1=row.insertCell(3);
@@ -76,9 +114,9 @@ function load_more_song()
             cell1.innerHTML = song.length;
 
             cell1=row.insertCell(5);
-            var song_json = JSON.stringify(song);
             cell1.innerHTML = "<a href='' onclick='add_to_queue("+song_json+"); return false;'>  <span class='glyphicon glyphicon-plus-sign'> </span> </a>";
         }
     });
+
     return false;
 }

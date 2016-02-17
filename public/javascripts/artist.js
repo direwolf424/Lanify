@@ -27,8 +27,9 @@ function load_artist(url)
             cell1.innerHTML = "<a href='' onclick='load_album("+JSON.stringify('/album/'+song.album)+"); return false;'>"+song.album+"</a>";
 
             cell1=row.insertCell(2);
-            cell1.innerHTML = "<a href='' onclick='load_artist("+JSON.stringify('/artist/'+song.artist)+"); return false;'>"+song.artist+"</a>";
-
+            for(var j=0;j<song.artist.length;j++){
+            cell1.innerHTML += "<a href='' onclick='load_artist("+JSON.stringify('/artist/'+song.artist[j])+"); return false;'>"+song.artist[j]+" </a>";
+            }
             cell1=row.insertCell(3);
             var song_json = JSON.stringify(song);
             cell1.innerHTML = "<a href='' onclick='add_to_queue("+song_json+"); return false;'>  <span class='glyphicon glyphicon-plus'> </span> </a>";
