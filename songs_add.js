@@ -44,6 +44,11 @@ function delete_info(str){
    str=str.replace("- Tinhkhucbathu.com", "");
    str=str.replace("www.Songs.PK", "");
    str=str.replace("www.djrobsonmichel.com", "");
+   str=str.replace("{www.LatestZone.Net}", "");
+   str=str.replace(":: www.FreeTeluguMp3Songs.com ::", "");
+   str=str.replace("[Songs.PK]", "");
+   str=str.replace("- PagalWorld.com", "");
+   str=str.replace("- www.SongsLover.com", "");
    str = str.trim();
    return str;
 }
@@ -86,9 +91,14 @@ var Song = mongoose.model('Song',songScheme);
 var name;
 
 //var path= "/myfile/dc/lanify/english";
+//------------------------------------------------------------
 var lang='english';
 var path= "/myfile/dc/lanify/english/";
 var path1="english/";
+//------------------------------------------------------------
+//var lang='hindi';
+//var path= "/myfile/dc/lanify/hindi/";
+//var path1="hindi/";
 var song_folder_arr = fs.readdirSync(path);
 //console.log("hello",song_folder_arr);
 Sync(function(){
@@ -97,14 +107,17 @@ Sync(function(){
       var folder = path+song_folder_arr[j];
 
       song_arr = fs.readdirSync(folder);
-      if(endsWith(song_arr, ".mp3") || endsWith(song_arr, ".Mp3") || endsWith(song_arr, ".MP3") || endsWith(song_arr, ".jpg") || endsWith(song_arr, ".ini"))
-         {
-            continue;
-         }
+      console.log(song_arr);
          var cntr=0,tags;
          for(var i=0;i<song_arr.length;i++)
          {
             var file = song_arr[i];
+            console.log(file);
+            //if(file.indexOf(' .mp3')>-1)
+            //{
+             ////console.log("Skipped "+file);
+             //continue;
+            //}
             if(endsWith(file, ".mp3"))
                {
                   // Function.prototype.sync() interface is same as Function.prototype.call() - first argument is 'this' context
@@ -112,12 +125,13 @@ Sync(function(){
                   var time,metadata;
                   try{
                      metadata = mm.sync(null,fs.createReadStream("/myfile/dc/lanify/"+pat),{duration:true});
-                     time=metadata.duration;
                      //console.log(metadata);
                   }
                   catch(e){
-                     console.log(e);
+                     console.log('-------------------------------------->>'+e);
+                     continue;
                   }
+                     time=metadata.duration;
                   var time1 = parseInt(time);
                   var min = time1/60;
                   var sec=time%60;
@@ -134,7 +148,7 @@ Sync(function(){
                   //console.log('hello',metadata);
                   //console.log('hello1');
                   time = min +":"+sec;
-                  if(isBlank(metadata.title))
+                  if(isBlank(metadata.title)||isBlank(metadata.artist)||isBlank(metadata.album))
                      {
                         //console.log("----------->the string was empty");
                         continue;
@@ -162,7 +176,7 @@ Sync(function(){
 
                      newSong.save(function(err) {
                         if (err)
-                           console.log("Error "+title);
+                           console.log("Error "+pat+" "+j);
                         else
                            {
                               console.log('Song added',cnt+'-->'+title);

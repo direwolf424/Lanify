@@ -3,7 +3,7 @@
    <head>
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <meta charset="utf-8">
-      <title>Lan Music</title>
+      <title>Lanify</title>
       <script src="/javascripts/jquery.min.js"></script>
       <script src="/javascripts/index.js"></script>
       <script src="/javascripts/album.js"></script>
@@ -38,7 +38,7 @@
    <body>
       <nav class="top_bar navbar-fixed-top">
          <div>
-            <div class="heading_top"><a href="" onclick="load_home()">LANify<sup>beta</sup></a></div>
+            <div class="heading_top"><a href="" onclick="load_home(); return false;">La<span class='glyphicon glyphicon-music'></span>ify<sup>β</sup></a></div>
          </div>
          <div id="search_bar">
             <input type="text" id="bar" class="form-control ui-autocomplete-input" placeholder="Search for Arijit Singh, Sunidhi Chauhan, 2 States..."/>
@@ -85,8 +85,8 @@
                         New Releases
                      </h1>
                      <div class="arrows">
-                        <span class='prev1 glyphicon glyphicon-arrow-left'></span>
-                        <span class='next1 glyphicon glyphicon-arrow-right'></span>
+                        <span class='prev1 slick_arrow glyphicon glyphicon-arrow-left'></span>
+                        <span class='next1 slick_arrow glyphicon glyphicon-arrow-right'></span>
                         <br>
                      </div>
                      <div class="album_slick">
@@ -98,8 +98,8 @@
                         Top Songs
                      </h1>
                      <div class="arrows">
-                        <span class='prev2 glyphicon glyphicon-arrow-left'></span>
-                        <span class='next2 glyphicon glyphicon-arrow-right'></span>
+                        <span class='prev2 slick_arrow glyphicon glyphicon-arrow-left'></span>
+                        <span class='next2 slick_arrow glyphicon glyphicon-arrow-right'></span>
                         <br>
                      </div>
                      <div class="song_slick">
@@ -110,16 +110,16 @@
                         Featured Artist
                      </h1>
                      <div class="arrows">
-                        <span class='prev3 glyphicon glyphicon-arrow-left'></span>
-                        <span class='next3 glyphicon glyphicon-arrow-right'></span>
+                        <span class='prev3 slick_arrow glyphicon glyphicon-arrow-left'></span>
+                        <span class='next3 slick_arrow glyphicon glyphicon-arrow-right'></span>
                         <br>
                      </div>
                      <div class="artist_slick">
                         <% for (var i in artists){%>
                         <div class="item active">
                            <div class="col-md-2">
-                              <img class="slick_image1" src="image/image.jpg"> </img>
-                              <div class="song_name">
+                              <img class="image_size" src="image/image.jpg"> </img>
+                              <div class="break_word">
                                  <a href="" onclick="load_artist('/artist/<%=artists[i]%>');return false;"> <%=artists[i]%> </a>
                               </div>
                            </div>
@@ -213,7 +213,7 @@
                </div>
                <div class="tab-pane" id="now_playing">
                   <div class="clear_queue">
-                     <button id="clear_queue"> Clear Queue </button>
+                     <button class ='btn-primary'id="clear_queue"> Clear Queue </button>
                   </div>
                   <div id="jp_container_1" >
                      <div class="jp-playlist">

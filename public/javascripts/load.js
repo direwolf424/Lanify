@@ -10,10 +10,10 @@ function load_slick_album()
     var url="/users/album";
     $.get(url, function(data, status){
         var result = data[0];
-        var y = JSON.stringify("this.src='/image/image.jpg'");
+        var y = JSON.stringify('this.src="/image/image.jpg"');
         for (var i=0;i<20 && i<result.length;i++)
         {
-            var x = "<div class='slick_image'> <img class='slick_image' onerror="+y+" data-lazy='"+result[i].album_art+"'> </img> <div class='song_name'> <a href='' class='album_click' onclick='load_album("+JSON.stringify('/album/'+result[i].album)+"); return false;'> "+result[i].album+" </a> </div> </div>";
+            var x = "<a href='' class='album_click' onclick='load_album("+JSON.stringify('/album/'+result[i].album)+"); return false;'> <div class='slick_image'> <img class='image_size' onError='this.onerror=null;this.src='image/image.jpg';' data-lazy='"+result[i].album_art+"'> </img> <div class='song_name'> "+result[i].album+" </div> </div> </a>";
             $('.album_slick').slick('slickAdd',x);
         }
     });
@@ -33,7 +33,7 @@ function load_slick_song()
         for (var i=0;i<20 && i<songs.length;i++)
         {
             var song_json = JSON.stringify(songs[i]);
-            var x ="<div class='item active'> <div class='col-md-3'> <div class='song_image'> <img onerror="+y+" data-lazy='"+songs[i].album_art_small+"'> </div> <div class='song_name'> <a href='' onclick='play1("+song_json+"); return false;'>"+ songs[i].title +"</a>  </div> </div> </div>";
+            var x =" <div class='col-md-3'> <div class='song_image'> <img class='image_size' onerror="+y+" data-lazy='"+songs[i].album_art_small+"'> </div> <div class='break_word'> <a href='' onclick='play1("+song_json+"); return false;'>"+ songs[i].title +"</a>  </div> </div>";
             $('.song_slick').slick('slickAdd',x);
         }
     });
@@ -53,7 +53,7 @@ function load_more_album()
         var x = JSON.stringify("this.src='/image/image.jpg'");
         for (var i=count+1;i<count+31 && i<result.length;i++)
         {
-            elem.innerHTML += "<div class='album col-md-5ths'> <div class='song_image'> <img onerror="+x+" src='"+result[i].album_art+"'> </img> </div> <div class='album_name_list'> <a class='album_click' onclick='load_album("+JSON.stringify('/album/'+result[i].album)+"); return false;' > "+result[i].album+" </a> </div> </div> ";
+            elem.innerHTML += "<div class='album col-md-5ths'> <a class='break_word' onclick='load_album("+JSON.stringify('/album/'+result[i].album)+"); return false;' > <div class='song_image'> <img onerror="+x+" src='"+result[i].album_art+"'> </img> </div> <div class='album_name_list'> "+result[i].album+" </a> </div> </div> ";
         }
     });
     return false;
@@ -71,7 +71,7 @@ function load_more_artist()
         var x = JSON.stringify("this.src='/image/image.jpg'");
         for (var i=count+1;i<count+31 && i<artist.length;i++)
         {
-            elem.innerHTML += "<div class='song col-md-5ths'> <div class='song_image'> <img onerror="+x+" src='/image/image.jpg'> </img> </div> <div class='song_name'> <a class='album_click' onclick='load_artist("+JSON.stringify('/artist/'+artist[i])+"); return false;' > "+artist[i]+" </a> </div> </div> ";
+            elem.innerHTML += "<div class='song col-md-5ths'> <div class='song_image'> <img onerror="+x+" src='/image/image.jpg'> </img> </div> <div class='song_name'> <a class='break_word' onclick='load_artist("+JSON.stringify('/artist/'+artist[i])+"); return false;' > "+artist[i]+" </a> </div> </div> ";
         }
     });
 
@@ -114,7 +114,7 @@ function load_more_song()
             cell1.innerHTML = song.length;
 
             cell1=row.insertCell(5);
-            cell1.innerHTML = "<a href='' onclick='add_to_queue("+song_json+"); return false;'>  <span class='glyphicon glyphicon-plus-sign'> </span> </a>";
+            cell1.innerHTML = "<a href='' onclick='add_to_queue("+song_json+"); return false;'>  <span class='glyphicon glyphicon-plus'> </span> </a>";
         }
     });
 

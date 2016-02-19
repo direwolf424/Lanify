@@ -1,0 +1,30 @@
+
+.album_description{
+
+}
+
+
+.album_image{
+    display: inline-block;
+    height: auto;
+    margin-right: 1%;
+    margin-top: 1%;
+
+}
+
+.album_name{
+    display: inline-block;
+    height: auto;
+    margin-right: 1%;
+    font-size: 24pt;
+    font-family: "Lato";
+}
+
+#album_songs{
+    margin-top: 2%;
+}
+
+.album_options{
+    font-size: 16pt;
+}
+

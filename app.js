@@ -76,7 +76,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(new RegExp('^\/update\/.*$'), update);
 
 app.use(express.static('public'));
 app.use(express.static('/myfile/dc/lanify'));
@@ -85,6 +84,7 @@ app.use(express.static('/myfile/dc/lanify'));
 app.use(new RegExp('^\/album\/.*$'), album);
 app.use(new RegExp('^\/artist\/.*$'), artist);
 app.use(new RegExp('^\/users\/.*$'), users);
+app.use(new RegExp('^\/update\/.*$'), update);
 app.use('/db',db.Route);
 app.use('/search',search);
 

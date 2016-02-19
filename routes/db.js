@@ -24,6 +24,17 @@ var songScheme = new Schema({
 // we need to create a model using it
 
 var Song = mongoose.model('Song',songScheme);
+
+var ip_table = new Schema({
+   ip:String,
+   clicks:Number,
+   songs:Array
+},{ collection: 'ip_info' });
+
+// the schema is useless so far
+// we need to create a model using it
+
+var Ip = mongoose.model('Ip',ip_table);
 var name;
 
 var path,songs_all,albums,album_arts;
@@ -60,3 +71,4 @@ router.get('/', function(req, res, next) {
 
 module.exports.Route = router;
 module.exports.Song = Song;
+module.exports.Ip = Ip;

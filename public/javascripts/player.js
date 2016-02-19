@@ -16,7 +16,7 @@ function remove_song(element){
         var LocalStorage = require('node-localstorage').LocalStorage;
         localStorage = new LocalStorage('./scratch');
     }
-    if(localStorage.getItem("queue")==null)
+    if(localStorage.getItem("queue")===null)
     {
         current_queue = [];
     }
@@ -72,7 +72,7 @@ function play1(song){
         var LocalStorage = require('node-localstorage').LocalStorage;
         localStorage = new LocalStorage('./scratch');
     }
-    if(localStorage.getItem("queue")==null)
+    if(localStorage.getItem("queue")===null)
     {
         current_queue = [];
     }
@@ -265,7 +265,7 @@ function pause(elem)
     var table = document.getElementById('table_now_playing');
     var play = table.rows[index].cells[1].firstElementChild.getAttribute('onclick');
     play = JSON.stringify(play);
-    table.rows[index].cells[0].innerHTML = "<a href='' class='jp-play' onclick="+play+">  <span class='glyphicon glyphicon-play'> </span> </a>";;
+    table.rows[index].cells[0].innerHTML = "<a href='' class='jp-play' onclick="+play+">  <span class='glyphicon glyphicon-play'> </span> </a>";
 }
 
 function clear_queue() {
@@ -285,7 +285,7 @@ function add_to_queue(song) {
         var LocalStorage = require('node-localstorage').LocalStorage;
         localStorage = new LocalStorage('./scratch');
     }
-    if(localStorage.getItem("queue")==null)
+    if(localStorage.getItem("queue")===null)
     {
         current_queue = [];
     }
@@ -339,23 +339,23 @@ function now_playing(song){
     var cell1=row.insertCell(0);
     cell1.innerHTML = "<a href='' onclick='play1("+song_json+"); return false;'>  <span class='glyphicon glyphicon-play'> </span> </a>";
 
-    var cell1=row.insertCell(1);
+    cell1=row.insertCell(1);
     cell1.innerHTML = "<a href='' onclick='play1("+song_json+"); return false;'>"+title+"</a>";
 
-    var cell1=row.insertCell(2);
+    cell1=row.insertCell(2);
     var pass = JSON.stringify("load_album('/album/"+album+"'); return false;");
     cell1.innerHTML = "<a class='album_click' href='' onclick="+pass+">"+album+"</a>";
 
-    var cell1=row.insertCell(3);
+    cell1=row.insertCell(3);
     for (var j=0;j< artist.length;j++) {
         cell1.innerHTML += "<a href='' onclick='load_artist(" + JSON.stringify('/artist/' + artist[j]) + ");return false;'>" + artist[j] + "</a> ";
     }
 
-    var cell1=row.insertCell(4);
+    cell1=row.insertCell(4);
     cell1.innerHTML = length;
 
-    var cell1=row.insertCell(5);
-    var pass = JSON.stringify("remove_song(this); return false;");
+    cell1=row.insertCell(5);
+    pass = JSON.stringify("remove_song(this); return false;");
     cell1.innerHTML = "<a href='' onclick="+pass+">  <span class='glyphicon glyphicon-remove'> </span> </a>";
 
 }
@@ -368,7 +368,7 @@ function load_playlist()
         var LocalStorage = require('node-localstorage').LocalStorage;
         localStorage = new LocalStorage('./scratch');
     }
-    if(localStorage.getItem("queue")==null)
+    if(localStorage.getItem("queue")===null)
     {
         current_queue = [];
     }

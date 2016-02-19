@@ -1,270 +1,272 @@
 body {
-  font-size: 14pt;
-  background: transparent;
-  background: #E8E8E8;
-  margin-right: 0;
+   font-size: 14pt;
+   background: transparent;
+   background: #E8E8E8;
+   margin-right: 0;
 }
 
 
 
 .new_releases{
-  font-family: "Arvo";
+   font-family: "Arvo";
 }
 
 
 a {
-  color: #3c3c3c;
+   color: #3c3c3c;
 }
 
 .heading_top
 {
-  background-color: #0193b7;
-  color: #f6f6f6;
-  font-weight: bold;
-  margin-left: 0;
-  margin-top: 0%;
-  margin-bottom: 1%;
-  height: 2%;
-  font-size: 24pt;
-  font-family: "Lato";
-  height: 3%;
-  padding-left: 1%;
-  padding-top: 1%;
-  padding-bottom: 1%;
+   background-color: #0193b7;
+   color: #f6f6f6;
+   font-weight: bold;
+   margin-left: 0;
+   margin-top: 0%;
+   margin-bottom: 1%;
+   height: 2%;
+   font-size: 24pt;
+   font-family: "Lato";
+   height: 3%;
+   padding-left: 1%;
+   padding-top: 1%;
+   padding-bottom: 1%;
 }
 
 .content{
-  background-color: white;
-  width: 100%;
-  height: 68%;
-//  right: 0%;
-  position: fixed;
-  overflow-y: scroll;
-  overflow-x: hidden;
-  margin-top: 10%;
-  margin-left: 0%;
-//  margin-right: 0%;
+   background-color: white;
+   width: 100%;
+   height: 68%;
+   //  right: 0%;
+   position: fixed;
+   overflow-y: scroll;
+   overflow-x: hidden;
+   margin-top: 10%;
+   margin-left: 0%;
+   //  margin-right: 0%;
 }
 
 .side_content{
-  margin-top: 0%;
-  padding-left: 1%;
-  padding-top: 1%;
-  background: #E8E8E8;
+   margin-top: 0%;
+   padding-left: 1%;
+   padding-top: 1%;
+   background: #E8E8E8;
 
-//  background-color: #ffeeff;
-  /*
-  border-right: solid;
-  border-color: #888888;
-  */
-  position: fixed;
-//  top: 28%;
-  width:15%;
-//  position: fixed;
-  height: 100%;
+   //  background-color: #ffeeff;
+   /*
+   border-right: solid;
+   border-color: #888888;
+    */
+   position: fixed;
+   //  top: 28%;
+   width:15%;
+   //  position: fixed;
+   height: 100%;
 }
 
 .top_songs{
-  font-size: 10pt;
+   font-size: 10pt;
 }
 
 
 .song_name{
-  widrh:20px;
-  height:25px;
-  text-overflow: ellipsis;
+   wirth:130px;
+   word-wrap:break-word;
+   /*height:25px;*/
+   /*text-overflow: ellipsis;*/
 }
 
 .main_content{
- /* border-left: solid;
-  border-color: #888888;
- */ position: relative;
-  left:15%;
-//  margin-bottom:20%;
-//  overflow:auto;
+   /* border-left: solid;
+   border-color: #888888;
+    */ position: relative;
+   left:15%;
+   //  margin-bottom:20%;
+   //  overflow:auto;
 }
 
 #albums,#artists{
-  padding-top: 2%;
-  padding-right: 5%;
+   padding-top: 2%;
+   padding-right: 5%;
 }
 
 
 #songs{
-  padding-top: 3%;
-  padding-right: 5%;
+   padding-top: 3%;
+   padding-right: 5%;
 }
 
 .song{
-  margin-top:1%;
-  margin-bottom:1%;
-//  border: solid;
-//  border-radius: 2%;
-//  margin-right: 1%;
+   margin-top:1%;
+   margin-bottom:1%;
+   //  border: solid;
+   //  border-radius: 2%;
+   //  margin-right: 1%;
 }
 
 td{
-  font-size: 10pt;
+   font-size: 10pt;
 }
 
 
 #player{
-  width:100%;
+   width:100%;
 }
 
 .tab-pane{
 }
 
 .player_container{
-  background-color: #ccffcc;
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  align-self: center;
+   background-color: #ccffcc;
+   position: fixed;
+   bottom: 0;
+   width: 100%;
+   align-self: center;
 }
 
 #audio_player{
-  margin-top: 1%;
-  margin-bottom: 1%;
+   margin-top: 1%;
+   margin-bottom: 1%;
 }
 
 #bar{
-  margin-left: 5%;
-  margin-right: 5%;
-  width: 90%;
+   margin-left: 5%;
+   margin-right: 5%;
+   width: 90%;
 }
 
 #search_result{
-  position: absolute;
-  margin-left: 5%;
-  margin-right: 5%;
-  width: 90%;
-  min-height: 250px;
-//  background-color: #9d9d9d;
+   position: absolute;
+   margin-left: 5%;
+   margin-right: 5%;
+   width: 90%;
+   min-height: 250px;
+   //  background-color: #9d9d9d;
 }
 
 #search_song,#search_album,#search_artist {
-  display: none;
-  min-height:200px;
-  max-height:200px;
-  min-width: 33%;
-  max-width: 33%;
-  overflow: hidden;
-  font-size: 12pt;
-//  background: #3c3c3c;
-//  margin-left: 5%;
-//  margin-right: 5%;
-//  margin-top: 2px;
-  padding: 5px 0;
-  background-color: #ffffff;
-  border: 1px solid #cccccc;
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  border-radius: 4px;
-  -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
-  background-clip: padding-box;
-//  background-color: #9d9d9d;
+   display: none;
+   min-height:200px;
+   max-height:200px;
+   min-width: 33%;
+   max-width: 33%;
+   overflow: hidden;
+   font-size: 12pt;
+   //  background: #3c3c3c;
+   //  margin-left: 5%;
+   //  margin-right: 5%;
+   //  margin-top: 2px;
+   padding: 5px 0;
+   background-color: #ffffff;
+   border: 1px solid #cccccc;
+   border: 1px solid rgba(0, 0, 0, 0.15);
+   border-radius: 4px;
+   -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+   background-clip: padding-box;
+   //  background-color: #9d9d9d;
 
 }
 
 #search_song p,#search_album p,#search_artist p{
-  display: block;
-  padding: 3px 15px;
-  clear: both;
-  font-weight: normal;
-  line-height: 18px;
-  color: #555555;
-  white-space: nowrap;
+   display: block;
+   padding: 3px 15px;
+   clear: both;
+   font-weight: normal;
+   line-height: 18px;
+   color: #555555;
+   white-space: nowrap;
 }
 
 .ui-menu-item:hover{
-  background-color: #2aabd2;
-  font-size: larger;
+   background-color: #2aabd2;
+   font-size: larger;
 }
 
 .top_bar{
-  background: #E8E8E8;
-  padding-bottom: 1.5%;
+   background: #E8E8E8;
+   padding-bottom: 1.5%;
 }
 
 .prev1,.prev2,.prev3{
-  left:95%;
+   left:95%;
 }
 
 .next1,.next2,.next3{
-  left:96%;
+   left:96%;
 }
 
 .slick_image,.song_image{
-  /*
-  height :130px;
-  width:120px;
-  */
-  height :75%;
-  width:75%;
+   /*
+   height :130px;
+   width:120px;
+    */
+   height :75%;
+   width:75%;
 
 }
 
 .slick_image1{
-  /*
-  height :75%;
-  width:75%;
-  */
-  height :110px;
-  width:120px;
+   /*
+   height :75%;
+   width:75%;
+    */
+   height :110px;
+   width:120px;
 }
 
 #table_songs td {
-//  width:20%;
+   //  width:20%;
 }
 
 .slick-slider {
-  background: url("../image/loader.gif");
+   background: url("../image/loader.gif");
 }
 .slick-slider,.slick-list {
-  opacity: 0;
-  position: absolute;
+   opacity: 0;
+   position: absolute;
 }
 .slick-slider, .slick-initialized {
-  background: none;
+   background: none;
 }
 .slick-slider, .slick-initialized, .slick-list {
-  opacity: 1;
-  position: relative;
-  transition: opacity 0.2s ease-in;
+   opacity: 1;
+   position: relative;
+   transition: opacity 0.2s ease-in;
 }
 
 .albums_all{
-  height:80%;
-  float:left;
+   height:80%;
+   float:left;
 }
 
 .album_name_list{
-  height:2px;
-  text-overflow: ellipsis;
+   height:2px;
+   text-overflow: ellipsis;
 }
 
 .album{
-  margin-top:1%;
-  margin-bottom:5%;
+   margin-top:1%;
+   margin-bottom:5%;
 }
 
 .load_more {
-  float:left;
-  text-align: center;
-  clear: left;
-  margin-left:45%;
-  margin-bottom: 2%;
+   float:left;
+   text-align: center;
+   clear: left;
+   margin-left:45%;
+   margin-bottom: 2%;
 }
 
 .clear_queue
 {
-//  position: fixed;
+   margin-top:1%;
+   /*position: fixed;*/
 }
 
 #table_now_playing{
-//  margin-top: 2%;
-//  position: relative;
+   //  margin-top: 2%;
+   //  position: relative;
 }
 
 .now_playing_div{
@@ -272,47 +274,63 @@ td{
 }
 
 #artist_single_songs_table{
-  width:95%;
-  margin-right: 5%;
+   width:95%;
+   margin-right: 5%;
 }
 
 .album img, .artists_all img{
-  width:100%;
-  height: 100%;
+   width:100%;
+   height: 100%;
 }
 
 .col-xs-5ths,
 .col-sm-5ths,
 .col-md-5ths,
 .col-lg-5ths {
-  position: relative;
-  min-height: 1px;
-  padding-right: 10px;
-  padding-left: 10px;
+   position: relative;
+   min-height: 1px;
+   padding-right: 10px;
+   padding-left: 10px;
 }
 
 .col-xs-5ths {
-  width: 20%;
-  float: left;
+   width: 20%;
+   float: left;
 }
 
 @media (min-width: 768px) {
-  .col-sm-5ths {
-    width: 20%;
-    float: left;
-  }
+   .col-sm-5ths {
+      width: 20%;
+      float: left;
+   }
 }
 
 @media (min-width: 992px) {
-  .col-md-5ths {
-    width: 20%;
-    float: left;
-  }
+   .col-md-5ths {
+      width: 20%;
+      float: left;
+   }
 }
 
 @media (min-width: 1200px) {
-  .col-lg-5ths {
-    width: 20%;
-    float: left;
-  }
+   .col-lg-5ths {
+      width: 20%;
+      float: left;
+   }
 }
+
+.slick_arrow{
+   cursor:pointer;
+
+}
+
+.image_size{
+   height:130px;
+   width:130px;
+}
+
+.break_word {
+   width: 120px;
+   word-wrap: break-word;
+}
+
