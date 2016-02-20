@@ -3,6 +3,14 @@ function load_home(){
    return false;
 }
 
+function hack(){
+   $('.next1').click();
+   $('.prev1').click();
+   $('.next2').click();
+   $('.prev2').click();
+   $('.next3').click();
+   $('.prev3').click();
+}
 $(document).ready(function(){
    load_slick_song();
    load_slick_album();
