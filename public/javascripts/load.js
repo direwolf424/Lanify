@@ -42,18 +42,18 @@ function load_slick_song()
 }
 
 
-function load_more_album()
+function load_more_album(url)
 {
-    var url="/users/album";
+    var lang=url.substr(13,url.length-13);
 
     $.get(url, function(data, status){
         var result = data[0];
-        var elem = document.getElementsByClassName("albums_all")[0];
-        var count = document.getElementsByClassName("album").length;
+        var elem = document.getElementsByClassName("albums_all_"+lang)[0];
+        var count = document.getElementsByClassName("album_"+lang).length;
         var x = JSON.stringify("this.src='/image/image.jpg'");
         for (var i=count+1;i<count+31 && i<result.length;i++)
         {
-            elem.innerHTML += "<div class='album col-md-5ths'> <a class='break_word' onclick='load_album("+JSON.stringify('/album/'+result[i].album)+"); return false;' > <div class='song_image'> <img onerror="+x+" src='"+result[i].album_art+"'> </img> </div> <div class='album_name_list'> "+result[i].album+" </a> </div> </div> ";
+            elem.innerHTML += "<div class='album album_"+lang+" col-md-5ths'> <a class='break_word' onclick='load_album("+JSON.stringify('/album/'+result[i].album)+"); return false;' > <div class='song_image'> <img onerror="+x+" src='"+result[i].album_art+"'> </img> </div> <div class='album_name_list'> "+result[i].album+" </a> </div> </div> ";
         }
     });
     return false;
