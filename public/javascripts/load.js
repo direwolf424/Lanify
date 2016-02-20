@@ -13,7 +13,7 @@ function load_slick_album()
         var y = JSON.stringify('this.src="/image/image.jpg"');
         for (var i=0;i<20 && i<result.length;i++)
         {
-            var x = "<a href='' class='album_click' onclick='load_album("+JSON.stringify('/album/'+result[i].album)+"); return false;'> <div class='slick_image'> <img class='image_size' onError='this.onerror=null;this.src='image/image.jpg';' data-lazy='"+result[i].album_art+"'> </img> <div class='song_name'> "+result[i].album+" </div> </div> </a>";
+            var x = "<a href='' class='album_click' onclick='load_album("+JSON.stringify('/album/'+result[i].album)+"); return false;'> <div class='slick_image'> <img class='image_size' onError='this.onerror=null;this.src=\"image/image.jpg\";' src='"+result[i].album_art+"'> </img> <div class='song_name'> "+result[i].album+" </div> </div> </a>";
             $('.album_slick').slick('slickAdd',x);
         }
     });
@@ -33,7 +33,7 @@ function load_slick_song()
         for (var i=0;i<20 && i<songs.length;i++)
         {
             var song_json = JSON.stringify(songs[i]);
-            var x =" <div class='col-md-3'> <div class='song_image'> <img class='image_size' onerror="+y+" data-lazy='"+songs[i].album_art_small+"'> </div> <div class='break_word'> <a href='' onclick='play1("+song_json+"); return false;'>"+ songs[i].title +"</a>  </div> </div>";
+            var x =" <div class='col-md-3'> <div class='song_image'> <img class='image_size' onError='this.onerror=null;this.src=\"image/image.jpg\";'  src='"+songs[i].album_art_small+"'> </div> <div class='break_word'> <a href='' onclick='play1("+song_json+"); return false;'>"+ songs[i].title +"</a>  </div> </div>";
             $('.song_slick').slick('slickAdd',x);
         }
     });

@@ -9,7 +9,6 @@ var path,album,artist,songs;
 router.get('/',function(req,res,next){
 
    var x =decodeURIComponent(req.originalUrl);
-   console.log('>>>>>>>>>>>>>>>>>>>>>>',x);
    var lang,group;
    x= x.substr(7, x.length-7);
    var result=[];
