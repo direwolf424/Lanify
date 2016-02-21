@@ -3,11 +3,27 @@
  */
 var myPlaylist;
 var player;
-
+var playlist=[];
+var playlist_index=0;
 
 function remove_song(element){
     var index = element.parentNode.parentNode.rowIndex;
-    myPlaylist.remove(index);
+    playlist.splice(index, 1);
+    if(index==playlist_index)
+    {
+        player = $("#jquery_jplayer_1");
+        playlist_index--;
+        play_next();
+        player.jPlayer("pause");
+        var title = playlist[playlist_index-1].title;
+        highlight(title,"pause",playlist[playlist_index-1]);
+        playlist_index--;
+    }
+    else
+    {
+        if(playlist_index>0)
+            playlist_index--;
+    }
     var table = document.getElementById('table_now_playing');
     var title = table.rows[index].cells[1].textContent;
     table.deleteRow(index);
@@ -34,13 +50,11 @@ function remove_song(element){
         }
     }
     localStorage.setItem('queue', JSON.stringify(current_queue));
-//    load_playlist();
     return false;
 }
 
 
 function play1(song){
-
     var loc = song.path;
     var title = song.title;
     var album = song.album;
@@ -50,9 +64,9 @@ function play1(song){
     $("#jquery_jplayer_1").jPlayer({
         ready: function () {
             $(this).jPlayer("setMedia", {
-                title: "Bubble",
-                mp3: loc,
-            });
+                title: title,
+                mp3: loc
+            }).jPlayer("play");
         },
         swfPath: "/javascripts",
         cssSelectorAncestor: "#jp_container_1",
@@ -64,7 +78,6 @@ function play1(song){
         remainingDuration: true,
         toggleDuration: true,
     });
-
     var index;
     var current_queue = [];
     var flag = true;
@@ -82,7 +95,6 @@ function play1(song){
         for(var i in current_queue)
         {
             play_song = current_queue[i];
-//                console.log(play_song);
             if(play_song.title == title)
             {
                 index=i;
@@ -94,96 +106,125 @@ function play1(song){
     }
     if(!flag)
     {
-        myPlaylist.play();
         player.jPlayer("setMedia", {
             mp3: loc
         });
-        player.jPlayer("play", index);
+        player.jPlayer("play");
+        playlist_index = index;
     }
     else
     {
         current_queue.push(song);
         localStorage.setItem('queue', JSON.stringify(current_queue));
-        myPlaylist.add(
-            {
-                title:title,
-                artist:artist,
-                mp3:loc
-            }
-        );
-        myPlaylist.play();
         player.jPlayer("setMedia", {
             mp3: loc
         });
         player.jPlayer("play", 0);
+        playlist_index = playlist.length;
+        playlist.push(song);
         now_playing(song);
     }
+    player.jPlayer("play");
     var name = document.getElementById("jp-song-name");
     name.innerHTML = title;
-    highlight(title,"play");
     return false;
 }
 
 
 $(document).ready(function() {
 
-    myPlaylist = new jPlayerPlaylist({
-        jPlayer: "#jquery_jplayer_1",
-        cssSelectorAncestor: "#jp_container_1"
-    }, [], {
-        playlistOptions: {
-            enableRemoveControls: true
-        },
-        supplied: "mp3",
-        smoothPlayBar: true,
-        keyEnabled: true,
+    $('.jp-next').click( function() {
+        play_next();
+    });
+    $('.jp-previous').click( function() {
+        play_prev();
     });
     load_playlist();
 
-    var x = document.getElementsByClassName('jp-play')[0];
-
-    $('.jp-title').bind("DOMSubtreeModified",function(){
-        var title = document.getElementsByClassName("jp-title")[0];
-        var name = document.getElementById("jp-song-name");
-        name.innerHTML = title.innerHTML;
-//        alert('changed');
-        highlight(title.innerHTML,"play");
-    });
-    var title = document.getElementsByClassName("jp-title")[0];
-    if(title.innerHTML)
+    if(playlist.length>0)
     {
+        var title = playlist[0].title;
+        var loc = playlist[0].path;
         var name = document.getElementById("jp-song-name");
-        name.innerHTML = title.innerHTML;
+        name.innerHTML = title;
+        player = $("#jquery_jplayer_1");
+        highlight(title,"pause",playlist[0]);
+
+        $("#jquery_jplayer_1").jPlayer({
+            ready: function () {
+                $(this).jPlayer("setMedia", {
+                    title: title,
+                    mp3: loc
+                });
+            },
+            swfPath: "/javascripts",
+            cssSelectorAncestor: "#jp_container_1",
+            supplied: "mp3",
+            useStateClassSkin: true,
+            autoBlur: false,
+            smoothPlayBar: true,
+            keyEnabled: true,
+            remainingDuration: true,
+            toggleDuration: true,
+        });
     }
 
     $("#jquery_jplayer_1").bind($.jPlayer.event.play, function(event) {
-        var title = document.getElementsByClassName("jp-title")[0];
         var name = document.getElementById("jp-song-name");
         view(name.innerHTML);
-     });
-
+        highlight(name.innerHTML,"play",playlist[playlist_index]);
+    });
     $("#jquery_jplayer_1").bind($.jPlayer.event.pause, function(event) {
-        var title = document.getElementsByClassName("jp-title")[0];
-//        highlight(title.innerHTML,"pause");
+        var name = document.getElementById("jp-song-name");
+        highlight(name.innerHTML,"pause",playlist[playlist_index]);
     });
 
+    $("#jquery_jplayer_1").bind($.jPlayer.event.ended, function(event) {
+        play_next();
+    });
+
+    $('.jp-pause').hide();
 });
+
+function play_next()
+{
+    if(playlist_index<playlist.length-1)
+    {
+        playlist_index++;
+        var song = playlist[playlist_index];
+        play1(song);
+    }
+    else
+    {
+        playlist_index=0;
+        var song = playlist[playlist_index];
+        play1(song);
+    }
+}
+
+function play_prev()
+{
+    if(playlist_index>0)
+    {
+        playlist_index--;
+        var song = playlist[playlist_index];
+        play1(song);
+    }
+}
 
 function view(song)
 {
-//    song =song.substr(1,song.length-1);
     var url="/update/"+song;
     $.get(url, function(data, status) {
-//        alert(data+" "+status);
     });
 }
 
 
-function highlight(title,status)
+function highlight(title,status,song)
 {
+//    alert(title+" "+song.title);
     if(status=="play")
     {
-//        alert("Highlighting");
         var i=0;
         var table = document.getElementById('table_now_playing');
         var table_songs = document.getElementById('table_songs');
@@ -194,7 +235,7 @@ function highlight(title,status)
             {
                 $(this).addClass("success");
                 var cell1 = table.rows[i].cells[0];
-                cell1.innerHTML = "<a href='' class='jp-pause' onclick='pause(this); return false;'>  <span class='glyphicon glyphicon-pause'> </span> </a>";
+                cell1.innerHTML = "<a href=''  onclick='pause(this,"+JSON.stringify(song)+"); return false;'>  <span class='glyphicon glyphicon-pause'> </span> </a>";
             }
             else
             {
@@ -203,33 +244,7 @@ function highlight(title,status)
                     $(this).removeClass("success");
                     var cell1 = table.rows[i].cells[0];
                     var play = table.rows[i].cells[1].firstElementChild.getAttribute('onclick');
-                    play = JSON.stringify(play);
-                    cell1.innerHTML = "<a href='' class='jp-play' onclick="+play+">  <span class='glyphicon glyphicon-play'> </span> </a>";
-                }
-            }
-            i++;
-        });
-        i=0;
-        $('#table_songs table tr').each(function(){
-            var val1 = $(table_songs.rows[i].cells[1]).text();
-            alert("In");
-            console.log(val1);
-            if (val1 == title)
-            {
-                console.log("Found");
-                $(this).addClass("success");
-                var cell1 = table_songs.rows[i].cells[0];
-                cell1.innerHTML = "<a href='' class='jp-pause' onclick='pause(this); return false;'>  <span class='glyphicon glyphicon-pause'> </span> </a>";
-            }
-            else
-            {
-                if($(this).hasClass("success"))
-                {
-                    $(this).removeClass("success");
-                    var cell1 = table_songs.rows[i].cells[0];
-                    var play = table_songs.rows[i].cells[1].firstElementChild.getAttribute('onclick');
-                    play = JSON.stringify(play);
-                    cell1.innerHTML = "<a href='' class='jp-play' onclick="+play+">  <span class='glyphicon glyphicon-play'> </span> </a>";
+                    cell1.innerHTML = "<a href='' onclick='"+play+"'>  <span class='glyphicon glyphicon-play'> </span> </a>";
                 }
             }
             i++;
@@ -241,7 +256,6 @@ function highlight(title,status)
         var table = document.getElementById('table_now_playing');
         $('#now_playing table tr').each(function(){
             var val1 = $(table.rows[i].cells[1]).text();
-//        console.log(val1);
             if (val1 == title)
             {
                 if($(this).hasClass("success"))
@@ -249,8 +263,7 @@ function highlight(title,status)
                     $(this).removeClass("success");
                     var cell1 = table.rows[i].cells[0];
                     var play = table.rows[i].cells[1].firstElementChild.getAttribute('onclick');
-                    play = JSON.stringify(play);
-                    cell1.innerHTML = "<a href='' class='jp-play' onclick="+play+">  <span class='glyphicon glyphicon-play'> </span> </a>";
+                    cell1.innerHTML = "<a href=''onclick='"+play+"'>  <span class='glyphicon glyphicon-play'> </span> </a>";
                 }
             }
             i++;
@@ -258,22 +271,30 @@ function highlight(title,status)
     }
 }
 
-function pause(elem)
+function pause(elem,song)
 {
-    myPlaylist.pause();
-    var index = elem.parentNode.parentNode.rowIndex;
+    player = $("#jquery_jplayer_1");
+//    $(".jp-pause").click();
+    player.jPlayer("pause");
     var table = document.getElementById('table_now_playing');
-    var play = table.rows[index].cells[1].firstElementChild.getAttribute('onclick');
-    play = JSON.stringify(play);
-    table.rows[index].cells[0].innerHTML = "<a href='' class='jp-play' onclick="+play+">  <span class='glyphicon glyphicon-play'> </span> </a>";
+    var i = elem.parentNode.parentNode.rowIndex;
+    var cell1 = table.rows[i].cells[0];
+    var play = table.rows[i].cells[1].firstElementChild.getAttribute('onclick');
+    cell1.innerHTML = "<a href='' onclick='"+play+"'>  <span class='glyphicon glyphicon-play'> </span> </a>";
+    /*var play = table.rows[index].cells[1].firstElementChild.getAttribute('onclick');
+    console.log(play);
+    table.rows[index].cells[0].innerHTML = "<a href='' onclick='"+play+"'>  <span class='glyphicon glyphicon-play'> </span> </a>";*/
+//    table.rows[index].cells[0].innerHTML = "play";
+
+    return false;
 }
 
 function clear_queue() {
     var current_queue = [];
-//    alert("Clearing");
     localStorage.setItem('queue', JSON.stringify(current_queue));
     $("#table_now_playing tr").remove();
-    myPlaylist.pause();
+//    myPlaylist.pause();
+    playlist.length = 0;
     load_playlist();
     return false;
 }
@@ -306,15 +327,7 @@ function add_to_queue(song) {
     }
     if(flag)
     {
-        myPlaylist.add(
-            {
-                title:song.title,
-                artist:song.artist,
-                mp3:song.path,
-                poster:song.album_art,
-                album:song.album
-            }
-        );
+        playlist.push(song);
         now_playing(song);
         current_queue.push(song);
         localStorage.setItem('queue', JSON.stringify(current_queue));
@@ -363,7 +376,7 @@ function now_playing(song){
 function load_playlist()
 {
     var current_queue = [];
-    var playlist = [];
+    var play = [];
     if (typeof localStorage === "undefined" || localStorage === null) {
         var LocalStorage = require('node-localstorage').LocalStorage;
         localStorage = new LocalStorage('./scratch');
@@ -378,6 +391,7 @@ function load_playlist()
         for(var i in current_queue)
         {
             var song = current_queue[i];
+            playlist.push(song);
             var new_song =
             {
                 title:song.title,
@@ -386,10 +400,10 @@ function load_playlist()
                 poster:song.album_art,
                 album:song.album
             };
-            playlist.push(new_song);
+            play.push(new_song);
             now_playing(song);
         }
-        myPlaylist.setPlaylist(playlist);
+//        myPlaylist.setPlaylist(play);
     }
     return false;
 }
