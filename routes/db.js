@@ -9,7 +9,7 @@ var Schema = mongoose.Schema;
 var songScheme = new Schema({
     title:String,
     path:String,
-    artist:String,
+    artist:Array,
     album:String,
     length:String,
     release_date: Date,
@@ -24,10 +24,21 @@ var songScheme = new Schema({
 // we need to create a model using it
 
 var Song = mongoose.model('Song',songScheme);
+
+var ip_table = new Schema({
+   ip:String,
+   clicks:Number,
+   songs:Array
+},{ collection: 'ip_info' });
+
+// the schema is useless so far
+// we need to create a model using it
+
+var Ip = mongoose.model('Ip',ip_table);
 var name;
 
 var path,songs_all,albums,album_arts;
-Song.find({}).limit(16).exec(function(err, songs) {
+Song.find({}).sort({views: -1}).limit(16).exec(function(err, songs) {
     if (err) throw err;
     songs_all = songs;
 });
@@ -46,16 +57,18 @@ Song.collection.distinct("album", function(err, results){
 
 Song.collection.distinct("artist", function(err, results){
     if (err) throw err;
-//    console.log(results);
+   //console.log(results);
     artist = results;
 });
 var express = require('express');
 var router = express.Router();
 /* GET home page. */
 router.get('/', function(req, res, next) {
-    console.log(req.ip);
+    console.log('------------------------------------------>>>>>>>>',req.ip);
+    //console.log('------------------------',req.username);
     res.render('db', {songs:songs_all, artists:artist ,dirname:__dirname,albums:albums,album_arts:album_arts });
 });
 
 module.exports.Route = router;
 module.exports.Song = Song;
+module.exports.Ip = Ip;
