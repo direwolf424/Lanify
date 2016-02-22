@@ -16,10 +16,6 @@ router.get('/',function(req,res,next){
    var finishRequest = function() {
       res.send(result);
    };
-
-
-
-
    var q1 = function(fn) {
       db.collection.group(group.key,group.cond,group.initial,group.reduce,group.finalise,true,function(err,results) {
          if (err) throw err;

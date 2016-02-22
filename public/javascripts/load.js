@@ -115,6 +115,9 @@ function load_more_song()
 
             cell1=row.insertCell(5);
             cell1.innerHTML = "<a href='' onclick='add_to_queue("+song_json+"); return false;'>  <span class='glyphicon glyphicon-plus'> </span> </a>";
+
+            cell1=row.insertCell(6);
+            cell1.innerHTML = '<a href="" class="add_tags" data-id="'+song._id+'" data-toggle="modal" data-target="#myModal">Add Tags</a>';
         }
     });
 

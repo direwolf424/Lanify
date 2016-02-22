@@ -17,8 +17,9 @@ var songScheme = new Schema({
     album_art_small:String,
     rating:Number,
     views:Number,
-    genre:String
-},{ collection: 'songs' });
+    genre:String,
+    tags:Array
+},{ collection: 'new' });
 
 // the schema is useless so far
 // we need to create a model using it
@@ -31,10 +32,15 @@ var ip_table = new Schema({
    songs:Array
 },{ collection: 'ip_info' });
 
+var tag_scheme = new Schema({
+    name: String,
+    songs: Array
+},{collection:'tags'});
 // the schema is useless so far
 // we need to create a model using it
 
 var Ip = mongoose.model('Ip',ip_table);
+var tags = mongoose.model('tags',tag_scheme);
 var name;
 
 var path,songs_all,albums,album_arts;
@@ -72,3 +78,4 @@ router.get('/', function(req, res, next) {
 module.exports.Route = router;
 module.exports.Song = Song;
 module.exports.Ip = Ip;
+module.exports.tags = tags;

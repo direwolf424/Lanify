@@ -214,7 +214,7 @@ function play_prev()
 
 function view(song)
 {
-    var url="/update/"+song;
+    var url="/update/view/"+song;
     $.get(url, function(data, status) {
     });
 }

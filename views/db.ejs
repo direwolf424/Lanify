@@ -9,6 +9,7 @@
       <script src="/javascripts/album.js"></script>
       <script src="/javascripts/artist.js"></script>
       <script src="/javascripts/load.js"></script>
+      <script src="/javascripts/tags.js"></script>
       <script src="/javascripts/player.js"></script>
       <script src="/bootstrap/js/bootstrap.min.js"></script>
       <script src="/javascripts/jquery/jquery-ui.js"></script>
@@ -255,6 +256,36 @@
          </div>
       </div>
 
+      <div id="myModal" class="modal fade" role="dialog">
+         <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+               <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Add Tags</h4>
+               </div>
+               <div class="modal-body">
+                  <p>Select tags.</p>
+                  <div class="checkbox">
+                     <label><input type="checkbox" value="rock" name="tags">Rock</label>
+                  </div>
+                  <div class="checkbox">
+                     <label><input type="checkbox" value="sad" name="tags">Sad</label>
+                  </div>
+                  <div class="checkbox">
+                     <label><input type="checkbox" value="romantic" name="tags">Romantic</label>
+                  </div>
+                  <input type="text" name="bookId" id="bookId" value="" style="display: none;visibility: hidden;"/>
+               </div>
+               <div class="modal-footer">
+                  <button id="submit_tags" type="button" data-dismiss="modal" class="btn btn-default" >Submit</button>
+                  <button type="submit" class="btn btn-default" data-dismiss="modal">Close</button>
+               </div>
+            </div>
+
+         </div>
+      </div>
       <div class="audio_player_container">
          <div id="jquery_jplayer_1" class="jp-jplayer"></div>
          <div id="jp_container_1" class="jp-audio audio_player" role="application" aria-label="media player">
