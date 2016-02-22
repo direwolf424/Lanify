@@ -157,17 +157,20 @@ td{
    //  margin-right: 5%;
    //  margin-top: 2px;
    padding: 5px 0;
-   background-color: #ffffff;
+   /*background-color: #E8E8E8;*/
+   background-color: white;
    border: 1px solid #cccccc;
    border: 1px solid rgba(0, 0, 0, 0.15);
    border-radius: 4px;
-   -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
-   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+   /*-webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);*/
+   /*box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);*/
    background-clip: padding-box;
    //  background-color: #9d9d9d;
 
 }
-
+.ui-widget-content {
+   background: #eeeeee url("images/ui-bg_highlight-soft_100_eeeeee_1x100.png") 50% top repeat-x;
+}
 #search_song p,#search_album p,#search_artist p{
    display: block;
    padding: 3px 15px;
