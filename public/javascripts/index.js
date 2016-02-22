@@ -96,10 +96,10 @@ $(document).ready(function(){
 
    $('body').click(function(event) {
       if(!$(event.target).is('.search_block')) {
-      var res = document.getElementById('search_result');
-      res.style.visibility="hidden";
-      res.style.display='none';
-      myInput.value = "";
+         var res = document.getElementById('search_result');
+         res.style.visibility="hidden";
+         res.style.display='none';
+         myInput.value = "";
       }
    });
 
@@ -200,13 +200,13 @@ $(document).keydown(function(e) {
       switch(e.which) {
          case 32: // spacebar
             if($('#jquery_jplayer_1').data().jPlayer.status.paused){
-            $('.jp-play').click();
+               $('.jp-play').click();
                var name = document.getElementById("jp-song-name");
                title = name.innerHTML;
                highlight(title,"play");
             }
             else{
-            $('.jp-pause').click();
+               $('.jp-pause').click();
                var name = document.getElementById("jp-song-name");
                title = name.innerHTML;
                highlight(title,"pause");
@@ -251,4 +251,13 @@ $(document).keydown(function(e) {
       }
    }
    e.preventDefault(); // prevent the default action (scroll / move caret);
+});
+
+$(window).on("load", function() {
+   setTimeout(function(){
+      $('body').addClass('loaded');
+      $('h1').css('color','#222222');
+      $('.navbar-fixed-bottom').css('position','fixed');
+      $('.navbar-fixed-top').css('position','fixed');
+   }, 2000);
 });
