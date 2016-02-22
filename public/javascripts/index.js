@@ -94,11 +94,13 @@ $(document).ready(function(){
       history.pushState(null, null, "http://192.168.159.28:3000/db");
    });
 
-   $(document).click(function() {
+   $('body').click(function(event) {
+      if(!$(event.target).is('.search_block')) {
       var res = document.getElementById('search_result');
       res.style.visibility="hidden";
       res.style.display='none';
       myInput.value = "";
+      }
    });
 
 });
@@ -128,7 +130,7 @@ $(function () {
                      var song_json = JSON.stringify(songs[i]);
 
                      //   var pass = JSON.stringify("play('"+songs[i].path+"',"+"'"+songs[i].title+"',"+"'"+songs[i].artist+"',"+"'"+songs[i].album+"')");
-                     res.innerHTML += "<p class='ui-menu-item' onclick='play1("+song_json+"); return false;'>"+songs[i].title+"<p>";
+                     res.innerHTML += "<div class=' search_line  ui-menu-item'> <div class='search_name'> <span onclick='play1("+song_json+"); return false;'>"+songs[i].title+" </span> </div> <div class='search_plus'> <a href='' onclick='add_to_queue("+song_json+"); return false;'>  <span class=' search_block glyphicon glyphicon-plus'></span> </a> </div>  </div>";
                      if(i>5)
                         break;
                   }

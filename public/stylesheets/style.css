@@ -334,3 +334,13 @@ td{
    word-wrap: break-word;
 }
 
+.search_name{
+   /*margin-right:5%;*/
+   /*float:left;*/
+   width:95%;
+   display:inline-block;
+}
+.search_plus{
+   width:2%;
+   display:inline-block;
+}
