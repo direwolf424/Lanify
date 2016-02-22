@@ -198,13 +198,13 @@ $(document).keydown(function(e) {
       switch(e.which) {
          case 32: // spacebar
             if($('#jquery_jplayer_1').data().jPlayer.status.paused){
-               myPlaylist.play();
+            $('.jp-play').click();
                var name = document.getElementById("jp-song-name");
                title = name.innerHTML;
                highlight(title,"play");
             }
             else{
-               myPlaylist.pause();
+            $('.jp-pause').click();
                var name = document.getElementById("jp-song-name");
                title = name.innerHTML;
                highlight(title,"pause");
@@ -214,14 +214,14 @@ $(document).keydown(function(e) {
             $('#bar').focus();
             break;
          case 37: //left
-            myPlaylist.previous();
+            $('.jp-previous').click();
             break;
          case 38: //top
             var vol=$("#jquery_jplayer_1").data("jPlayer").options.volume;
             $("#jquery_jplayer_1").jPlayer("volume", vol+0.1);
             break;
          case 39: //right
-            myPlaylist.next();
+            $('.jp-next').click();
             break;
          case 40: //bottom
             var vol=$("#jquery_jplayer_1").data("jPlayer").options.volume;
