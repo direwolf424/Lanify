@@ -55,7 +55,7 @@
          <div class="col-md-2 side_content">
             <ul  class="nav nav-pills nav-stacked">
                <li class="active">
-                  <a  href="#home" data-toggle="tab"> <span class='glyphicon glyphicon-home'></span> Home</a>
+                  <a  href="#home" onclick="hack()" data-toggle="tab"> <span class='glyphicon glyphicon-home'></span> Home</a>
                </li>
                <li>
                   <a href="#albums" data-toggle="tab"> <span class='glyphicon glyphicon-cd'></span> Albums</a>
@@ -154,7 +154,7 @@
                         </div>
                      </div>
                      <div class="tab-pane" id="album_telugu_div">
-                        <div class="albums_all_telugu">Telugu Songs coming soon</div>
+                        <div class="albums_all_telugu"></div>
                         <div class="load_more">
                            <button class="btn-primary" onclick="load_more_album('/users/album/telugu'); return false;"> Load More </button>
                         </div>
@@ -285,9 +285,9 @@
                      </div>
                   </div>
                </div>
-               <div class="jp-details">
-                  <div class="jp-title" aria-label="title">&nbsp;</div>
-               </div>
+               <!--<div class="jp-details">-->
+                  <!--<div class="jp-title" aria-label="title">&nbsp;</div>-->
+               <!--</div>-->
                <div class="jp-no-solution">
                   <span>Update Required</span>
                   To play the media you will need to either update your browser to a recent version or update your <a href="http://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>.

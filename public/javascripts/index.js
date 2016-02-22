@@ -3,6 +3,14 @@ function load_home(){
    return false;
 }
 
+function hack(){
+   $('.next1').click();
+   $('.prev1').click();
+   $('.next2').click();
+   $('.prev2').click();
+   $('.next3').click();
+   $('.prev3').click();
+}
 $(document).ready(function(){
    load_slick_song();
    load_slick_album();
@@ -86,11 +94,13 @@ $(document).ready(function(){
       history.pushState(null, null, "http://192.168.159.28:3000/db");
    });
 
-   $(document).click(function() {
+   $('body').click(function(event) {
+      if(!$(event.target).is('.search_block')) {
       var res = document.getElementById('search_result');
       res.style.visibility="hidden";
       res.style.display='none';
       myInput.value = "";
+      }
    });
 
 });
@@ -120,7 +130,7 @@ $(function () {
                      var song_json = JSON.stringify(songs[i]);
 
                      //   var pass = JSON.stringify("play('"+songs[i].path+"',"+"'"+songs[i].title+"',"+"'"+songs[i].artist+"',"+"'"+songs[i].album+"')");
-                     res.innerHTML += "<p class='ui-menu-item' onclick='play1("+song_json+"); return false;'>"+songs[i].title+"<p>";
+                     res.innerHTML += "<div class=' search_line  ui-menu-item'> <div class='search_name'> <span onclick='play1("+song_json+"); return false;'>"+songs[i].title+" </span> </div> <div class='search_plus'> <a href='' onclick='add_to_queue("+song_json+"); return false;'>  <span class=' search_block glyphicon glyphicon-plus'></span> </a> </div>  </div>";
                      if(i>5)
                         break;
                   }
@@ -190,13 +200,13 @@ $(document).keydown(function(e) {
       switch(e.which) {
          case 32: // spacebar
             if($('#jquery_jplayer_1').data().jPlayer.status.paused){
-               myPlaylist.play();
+            $('.jp-play').click();
                var name = document.getElementById("jp-song-name");
                title = name.innerHTML;
                highlight(title,"play");
             }
             else{
-               myPlaylist.pause();
+            $('.jp-pause').click();
                var name = document.getElementById("jp-song-name");
                title = name.innerHTML;
                highlight(title,"pause");
@@ -206,14 +216,14 @@ $(document).keydown(function(e) {
             $('#bar').focus();
             break;
          case 37: //left
-            myPlaylist.previous();
+            $('.jp-previous').click();
             break;
          case 38: //top
             var vol=$("#jquery_jplayer_1").data("jPlayer").options.volume;
             $("#jquery_jplayer_1").jPlayer("volume", vol+0.1);
             break;
          case 39: //right
-            myPlaylist.next();
+            $('.jp-next').click();
             break;
          case 40: //bottom
             var vol=$("#jquery_jplayer_1").data("jPlayer").options.volume;
