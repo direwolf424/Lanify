@@ -4,6 +4,10 @@
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <meta charset="utf-8">
       <title>Lanify</title>
+      <!--<link rel='stylesheet' href='/stylesheets/style.css' />-->
+      <link rel="stylesheet" href="/stylesheets/normalize.css">
+      <link rel="stylesheet" href="/stylesheets/main.css">
+      <link rel="stylesheet" href="/stylesheets/loader.css">
       <script src="/javascripts/jquery.min.js"></script>
       <script src="/javascripts/index.js"></script>
       <script src="/javascripts/album.js"></script>
@@ -13,6 +17,7 @@
       <script src="/javascripts/player.js"></script>
       <script src="/bootstrap/js/bootstrap.min.js"></script>
       <script src="/javascripts/jquery/jquery-ui.js"></script>
+      <script src="/javascripts/modernizr-2.6.2.min.js"></script>
       <!--
          <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Arvo">
          <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Lato">
@@ -37,6 +42,15 @@
 
    </head>
    <body>
+
+      <div id="loader-wrapper">
+         <div id="loader"></div>
+         <div id="loader1">Lanify</div>
+         <div class="loader-section section-left"></div>
+         <div class="loader-section section-right"></div>
+
+      </div>
+
       <nav class="top_bar navbar-fixed-top">
          <div>
             <div class="heading_top"><a href="" onclick="load_home(); return false;">La<span class='glyphicon glyphicon-music'></span>ify<sup>β</sup></a></div>
@@ -44,12 +58,13 @@
          <div id="search_bar">
             <input type="text" id="bar" class="form-control ui-autocomplete-input" placeholder="Search for Arijit Singh, Sunidhi Chauhan, 2 States..."/>
          </div>
-         <div id="search_result" class="row">
+         <div id="search_result" class="row ">
             <div id="search_song" class="ui-front ui-menu ui-widget ui-widget-content col-md-4"> </div>
-            <div id="search_album" class="ui-front ui-menu ui-widget ui-widget-content col-md-4"> </div>
-            <div id="search_artist" class="ui-front ui-menu ui-widget ui-widget-content col-md-4">  </div>
+            <div id="search_album" class=" ui-front ui-menu ui-widget ui-widget-content col-md-4"> </div>
+            <div id="search_artist" class=" ui-front ui-menu ui-widget ui-widget-content col-md-4">  </div>
          </div>
       </nav>
+
 
       <div class="content row area_content">
 
@@ -317,7 +332,7 @@
                   </div>
                </div>
                <!--<div class="jp-details">-->
-                  <!--<div class="jp-title" aria-label="title">&nbsp;</div>-->
+               <!--<div class="jp-title" aria-label="title">&nbsp;</div>-->
                <!--</div>-->
                <div class="jp-no-solution">
                   <span>Update Required</span>
