@@ -111,7 +111,7 @@ $(function () {
    $("#bar").autocomplete({
       source: function (request, response) {
          $.ajax({
-            url: "http://192.168.159.234:3000/search",
+            url: "http://192.168.159.28:3000/search",
             type: "GET",
             data: request,  // request is the value of search input
             success: function (data) {
@@ -130,7 +130,7 @@ $(function () {
                      var song_json = JSON.stringify(songs[i]);
 
                      //   var pass = JSON.stringify("play('"+songs[i].path+"',"+"'"+songs[i].title+"',"+"'"+songs[i].artist+"',"+"'"+songs[i].album+"')");
-                     res.innerHTML += "<div class=' search_line  ui-menu-item'> <div class='search_name'> <span onclick='play1("+song_json+"); return false;'>"+songs[i].title+" </span> </div> <div class='search_plus'> <a href='' onclick='add_to_queue("+song_json+"); return false;'>  <span class=' search_block glyphicon glyphicon-plus'></span> </a> </div>  </div>";
+                     res.innerHTML += "<div class=' search_line  ui-menu-item'> <div onclick='play1("+song_json+"); return false;' class='search_name'> <span>"+songs[i].title+" </span> </div> <div class='search_plus'> <a href='' onclick='add_to_queue("+song_json+"); return false;'>  <span class=' search_block glyphicon glyphicon-plus'></span> </a> </div>  </div>";
                      if(i>5)
                         break;
                   }

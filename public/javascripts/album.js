@@ -46,7 +46,7 @@ function load_album(url)
 
             var cell1=row.insertCell(0);
             var song_json=JSON.stringify(song);
-            cell1.innerHTML = "<a href='' onclick='play1("+JSON.stringify(song_json)+"); return false;'>  <span class='glyphicon glyphicon-play'> </span> </a>";
+            cell1.innerHTML = "<a href='' onclick='play1("+song_json+"); return false;'>  <span class='glyphicon glyphicon-play'> </span> </a>";
 
             cell1=row.insertCell(1);
             pass = JSON.stringify("play");
