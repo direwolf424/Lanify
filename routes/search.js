@@ -17,6 +17,7 @@ router.get('/',function(req,res,next){
    var songs,albums,artists;
    var result=[];
    var x = req.query['term'];
+   x=x.trim();
    var finishRequest = function(result){
       res.send(result,{ 'Content-Type' : 'application/json' } ,200);
    };

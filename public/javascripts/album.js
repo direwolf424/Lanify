@@ -8,9 +8,9 @@ function play_album(data) {
          song = data[i];
          add_to_queue(song);
       }
-      $( ".jp-play" ).trigger( "click" );
+      $( ".jp-next" ).click();
       //    player.jPlayer("play", 0);
-      myPlaylist.play();
+      //myPlaylist.play();
       return false;
 }
 
@@ -30,7 +30,7 @@ function load_album(url)
       //        history.pushState(null, null, url);
       var elem = document.getElementById("album_single_image");
       var pass = JSON.stringify(data[0].album_art);
-      elem.innerHTML = "<img class ='image_size' onError='this.onerror=null;this.src='image/image.jpg';' src="+pass+">";
+      elem.innerHTML = "<img class ='image_size' onError='this.onerror=null;this.src=\"image/image.jpg\";' src="+pass+">";
       elem = document.getElementById("album_single_name");
       elem.innerHTML = data[0].album;
       elem = document.getElementById("play_album");

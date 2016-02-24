@@ -19,7 +19,7 @@ var songScheme = new Schema({
     views:Number,
     genre:String,
     tags:Array
-},{ collection: 'new' });
+},{ collection: 'songs' });
 
 // the schema is useless so far
 // we need to create a model using it

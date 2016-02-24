@@ -295,6 +295,7 @@ function clear_queue() {
     $("#table_now_playing tr").remove();
 //    myPlaylist.pause();
     playlist.length = 0;
+    $('.jp-stop').click();
     load_playlist();
     return false;
 }
