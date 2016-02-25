@@ -8,9 +8,8 @@ function play_album(data) {
          song = data[i];
          add_to_queue(song);
       }
+      playlist_index = -1;
       $( ".jp-next" ).click();
-      //    player.jPlayer("play", 0);
-      //myPlaylist.play();
       return false;
 }
 

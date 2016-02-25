@@ -70,3 +70,27 @@
    bottom: 0;
 }
 
+.jp-repeat {
+   width: 28px;
+   height: 28px;
+   margin-top: 6px;
+   margin-left:3%;
+}
+
+/*.jp-shuffle {*/
+   /*width: 28px;*/
+   /*height: 28px;*/
+   /*margin-top: 6px;*/
+   /*margin-left:3%;*/
+/*}*/
+/*.jp-repeat {*/
+  /*background: url("../image/jplayer.blue.monday.jpg") 0 -290px no-repeat; }*/
+
+/*.jp-repeat:focus {*/
+  /*background: url("../image/jplayer.blue.monday.jpg") -30px -290px no-repeat; }*/
+
+/*.jp-state-looped .jp-repeat {*/
+  /*background: url("../image/jplayer.blue.monday.jpg") -60px -290px no-repeat; }*/
+
+/*.jp-state-looped .jp-repeat:focus {*/
+  /*background: url("../image/jplayer.blue.monday.jpg") -90px -290px no-repeat; }*/

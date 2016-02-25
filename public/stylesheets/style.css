@@ -68,13 +68,16 @@ a {
    font-size: 10pt;
 }
 
-
-.song_name{
-   wirth:130px;
+.song_name {
+   widrh: 20px;
    word-wrap:break-word;
-   /*height:25px;*/
-   /*text-overflow: ellipsis;*/
 }
+/*.song_name{*/
+/*wirth:130px;*/
+/*word-wrap:break-word;*/
+/*[>height:25px;<]*/
+/*[>text-overflow: ellipsis;<]*/
+/*}*/
 
 .main_content{
    /* border-left: solid;
@@ -199,16 +202,21 @@ td{
    left:96%;
 }
 
-.slick_image,.song_image{
+.song_image{
    /*
    height :130px;
    width:120px;
     */
+   height :120px;
+   width:130px;
+
+}
+
+.slick_image{
    height :75%;
    width:75%;
 
 }
-
 .slick_image1{
    /*
    height :75%;
@@ -243,14 +251,17 @@ td{
    float:left;
 }
 
-.album_name_list{
-   height:2px;
+.ellip_name{
+   /*height:2px;*/
+   /*text-overflow: clip;*/
+   white-space: nowrap;
+   overflow: hidden;
    text-overflow: ellipsis;
 }
 
 .album{
-   margin-top:1%;
-   margin-bottom:5%;
+   margin-top:2%;
+   margin-bottom:2%;
 }
 
 .load_more {

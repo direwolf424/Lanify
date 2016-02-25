@@ -33,7 +33,9 @@ function load_slick_song()
         for (var i=0;i<20 && i<songs.length;i++)
         {
             var song_json = JSON.stringify(songs[i]);
-            var x =" <div class='col-md-3'> <div class='song_image'> <img class='image_size' onerror='this.onerror=null;this.src=\"image/image.jpg\";' src='"+songs[i].album_art_small+"'> </div> <div class='break_word'> <a href='' onclick='play1("+song_json+"); return false;'>"+ songs[i].title +"</a>  </div> </div>";
+            var x = "<a href='' class='album_click' onclick='play1("+song_json+"); return false;'> <div class='slick_image'> <img class='image_size' onError='this.onerror=null;this.src=\"image/image.jpg\";' src='"+songs[i].album_art_small+"'> </img> <div class='song_name'> "+songs[i].title+" </div> </div> </a>";
+
+             //x =" <div class='col-md-3'> <div class='song_image'> <img class='image_size' onerror='this.onerror=null;this.src=\"image/image.jpg\";' src='"+songs[i].album_art_small+"'> </div> <div class='break_word'> <a href='' onclick='play1("+song_json+"); return false;'>"+ songs[i].title +"</a>  </div> </div>";
             $('.song_slick').slick('slickAdd',x);
         }
     });
@@ -53,7 +55,7 @@ function load_more_album(url)
         var x = JSON.stringify("this.src='/image/image.jpg'");
         for (var i=count+1;i<count+31 && i<result.length;i++)
         {
-            elem.innerHTML += "<div class='album album_"+lang+" col-md-5ths'> <a class='break_word' onclick='load_album("+JSON.stringify('/album/'+result[i].album)+"); return false;' > <div class='song_image'> <img onerror="+x+" src='"+result[i].album_art+"'> </img> </div> <div class='album_name_list'> "+result[i].album+" </a> </div> </div> ";
+            elem.innerHTML += "<div title='"+result[i].album+"' class='album album_"+lang+" col-md-5ths'> <a onclick='load_album("+JSON.stringify('/album/'+result[i].album)+"); return false;' > <div class='song_image'> <img onerror="+x+" src='"+result[i].album_art+"'> </img> </div> <div class='ellip_name'> "+result[i].album+" </a> </div> </div> ";
         }
     });
     return false;
@@ -71,7 +73,7 @@ function load_more_artist()
         var x = JSON.stringify("this.src='/image/image.jpg'");
         for (var i=count+1;i<count+31 && i<artist.length;i++)
         {
-            elem.innerHTML += "<div class='song col-md-5ths'> <div class='song_image'> <img onerror="+x+" src='/image/image.jpg'> </img> </div> <div class='song_name'> <a class='break_word' onclick='load_artist("+JSON.stringify('/artist/'+artist[i])+"); return false;' > "+artist[i]+" </a> </div> </div> ";
+            elem.innerHTML += "<div title = '"+artist[i]+"' class='song col-md-5ths'> <div class='song_image'> <img onerror="+x+" src='/image/image.jpg'> </img> </div> <div class='ellip_name'> <a onclick='load_artist("+JSON.stringify('/artist/'+artist[i])+"); return false;' > "+artist[i]+" </a> </div> </div> ";
         }
     });
 
