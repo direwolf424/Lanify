@@ -12,6 +12,8 @@ function hack(){
    $('.prev3').click();
 }
 $(document).ready(function(){
+
+   load_tags();
    load_slick_song();
    load_slick_album();
    load_more_artist();
@@ -91,7 +93,7 @@ $(document).ready(function(){
    });
 
    $('.nav-stacked').click(function() {
-      history.pushState(null, null, "http://192.168.159.28:3000/db");
+      history.pushState(null, null, "http://192.168.159.234:1234/db");
    });
 
    $('body').click(function(event) {
@@ -111,7 +113,7 @@ $(function () {
    $("#bar").autocomplete({
       source: function (request, response) {
          $.ajax({
-            url: "http://192.168.159.28:3000/search",
+            url: "http://192.168.159.234:1234/search",
             type: "GET",
             data: request,  // request is the value of search input
             success: function (data) {

@@ -10,14 +10,15 @@ $(document).ready(function() {
             $(this).attr('checked', false);
         });
 
-        var id = document.getElementById('bookId').value;
+        var id = document.getElementById('tag_id').value;
+//        var lang = document.getElementById('tag_lang').value;
 
-        var url="/tags/"+id;
+        var url="/tags/update/"+id;
 
         $.ajax({
             type: "GET",
             data: {tag:favorite},
-            url: url,
+            url: url
         });
 
 
@@ -27,7 +28,11 @@ $(document).ready(function() {
 
 $(document).on("click", ".add_tags", function () {
     var myBookId = $(this).data('id');
-    $(".modal-body #bookId").val( myBookId );
+    $(".modal-body #tag_id").val( myBookId );
+/*
+    var myBookId = $(this).data('lang');
+    $(".modal-body #tag_lang").val( myBookId );
+*/
     // As pointed out in comments,
     // it is superfluous to have to manually call the modal.
     // $('#addBookDialog').modal('show');

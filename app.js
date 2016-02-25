@@ -79,8 +79,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(express.static('public'));
-app.use(express.static('/myfile/dc/lanify'));
-//app.use(express.static('E://Music//Music World'));
+//app.use(express.static('/myfile/dc/lanify'));
+app.use(express.static('E://Music//Music World'));
 
 //app.use('/', routes);
 app.use(new RegExp('^\/album\/.*$'), album);

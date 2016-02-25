@@ -91,6 +91,12 @@
                <li>
                   <a href="#now_playing" data-toggle="tab"> <span class='glyphicon glyphicon-signal'></span> Now Playing</a>
                </li>
+               <li>
+                  <a href="#tags" data-toggle="tab"> <span class='glyphicon glyphicon-book'></span> Playlist </a>
+               </li>
+               <li style="visibility: hidden; display: none;">
+                  <a href="#tags_single" data-toggle="tab"> <span class='glyphicon glyphicon-music'></span> Tags Single</a>
+               </li>
             </ul>
          </div>
          <div class="col-md-10 main_content">
@@ -267,6 +273,24 @@
                      </table>
                   </div>
                </div>
+               <div class="tab-pane" id="tags">
+               </div>
+               <div class="tab-pane" id="tags_single">
+                  <div class="tag_description">
+                     <div id="tag_single_image" class="album_image">
+                     </div>
+                     <div class="tag_name">
+                        <div id="tag_single_name" >
+                        </div>
+                        <div class="tag_options">
+                           <div id="play_tag"></div>
+                           <div id="add_to_queue_tag"></div>
+                        </div>
+                     </div>
+                  </div>
+                  <table class="table-striped table" id="tag_single_songs">
+                  </table>
+               </div>
             </div>
          </div>
       </div>
@@ -283,15 +307,72 @@
                <div class="modal-body">
                   <p>Select tags.</p>
                   <div class="checkbox">
-                     <label><input type="checkbox" value="rock" name="tags">Rock</label>
+                     <label><input type="checkbox" value="romantic" name="tags">Romantic</label>
                   </div>
                   <div class="checkbox">
                      <label><input type="checkbox" value="sad" name="tags">Sad</label>
                   </div>
                   <div class="checkbox">
-                     <label><input type="checkbox" value="romantic" name="tags">Romantic</label>
+                     <label><input type="checkbox" value="bollywood 90s" name="tags">Bollywood 90s</label>
                   </div>
-                  <input type="text" name="bookId" id="bookId" value="" style="display: none;visibility: hidden;"/>
+                  <div class="checkbox">
+                     <label><input type="checkbox" value="sufi" name="tags">Sufi</label>
+                  </div>
+                  <div class="checkbox">
+                     <label><input type="checkbox" value="item song" name="tags">Item Song</label>
+                  </div>
+                  <div class="checkbox">
+                     <label><input type="checkbox" value="ghazal" name="tags">Ghazal</label>
+                  </div>
+                  <div class="checkbox">
+                     <label><input type="checkbox" value="rock" name="tags">Rock</label>
+                  </div>
+                  <div class="checkbox">
+                     <label><input type="checkbox" value="party" name="tags">Party</label>
+                  </div>
+                  <div class="checkbox">
+                     <label><input type="checkbox" value="rap" name="tags">Rap</label>
+                  </div>
+                  <div class="checkbox">
+                     <label><input type="checkbox" value="pop" name="tags">Pop</label>
+                  </div>
+                  <div class="checkbox">
+                     <label><input type="checkbox" value="edm" name="tags">EDM</label>
+                  </div>
+                  <div class="checkbox">
+                     <label><input type="checkbox" value="jazz" name="tags">Jazz</label>
+                  </div>
+                  <div class="checkbox">
+                     <label><input type="checkbox" value="hip hop" name="tags">Hip Hop</label>
+                  </div>
+                  <div class="checkbox">
+                     <label><input type="checkbox" value="electronic" name="tags">Electronic</label>
+                  </div>
+                  <div class="checkbox">
+                     <label><input type="checkbox" value="punjabi" name="tags">Punjabi</label>
+                  </div>
+                  <div class="checkbox">
+                     <label><input type="checkbox" value="indie" name="tags">Indie</label>
+                  </div>
+                  <div class="checkbox">
+                     <label><input type="checkbox" value="folk" name="tags">Folk</label>
+                  </div>
+                  <div class="checkbox">
+                     <label><input type="checkbox" value="instrumental" name="tags">Instrumental</label>
+                  </div>
+                  <div class="checkbox">
+                     <label><input type="checkbox" value="classic" name="tags">Classic</label>
+                  </div>
+                  <div class="checkbox">
+                     <label><input type="checkbox" value="devotional" name="tags">Devotional</label>
+                  </div>
+                  <div class="checkbox">
+                     <label><input type="checkbox" value="festival" name="tags">Festival</label>
+                  </div>
+
+
+                  <input type="text" name="bookId" id="tag_id" value="" style="display: none;visibility: hidden;"/>
+                  <input type="text" name="bookId" id="tag_lang" value="" style="display: none;visibility: hidden;"/>
                </div>
                <div class="modal-footer">
                   <button id="submit_tags" type="button" data-dismiss="modal" class="btn btn-default" >Submit</button>

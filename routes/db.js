@@ -19,7 +19,7 @@ var songScheme = new Schema({
     views:Number,
     genre:String,
     tags:Array
-},{ collection: 'songs' });
+},{ collection: 'new' });
 
 // the schema is useless so far
 // we need to create a model using it
@@ -34,16 +34,16 @@ var ip_table = new Schema({
 
 var tag_scheme = new Schema({
     name: String,
-    songs: Array
+    song: String,
+    count: Number
 },{collection:'tags'});
+
 // the schema is useless so far
 // we need to create a model using it
 
 var Ip = mongoose.model('Ip',ip_table);
 var tags = mongoose.model('tags',tag_scheme);
-var name;
-
-var path,songs_all,albums,album_arts;
+var path,songs_all,albums,album_arts,name;
 Song.find({}).sort({views: -1}).limit(16).exec(function(err, songs) {
     if (err) throw err;
     songs_all = songs;

@@ -4,7 +4,7 @@
 }
 
 
-.album_image{
+.album_image, .tag_image{
     display: inline-block;
     height: auto;
     margin-right: 1%;
@@ -12,7 +12,7 @@
 
 }
 
-.album_name{
+.album_name, .tag_name{
     display: inline-block;
     height: auto;
     margin-right: 1%;
@@ -20,11 +20,11 @@
     font-family: "Lato";
 }
 
-#album_songs{
+#album_songs, #tag_songs{
     margin-top: 2%;
 }
 
-.album_options{
+.album_options, .tag_options{
     font-size: 16pt;
 }
 

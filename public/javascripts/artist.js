@@ -22,7 +22,8 @@ function load_artist(url)
             var cell1=row.insertCell(0);
             var song_json = JSON.stringify(song);
             cell1.innerHTML = "<a href='' onclick='play1("+song_json+"); return false;'>  <span class='glyphicon glyphicon-play'> </span> </a>";
-            cell1=row.insertCell(1);
+
+            var cell1=row.insertCell(1);
             cell1.innerHTML = "<a href='' onclick='play1("+song_json+"); return false;'>"+song.title+"</a>";
 
             cell1=row.insertCell(2);
@@ -33,7 +34,14 @@ function load_artist(url)
             cell1.innerHTML += "<a href='' onclick='load_artist("+JSON.stringify('/artist/'+song.artist[j])+"); return false;'>"+song.artist[j]+" </a>";
             }
             cell1=row.insertCell(4);
+            cell1.innerHTML = song.length;
+
+            cell1=row.insertCell(5);
+            cell1.innerHTML = '<a href="" class="add_tags" data-id="'+song._id+'" data-toggle="modal" data-target="#myModal">Add Tags</a>';
+
+            cell1=row.insertCell(6);
             cell1.innerHTML = "<a href='' onclick='add_to_queue("+song_json+"); return false;'>  <span class='glyphicon glyphicon-plus'> </span> </a>";
+
 
         }
         var albums = data[2];
@@ -46,6 +54,8 @@ function load_artist(url)
             var album_art = album_arts[i];
            elem = document.getElementById("artist_single_albums");
             elem.innerHTML += "<div class='col-md-3 song'> <div class='song_image'> <img class ='image_size' onError='this.onerror=null;this.src=\"image/image.jpg\";' src='"+album_art+"'> </img> </div> <div class='song_name'> <a onclick='load_album("+JSON.stringify('/album/'+album)+"); return false;'>"+album+"</a> </div> </div>";
+            elem = document.getElementById("artist_single_albums");
+            elem.innerHTML += "<div class='col-md-3 song'> <div class='song_image'> <img class='image_size' src='"+album_art+"'> </img> </div> <div class='song_name'> <a onclick='load_album("+JSON.stringify('/album/'+album)+"); return false;'>"+album+"</a> </div> </div>";
         }
         $('.nav-stacked a[href="#artist_single"]').tab('show');
     });

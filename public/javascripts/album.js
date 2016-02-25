@@ -3,6 +3,7 @@
  */
 function play_album(data) {
    clear_queue();
+   player = $("#jquery_jplayer_1");
    for(var i in data)
       {
          song = data[i];
@@ -32,6 +33,7 @@ function load_album(url)
       elem.innerHTML = "<img class ='image_size' onError='this.onerror=null;this.src=\"image/image.jpg\";' src="+pass+">";
       elem = document.getElementById("album_single_name");
       elem.innerHTML = data[0].album;
+
       elem = document.getElementById("play_album");
       elem.innerHTML = " <a href='' onclick='play_album("+JSON.stringify(data)+"); return false;'> <span class='glyphicon glyphicon-play'></span> Play </a>";
       elem = document.getElementById("add_to_queue_album");
@@ -55,9 +57,16 @@ function load_album(url)
             for(var j=0;j<song.artist.length;j++){
             cell1.innerHTML += "<a href='' onclick='load_artist("+JSON.stringify('/artist/'+song.artist[j])+");return false;'>"+song.artist[j]+" </a>";
             }
+
             cell1=row.insertCell(3);
-            //var song_json = JSON.stringify(song);
+            cell1.innerHTML = song.length;
+
+            cell1=row.insertCell(4);
+            cell1.innerHTML = '<a href="" class="add_tags" data-id="'+song._id+'" data-toggle="modal" data-target="#myModal">Add Tags</a>';
+
+            cell1=row.insertCell(5);
             cell1.innerHTML = "<a href='' onclick='add_to_queue("+song_json+"); return false;'>  <span class='glyphicon glyphicon-plus'> </span> </a>";
+
 
          }
          $('.nav-stacked a[href="#album_single"]').tab('show');
