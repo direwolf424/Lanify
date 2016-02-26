@@ -18,7 +18,7 @@ router.get('/',function(req,res,next){
     var op = x.substr(6,4);
     var id,tag,songs_arr=[];
     var finishRequest = function(result) {
-        console.log('------------------------------->>calling',x);
+        //console.log('------------------------------->>calling',x);
         res.send(result);
     };
 
@@ -27,7 +27,7 @@ router.get('/',function(req,res,next){
         for(var i=0;i<tag.length;i++)
         {
             var ct = tag[i];
-            console.log("----"+ct);
+            //console.log("----"+ct);
             db.update({"_id":id},{$addToSet:{tags:tag[i]}}, function(err, ip1) {
                 if (err) console.log(err);
                 console.log("Tags Added"+id);

@@ -28,3 +28,11 @@
     font-size: 16pt;
 }
 
+.test{
+   position:fixed;
+   padding-bottom:1%;
+}
+.albums_all_language{
+   position:relative;
+   margin-top:5%;
+}

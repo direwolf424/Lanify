@@ -11,6 +11,7 @@ var db = require('./routes/db');
 var album = require('./routes/album');
 var artist = require('./routes/artist');
 var search = require('./routes/search');
+var request = require('./routes/request');
 var update = require('./routes/update');
 var tags = require('./routes/tags');
 var mongoose = require('mongoose');
@@ -79,8 +80,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(express.static('public'));
-//app.use(express.static('/myfile/dc/lanify'));
-app.use(express.static('E://Music//Music World'));
+app.use(express.static('/myfile/dc/lanify'));
+//app.use(express.static('E://Music//Music World'));
 
 //app.use('/', routes);
 app.use(new RegExp('^\/album\/.*$'), album);
@@ -88,6 +89,7 @@ app.use(new RegExp('^\/artist\/.*$'), artist);
 app.use(new RegExp('^\/users\/.*$'), users);
 app.use(new RegExp('^\/update\/.*$'), update);
 app.use(new RegExp('^\/tags\/.*$'), tags);
+app.use('/request',request);
 app.use('/db',db.Route);
 app.use('/search',search);
 

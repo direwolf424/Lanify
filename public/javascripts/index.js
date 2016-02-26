@@ -13,6 +13,7 @@ function hack(){
 }
 $(document).ready(function(){
 
+   repeat();
    load_tags();
    load_slick_song();
    load_slick_album();
@@ -93,7 +94,8 @@ $(document).ready(function(){
    });
 
    $('.nav-stacked').click(function() {
-      history.pushState(null, null, "http://192.168.159.234:1234/db");
+      history.pushState(null, null, "http://192.168.159.28:1234/db");
+      //history.pushState(null, null, "http://192.168.159.234:1234/db");
    });
 
    $('body').click(function(event) {
@@ -113,7 +115,8 @@ $(function () {
    $("#bar").autocomplete({
       source: function (request, response) {
          $.ajax({
-            url: "http://192.168.159.234:1234/search",
+            //url: "http://192.168.159.234:1234/search",
+            url: "http://192.168.159.28:1234/search",
             type: "GET",
             data: request,  // request is the value of search input
             success: function (data) {
@@ -198,7 +201,11 @@ $(document).ready(function()
 /* functions to bind various keys for music player */
 $(document).keydown(function(e) {
    //alert(e.target.tagName.toLowerCase() );
-   if(e.target.tagName.toLowerCase() != 'input' ){
+   var target = e.target || e.srcElement;
+   //if ( target.tagName == "TEXTAREA" ) {
+      //alert('hello');
+   //}
+   if(e.target.tagName.toLowerCase() != 'input' && target.tagName != "TEXTAREA" ){
       switch(e.which) {
          case 32: // spacebar
             if($('#jquery_jplayer_1').data().jPlayer.status.paused){
@@ -261,5 +268,26 @@ $(window).on("load", function() {
       $('h1').css('color','#222222');
       $('.navbar-fixed-bottom').css('position','fixed');
       $('.navbar-fixed-top').css('position','fixed');
-   }, 2000);
+   }, 1000);
 });
+
+function submit_request(){
+   var e1 = $('#name').val();
+   var e2 = $('#songname').val();
+   var e3 = $('#bugs').val();
+   var e4 = $('#features').val();
+   alert("Thanks for your feedback");
+   $('#name').val('');
+   $('#songname').val('');
+   $('#bugs').val('');
+   $('#features').val('');
+   $.ajax({
+      type: "POST",
+      data: {username:e1,
+         songname:e2,
+         bugs:e3,
+         features:e4
+      },
+      url: "http://192.168.159.28:1234/request",
+   });
+}
