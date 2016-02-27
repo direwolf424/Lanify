@@ -54,8 +54,8 @@ function load_artist(url)
             var album_art = album_arts[i];
            elem = document.getElementById("artist_single_albums");
             elem.innerHTML += "<div class='col-md-3 song'> <div class='song_image'> <img class ='image_size' onError='this.onerror=null;this.src=\"image/image.jpg\";' src='"+album_art+"'> </img> </div> <div class='song_name'> <a onclick='load_album("+JSON.stringify('/album/'+album)+"); return false;'>"+album+"</a> </div> </div>";
-            elem = document.getElementById("artist_single_albums");
-            elem.innerHTML += "<div class='col-md-3 song'> <div class='song_image'> <img class='image_size' src='"+album_art+"'> </img> </div> <div class='song_name'> <a onclick='load_album("+JSON.stringify('/album/'+album)+"); return false;'>"+album+"</a> </div> </div>";
+            //elem = document.getElementById("artist_single_albums");
+            //elem.innerHTML += "<div class='col-md-3 song'> <div class='song_image'> <img class='image_size' src='"+album_art+"'> </img> </div> <div class='song_name'> <a onclick='load_album("+JSON.stringify('/album/'+album)+"); return false;'>"+album+"</a> </div> </div>";
         }
         $('.nav-stacked a[href="#artist_single"]').tab('show');
     });

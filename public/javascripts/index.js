@@ -160,7 +160,7 @@ $(function () {
                         res.innerHTML = "";
                         for(i in artists)
                            {
-                              console.log(artists[i].length);
+                              //console.log(artists[i].length);
                               res.innerHTML += "<p class='ui-menu-item' onclick='load_artist("+JSON.stringify('/artist/'+artists[i])+"); return false;'>"+artists[i]+"<p>";
                               if(i>5)
                                  break;
@@ -211,13 +211,17 @@ $(document).keydown(function(e) {
             if($('#jquery_jplayer_1').data().jPlayer.status.paused){
                $('.jp-play').click();
                var name = document.getElementById("jp-song-name");
+               var album =document.getElementById("jp-album-name");
                title = name.innerHTML;
+               album = album.innerHTML;
                highlight(title,"play");
             }
             else{
                $('.jp-pause').click();
                var name = document.getElementById("jp-song-name");
+               var album =document.getElementById("jp-album-name");
                title = name.innerHTML;
+               album = album.innerHTML;
                highlight(title,"pause");
             }
             break;

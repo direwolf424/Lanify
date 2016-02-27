@@ -28,10 +28,18 @@
 /*Progress Bar End*/
 
 #jp-song-name{
-   width: 10%;
+   width: 13%;
    margin-left: 1%;
    padding-top: 1%;
    font-weight:bold;
+   word-wrap: break-word;
+}
+
+#jp-album-name{
+   width: 13%;
+   margin-left: 1%;
+   padding-bottom: 1%;
+   /*font-weight:bold;*/
    word-wrap: break-word;
 }
 

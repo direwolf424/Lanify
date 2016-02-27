@@ -144,7 +144,9 @@ function play1(song){
                }
                player.jPlayer("play");
                var name = document.getElementById("jp-song-name");
+               var player_album = document.getElementById("jp-album-name");
                name.innerHTML = title;
+               player_album.innerHTML = album;
                return false;
 }
 
@@ -197,11 +199,14 @@ $(document).ready(function() {
 
       $("#jquery_jplayer_1").bind($.jPlayer.event.play, function(event) {
          var name = document.getElementById("jp-song-name");
+         var player_album = document.getElementById("jp-album-name");
          view(name.innerHTML);
+         view(player_album.innerHTML);
          highlight(name.innerHTML,"play",playlist[playlist_index]);
       });
       $("#jquery_jplayer_1").bind($.jPlayer.event.pause, function(event) {
          var name = document.getElementById("jp-song-name");
+         var player_album = document.getElementById("jp-album-name");
          highlight(name.innerHTML,"pause",playlist[playlist_index]);
       });
 
@@ -322,7 +327,9 @@ function clear_queue() {
       mp3: ""
    });
    var name = document.getElementById("jp-song-name");
+   var player_album = document.getElementById("jp-album-name");
    name.innerHTML = "";
+   player_album.innerHTML = "";
    playlist_index = 0;
    playlist = [];
    load_playlist();
