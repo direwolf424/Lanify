@@ -5,7 +5,9 @@
  * Created by Saurabh on 15-Jan-16.
  */
 
-var flag_album=true;
+var flag_album_english=true;
+var flag_album_hindi=true;
+var flag_album_telugu=true;
 var flag_artist=true;
 var flag_song=true;
 var album_data,artist_data,song_data;
@@ -50,14 +52,14 @@ function load_slick_song()
 }
 
 
-function load_more_album(url)
+function load_more_album1(url)
 {
    var lang=url.substr(13,url.length-13);
-   if(flag_album){
+   if(flag_album_english){
       $.get(url, function(data, status){
          var result = data[0];
-         album_data = result;
-         flag_album = false;
+         album_data_english = result;
+         flag_album_english = false;
          var elem = document.getElementsByClassName("albums_all_"+lang)[0];
          var count = document.getElementsByClassName("album_"+lang).length;
          var x = JSON.stringify("this.src='/image/image.jpg'");
@@ -69,7 +71,7 @@ function load_more_album(url)
    }
    else{
       //alert('no get request');
-      var result = album_data;
+      var result = album_data_english;
       var elem = document.getElementsByClassName("albums_all_"+lang)[0];
       var count = document.getElementsByClassName("album_"+lang).length;
       var x = JSON.stringify("this.src='/image/image.jpg'");
@@ -80,6 +82,67 @@ function load_more_album(url)
    }
    return false;
 }
+function load_more_album2(url)
+{
+   var lang=url.substr(13,url.length-13);
+   if(flag_album_hindi){
+      $.get(url, function(data, status){
+         var result = data[0];
+         album_data_hindi = result;
+         flag_album_hindi = false;
+         var elem = document.getElementsByClassName("albums_all_"+lang)[0];
+         var count = document.getElementsByClassName("album_"+lang).length;
+         var x = JSON.stringify("this.src='/image/image.jpg'");
+         for (var i=count+1;i<count+31 && i<result.length;i++)
+         {
+            elem.innerHTML += "<div title='"+result[i].album+"' class='album album_"+lang+" col-md-5ths'> <a onclick='load_album("+JSON.stringify('/album/'+result[i].album)+"); return false;' > <div class='song_image'> <img onerror="+x+" src='"+result[i].album_art+"'> </img> </div> <div class='ellip_name'> "+result[i].album+" </a> </div> </div> ";
+         }
+      });
+   }
+   else{
+      //alert('no get request');
+      var result = album_data_hindi;
+      var elem = document.getElementsByClassName("albums_all_"+lang)[0];
+      var count = document.getElementsByClassName("album_"+lang).length;
+      var x = JSON.stringify("this.src='/image/image.jpg'");
+      for (var i=count+1;i<count+31 && i<result.length;i++)
+      {
+         elem.innerHTML += "<div title='"+result[i].album+"' class='album album_"+lang+" col-md-5ths'> <a onclick='load_album("+JSON.stringify('/album/'+result[i].album)+"); return false;' > <div class='song_image'> <img onerror="+x+" src='"+result[i].album_art+"'> </img> </div> <div class='ellip_name'> "+result[i].album+" </a> </div> </div> ";
+      }
+   }
+   return false;
+}
+function load_more_album3(url)
+{
+   var lang=url.substr(13,url.length-13);
+   if(flag_album_telugu){
+      $.get(url, function(data, status){
+         var result = data[0];
+         album_data_telugu = result;
+         flag_album_telugu = false;
+         var elem = document.getElementsByClassName("albums_all_"+lang)[0];
+         var count = document.getElementsByClassName("album_"+lang).length;
+         var x = JSON.stringify("this.src='/image/image.jpg'");
+         for (var i=count+1;i<count+31 && i<result.length;i++)
+         {
+            elem.innerHTML += "<div title='"+result[i].album+"' class='album album_"+lang+" col-md-5ths'> <a onclick='load_album("+JSON.stringify('/album/'+result[i].album)+"); return false;' > <div class='song_image'> <img onerror="+x+" src='"+result[i].album_art+"'> </img> </div> <div class='ellip_name'> "+result[i].album+" </a> </div> </div> ";
+         }
+      });
+   }
+   else{
+      //alert('no get request');
+      var result = album_data_telugu;
+      var elem = document.getElementsByClassName("albums_all_"+lang)[0];
+      var count = document.getElementsByClassName("album_"+lang).length;
+      var x = JSON.stringify("this.src='/image/image.jpg'");
+      for (var i=count+1;i<count+31 && i<result.length;i++)
+      {
+         elem.innerHTML += "<div title='"+result[i].album+"' class='album album_"+lang+" col-md-5ths'> <a onclick='load_album("+JSON.stringify('/album/'+result[i].album)+"); return false;' > <div class='song_image'> <img onerror="+x+" src='"+result[i].album_art+"'> </img> </div> <div class='ellip_name'> "+result[i].album+" </a> </div> </div> ";
+      }
+   }
+   return false;
+}
+
 
 
 function load_more_artist()

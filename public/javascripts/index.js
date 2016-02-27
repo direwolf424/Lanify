@@ -19,9 +19,9 @@ $(document).ready(function(){
    load_slick_album();
    load_more_artist();
    load_more_song();
-   load_more_album('/users/album/english');
-   load_more_album('/users/album/hindi');
-   load_more_album('/users/album/telugu');
+   load_more_album1('/users/album/english');
+   load_more_album2('/users/album/hindi');
+   load_more_album3('/users/album/telugu');
    var img = document.getElementsByTagName('img');
    //    alert(img.length);
    for(var i =0;i< img.length;i++)
