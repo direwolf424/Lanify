@@ -146,10 +146,10 @@ function play1(song){
                var name = document.getElementById("jp-song-name");
                var player_album = document.getElementById("jp-album-name");
                name.innerHTML = title;
-               player_album.innerHTML = album;
+               var pass = JSON.stringify("load_album('/album/"+album+"'); return false;");
+               player_album.innerHTML = "<a class='album_click' href='' onclick="+pass+">"+album+"</a>";
                return false;
 }
-
 
 $(document).ready(function() {
 

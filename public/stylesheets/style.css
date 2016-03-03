@@ -109,6 +109,7 @@ a {
 
 td{
    font-size: 10pt;
+   max-width: 350px;
 }
 
 
@@ -379,6 +380,17 @@ td{
    position: unset;
 }
 
+.filter_letter:hover{
+   color:#0d88c1;
+   font-size: larger;
+   text-decoration: initial;
+}
+
+#alphabet_songs
+{
+   margin-bottom: 2%;
+   text-align: center;
+}
 .cd-user-modal {
    visibility: hidden;
    opacity: 0;
