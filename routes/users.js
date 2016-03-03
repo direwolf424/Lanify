@@ -35,7 +35,7 @@ router.get('/',function(req,res,next){
    };
 
    var q4 = function(fn) {
-      db.find({}).sort({views: -1}).limit(1000).exec(function(err, results) {
+      db.find({}).sort({views: -1}).limit(2000).exec(function(err, results) {
          if (err) throw err;
          songs = results;
          return fn && fn(null,songs);
