@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var url = require('url');
 var mongoose = require('mongoose');
-var db = require('./db').Song;
+var db = require('../model/songs').Song;
 mongoose.createConnection('mongodb://localhost/music');
 var path,album,artist,songs;
 
@@ -26,7 +26,7 @@ router.get('/',function(req,res,next){
    };
 
    var q3 = function(fn) {
-      db.collection.distinct("artist", function(err, results){
+      db.collection.distinct("artist",function(err, results){
          if (err) throw err;
          artist = results;
          return fn && fn(null,artist);
@@ -34,7 +34,7 @@ router.get('/',function(req,res,next){
    };
 
    var q4 = function(fn) {
-      db.find({}).sort({views: -1}).exec(function(err, results) {
+      db.find({}).sort({views: -1}).limit(30).exec(function(err, results) {
          if (err) throw err;
          songs = results;
          return fn && fn(null,songs);

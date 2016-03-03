@@ -159,7 +159,8 @@ function load_more_artist()
          var x = JSON.stringify("this.src='/image/image.jpg'");
          for (var i=count+1;i<count+31 && i<artist.length;i++)
          {
-            elem.innerHTML += "<div title = '"+artist[i]+"' class='song col-md-5ths'> <div class='song_image'> <img onerror="+x+" src='/image/image.jpg'> </img> </div> <div class='ellip_name'> <a onclick='load_artist("+JSON.stringify('/artist/'+artist[i])+"); return false;' > "+artist[i]+" </a> </div> </div> ";
+         elem.innerHTML += "<div title='"+artist[i]+"' class='col-md-5ths'> <a onclick='load_artist("+JSON.stringify('/artist/'+artist[i])+"); return false;' > <div class='song_image'> <img src='/image/image.jpg'> </img> </div> <div class='ellip_name'> "+artist[i]+" </a> </div> </div> ";
+            //elem.innerHTML += "<div title = '"+artist[i]+"' class='song col-md-5ths'> <div class='song_image'> <img onerror="+x+" src='/image/image.jpg'> </img> </div> <div class='ellip_name'> <a onclick='load_artist("+JSON.stringify('/artist/'+artist[i])+"); return false;' > "+artist[i]+" </a> </div> </div> ";
          }
       });
    }
@@ -170,7 +171,8 @@ function load_more_artist()
       var x = JSON.stringify("this.src='/image/image.jpg'");
       for (var i=count+1;i<count+31 && i<artist.length;i++)
       {
-         elem.innerHTML += "<div title = '"+artist[i]+"' class='song col-md-5ths'> <div class='song_image'> <img onerror="+x+" src='/image/image.jpg'> </img> </div> <div class='ellip_name'> <a onclick='load_artist("+JSON.stringify('/artist/'+artist[i])+"); return false;' > "+artist[i]+" </a> </div> </div> ";
+         elem.innerHTML += "<div title='"+artist[i]+"' class='col-md-5ths'> <a onclick='load_artist("+JSON.stringify('/artist/'+artist[i])+"); return false;' > <div class='song_image'> <img src='/image/image.jpg'> </img> </div> <div class='ellip_name'> "+artist[i]+" </a> </div> </div> ";
+         //elem.innerHTML += "<div title = '"+artist[i]+"' class='song col-md-5ths'> <div class='song_image'> <img onerror="+x+" src='/image/image.jpg'> </img> </div> <div class='ellip_name'> <a onclick='load_artist("+JSON.stringify('/artist/'+artist[i])+"); return false;' > "+artist[i]+" </a> </div> </div> ";
       }
    }
 
@@ -219,7 +221,7 @@ function load_more_song()
             cell1.innerHTML = '<a href="" class="add_tags" data-id="'+song._id+'" data-toggle="modal" data-target="#myModal">Add Tags</a>';
 
             cell1=row.insertCell(6);
-            cell1.innerHTML = "<a href='' onclick='add_to_queue("+song_json+"); return false;'>  <span class='glyphicon glyphicon-plus'> </span> </a>";
+               cell1.innerHTML=" <div class='dropdown'><button class='dropdown-toggle' type='button' data-toggle='dropdown'><span class='glyphicon glyphicon-plus'></span></button><ul class='dropdown-menu'><li><a onclick='add_to_queue("+song_json+"); return false;' >Now Playing</a></li></ul>";
 
          }
       });
@@ -258,7 +260,8 @@ function load_more_song()
          cell1.innerHTML = '<a href="" class="add_tags" data-id="'+song._id+'" data-toggle="modal" data-target="#myModal">Add Tags</a>';
 
          cell1=row.insertCell(6);
-         cell1.innerHTML = "<a href='' onclick='add_to_queue("+song_json+"); return false;'>  <span class='glyphicon glyphicon-plus'> </span> </a>";
+               cell1.innerHTML=" <div class='dropdown'><button class='dropdown-toggle' type='button' data-toggle='dropdown'><span class='glyphicon glyphicon-plus'></span></button><ul class='dropdown-menu'><li><a onclick='add_to_queue("+song_json+"); return false;' >Now Playing</a></li></ul>";
+         //cell1.innerHTML = "<a href='' onclick='add_to_queue("+song_json+"); return false;'>  <span class='glyphicon glyphicon-plus'> </span> </a>";
 
       }
    }
@@ -292,7 +295,7 @@ function tag_lang(data,lang,tag){
       cell1.innerHTML = "<a href='' onclick='play1("+song_json+"); return false'>"+data[song].title+"</a>";
 
       cell1=row.insertCell(2);
-      var pass = JSON.stringify("load_album('/album/"+song.album+"'); return false;");
+      var pass = JSON.stringify("load_album('/album/"+data[song].album+"'); return false;");
       cell1.innerHTML = "<a class='album_click' href='' onclick="+pass+">"+data[song].album+"</a>";
 
       cell1=row.insertCell(3);
@@ -369,4 +372,6 @@ function load_tags()
    });
    return false;
 }
+
+
 

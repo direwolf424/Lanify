@@ -378,3 +378,14 @@ td{
 .navbar-fixed-bottom, .navbar-fixed-top {
    position: unset;
 }
+
+.cd-user-modal {
+   visibility: hidden;
+   opacity: 0;
+   transition: opacity 0.3s, visibility 0.3s;
+}
+
+.cd-user-modal.is-visible {
+   visibility: visible;
+   opacity: 1;
+}

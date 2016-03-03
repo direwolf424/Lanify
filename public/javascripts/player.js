@@ -249,8 +249,9 @@ function play_prev()
 
 function view(song)
 {
-   var url="/update/view/"+song;
+   var url="/update/"+song;
    $.get(url, function(data, status) {
+      console.log(data);
    });
 }
 

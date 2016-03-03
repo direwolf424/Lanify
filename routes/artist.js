@@ -3,7 +3,7 @@ var router = express.Router();
 var url = require('url');
 var mongoose = require('mongoose');
 var fs = require('fs');
-var db = require('./db').Song;
+var db = require('../model/songs').Song;
 
 mongoose.createConnection('mongodb://localhost/music');
 

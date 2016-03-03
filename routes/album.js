@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var url = require('url');
 var mongoose = require('mongoose');
-var db = require('./db').Song;
+var db = require('../model/songs').Song;
 mongoose.createConnection('mongodb://localhost/music');
 var path,songs_all,albums,album_arts;
 

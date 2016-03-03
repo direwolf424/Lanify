@@ -12,6 +12,7 @@
       <script src="/javascripts/index.js"></script>
       <script src="/javascripts/album.js"></script>
       <script src="/javascripts/artist.js"></script>
+      <script src="/javascripts/playlist.js"></script>
       <script src="/javascripts/load.js"></script>
       <script src="/javascripts/tags.js"></script>
       <script src="/javascripts/player.js"></script>
@@ -92,10 +93,13 @@
                   <a href="#tags" data-toggle="tab"> <span class='glyphicon glyphicon-book'></span> Tags </a>
                </li>
                <li>
+                  <a href="#playlist" data-toggle="tab"> <span class='glyphicon glyphicon-list-alt'></span> Playlist</a>
+               </li>
+               <li>
                   <a href="#now_playing" data-toggle="tab"> <span class='glyphicon glyphicon-headphones'></span> Now Playing</a>
                </li>
                <li>
-                  <a href="#request" data-toggle="tab"> <span class='glyphicon glyphicon-envelope'></span>Request</a>
+                  <a href="#request" data-toggle="tab"> <span class='glyphicon glyphicon-envelope'></span> Request</a>
                </li>
                <li style="visibility: hidden; display: none;">
                   <a href="#tags_single" data-toggle="tab"> <span class='glyphicon glyphicon-music'></span> Tags Single</a>
@@ -277,6 +281,14 @@
                   </div>
                </div>
 
+
+               <div class="tab-pane" id="playlist">
+                  <div>
+                     <!--You can save your playlist , make it public .-->
+                     Coming Soon . :D
+                     <!--<button onclick="load_user_playlist()"> click</button>-->
+                  </div>
+               </div>
                <div class="tab-pane" id="request">
                   <form class="form-horizontal" style = "margin-top:5%;margin-left:5%" role="form">
                      <div class="form-group">
@@ -292,12 +304,12 @@
                         </div>
                      </div>
                      <div class="form-group search_block">
-                          <label for="bugs">Bugs:</label>
-                            <textarea class="form-control search_block" rows="3" id="bugs"></textarea>
+                        <label for="bugs">Bugs:</label>
+                        <textarea class="form-control search_block" rows="3" id="bugs"></textarea>
                      </div>
                      <div class="form-group search_block">
-                          <label for="features">Features:</label>
-                            <textarea class="form-control search_block" rows="3" id="features"></textarea>
+                        <label for="features">Features:</label>
+                        <textarea class="form-control search_block" rows="3" id="features"></textarea>
                      </div>
                      <div class="form-group" style="margin-left:30%"> 
                         <div class="col-sm-offset-2 col-sm-10">
@@ -465,7 +477,7 @@
                   <marquee id="jp-song-name">
                   </marquee>
                   <div id="jp-album-name">
-               </div>
+                  </div>
                   <div class="jp-progress">
                      <div class="jp-seek-bar">
                         <div class="jp-play-bar"></div>

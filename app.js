@@ -12,59 +12,70 @@ var album = require('./routes/album');
 var artist = require('./routes/artist');
 var search = require('./routes/search');
 var request = require('./routes/request');
+var playlist = require('./routes/playlist');
 var update = require('./routes/update');
+var user = require('./model/user').user;
 var tags = require('./routes/tags');
 var mongoose = require('mongoose');
+var flash = require('connect-flash');
 var app = express();
 var passport = require('passport');
 var expressSession = require('express-session');
 var LocalStrategy = require('passport-local').Strategy;
 
 //mongoose.connect('mongodb://localhost/music');
-passport.use(new LocalStrategy(
-   function(username, password, done) {
-      //User.findOne({ username: username }, function (err, user) {
-      //if (err) { return done(err); }
-      //if (!user) {
-      //return done(null, false, { message: 'Incorrect username.' });
-      //}
-      //if (!user.validPassword(password)) {
-      //return done(null, false, { message: 'Incorrect password.' });
-      //}
-      //return done(null, user);
-      //});
-      if(username == password){
-         return done(null,username);
-      }
-      else{
-         return done(null,false);
-      }
-   }
-));
+mongoose.createConnection('mongodb://localhost/music');
 
+passport.use('login', new LocalStrategy({
+   passReqToCallback : true
+},
+function(req, username, password, done) { 
+   // check in mongo if a user with username exists or not
+   user.findOne({ 'username' :  username }, 
+                function(err, user) {
+                   // In case of any error, return using the done method
+                   if (err)
+                      return done(err);
+                   //Username does not exist, log error & redirect back
+                   if (!user){
+                      console.log('User Not Found with username '+username);
+                      return done(null, false, 
+                                  req.flash('message', 'User Not found.'));                 
+                   }
+                   // User exists but wrong password, log the error 
+                   //if (!isValidPassword(user, password)){
+                   if ((password!=user.password)){
+                      console.log('Invalid Password');
+                      return done(null, false, 
+                                  req.flash('message', 'Invalid Password'));
+                   }
+                   //User and password both match, return user from 
+                   //done method which will be treated like success
+                   console.log('------>>',user);
+                   return done(null, user);
+                }
+               );
+}));
 app.use(expressSession({secret: 'mySecretKey'}));
 app.use(passport.initialize());
 app.use(passport.session());
 
 passport.serializeUser(function(user, done) {
+   console.log('serializeing--------',user);
    done(null, user);
 });
 
 passport.deserializeUser(function(id, done) {
-   done(null,id);
-   //User.findById(id, function(err, user) {
-      //done(err, user);
-   //});
+   //done(null,id);
+   user.findById(id, function(err, user) {
+      done(err, user);
+   });
 });
 //req.login(user, function(err) {
-     //if (err) { return next(err); }
-       //return res.redirect('/users/' + req.user.username);
+//if (err) { return next(err); }
+//return res.redirect('/users/' + req.user.username);
 //});
 
-app.get('/logout', function(req, res){
-     req.logout();
-       res.redirect('/');
-});
 
 app.use(cors());
 // view engine setup
@@ -78,7 +89,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(flash());
 app.use(express.static('public'));
 app.use(express.static('/myfile/dc/lanify'));
 //app.use(express.static('E://Music//Music World'));
@@ -89,50 +100,70 @@ app.use(new RegExp('^\/artist\/.*$'), artist);
 app.use(new RegExp('^\/users\/.*$'), users);
 app.use(new RegExp('^\/update\/.*$'), update);
 app.use(new RegExp('^\/tags\/.*$'), tags);
+app.use(new RegExp('^\/playlist\/.*$'), playlist);
 app.use('/request',request);
 app.use('/db',db.Route);
 app.use('/search',search);
 
+var isAuthenticated = function (req, res, next) {
+   if (req.isAuthenticated())
+      return next();
+   res.redirect('/login');
+};
+
+//req.login(user, function(err) {
+   //if (err) { return next(err); }
+   //return res.redirect('/users/' + req.user.username);
+//});
+app.get('/logout', function(req, res){
+   //console.log('loggggggggggggggggggggggggggggggggggggggggggggggggggiinggn');
+   req.logout();
+   res.redirect('/login');
+});
 app.get('/login',function(req,res,next){
-   console.log('---------------->',req.username);
-   res.render('login');
+   if(!req.user)
+      res.render('login');
+   else
+      res.redirect('/db');
 });
 app.post('/login',
-         passport.authenticate('local', { successRedirect: '/db',
-                               failureRedirect: '/login'
-                               })
-        );
+         passport.authenticate('login'),
+         function(req, res) {
+            // If this function gets called, authentication was successful.
+            // `req.user` contains the authenticated user.
+            res.redirect('/db');
+         });
 
-        // catch 404 and forward to error handler
-        app.use(function(req, res, next) {
-           var err = new Error('Not Found');
-           err.status = 404;
-           next(err);
-        });
+         // catch 404 and forward to error handler
+         app.use(function(req, res, next) {
+            var err = new Error('Not Found');
+            err.status = 404;
+            next(err);
+         });
 
-        // error handlers
+         // error handlers
 
-        // development* error handler
-        // will print stacktrace
-        if (app.get('env') === 'development') {
-           app.use(function(err, req, res, next) {
-              res.status(err.status || 500);
-              res.render('error', {
-                 message: err.message,
-                 error: err
-              });
-           });
-        }
+         // development* error handler
+         // will print stacktrace
+         if (app.get('env') === 'development') {
+            app.use(function(err, req, res, next) {
+               res.status(err.status || 500);
+               res.render('error', {
+                  message: err.message,
+                  error: err
+               });
+            });
+         }
 
-        // production error handler
-        // no stacktraces leaked to user
-        app.use(function(err, req, res, next) {
-           res.status(err.status || 500);
-           res.render('error', {
-              message: err.message,
-              error: {}
-           });
-        });
+         // production error handler
+         // no stacktraces leaked to user
+         app.use(function(err, req, res, next) {
+            res.status(err.status || 500);
+            res.render('error', {
+               message: err.message,
+               error: {}
+            });
+         });
 
 
-        module.exports = app;
+         module.exports = app;

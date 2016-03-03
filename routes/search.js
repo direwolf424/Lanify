@@ -2,7 +2,7 @@
 var mongoose = require('mongoose');
 var express = require('express');
 var router = express.Router();
-var db = require('./db');
+var db = require('../model/songs');
 
 function buildResultSet(docs) {
    var result = [];
@@ -22,7 +22,7 @@ router.get('/',function(req,res,next){
       res.send(result,{ 'Content-Type' : 'application/json' } ,200);
    };
    var q1=function(fn){
-      db.Song.find({title: {'$regex':x,$options: 'i'}},function(err,users){
+      db.Song.find({title: {'$regex':x,$options: 'i'}}).limit(7).exec(function(err,users){
          if(err) throw err;
          songs = buildResultSet(users);
          return fn && fn(null,songs);
@@ -46,17 +46,17 @@ router.get('/',function(req,res,next){
    q1(function(err,songs){
       if(err)
          throw err;
-//      console.log("songs",songs);
+      //      console.log("songs",songs);
       result.push(songs);
       q2(function(err,albums){
          if(err)
             throw err;
-//         console.log("albums",albums);
+         //         console.log("albums",albums);
          result.push(albums);
          q3(function(err,artist){
             if(err)
                throw err;
-//            console.log("artist",artist);
+            //            console.log("artist",artist);
             result.push(artist);
             finishRequest(result);
          });

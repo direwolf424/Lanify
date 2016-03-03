@@ -3,88 +3,47 @@ var fs = require('fs');
 var pa = require('path');
 var id3 = require('id3js');
 var Sync = require('sync');
+var Song = require('../model/songs').Song;
+var express = require('express');
+var router = express.Router();
 mongoose.connect('mongodb://localhost/music');
-var Schema = mongoose.Schema;
-
-var songScheme = new Schema({
-    title:String,
-    path:String,
-    artist:Array,
-    album:String,
-    length:String,
-    release_date: Date,
-    album_art:String,
-    album_art_small:String,
-    rating:Number,
-    views:Number,
-    genre:String,
-    tags:Array
-},{ collection: 'songs' });
-
-// the schema is useless so far
-// we need to create a model using it
-
-var Song = mongoose.model('Song',songScheme);
-
-var ip_table = new Schema({
-   ip:String,
-   clicks:Number,
-   songs:Array
-},{ collection: 'ip_info' });
-
-var tag_scheme = new Schema({
-    name: String,
-    song: String,
-    count: Number
-},{collection:'tags'});
-
-var request_scheme = new Schema({
-   name: String,
-   ip_addr:String,
-   song:Array,
-   bugs:Array,
-   features:Array
-},{collections:'request'});
-// the schema is useless so far
-// we need to create a model using it
-
-var Ip = mongoose.model('Ip',ip_table);
-var tags = mongoose.model('tags',tag_scheme);
-var request = mongoose.model('request',request_scheme);
 var path,songs_all,albums,album_arts,name;
+
+var isAuthenticated = function (req, res, next) {
+   if (req.user)
+      return next();
+   res.redirect('/login');
+};
 Song.find({}).sort({views: -1}).limit(16).exec(function(err, songs) {
-    if (err) throw err;
-    songs_all = songs;
+   if (err) throw err;
+   songs_all = songs;
 });
 
 
 Song.collection.distinct("album_art", function(err, results){
-    if (err) throw err;
-    album_arts = results;
+   if (err) throw err;
+   album_arts = results;
 });
 
 Song.collection.distinct("album", function(err, results){
-    if (err) throw err;
-//    console.log(results);
-    albums = results;
+   if (err) throw err;
+   albums = results;
 });
 
 Song.collection.distinct("artist", function(err, results){
-    if (err) throw err;
-   //console.log(results);
-    artist = results;
+   if (err) throw err;
+   artist = results;
 });
-var express = require('express');
-var router = express.Router();
 /* GET home page. */
-router.get('/', function(req, res, next) {
-    console.log('------------------------------------------>>>>>>>>',req.ip);
-    //console.log('------------------------',req.username);
-    res.render('db', {songs:songs_all, artists:artist ,dirname:__dirname,albums:albums,album_arts:album_arts });
+router.get('/',function(req, res, next) {
+   //console.log('------------------------------------------>>>>>>>>',req.ip);
+   //console.log('------------------------',req.user);
+   if(req.user){
+      res.render('db', {username:req.user.username,songs:songs_all, artists:artist ,dirname:__dirname,albums:albums,album_arts:album_arts });
+   }
+   else{
+      res.render('db', {username:'GUEST',songs:songs_all, artists:artist ,dirname:__dirname,albums:albums,album_arts:album_arts });
+   }
 });
 
 module.exports.Route = router;
-module.exports.Song = Song;
-module.exports.Ip = Ip;
-module.exports.tags = tags;
-module.exports.request = request;

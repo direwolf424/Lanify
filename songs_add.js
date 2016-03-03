@@ -3,9 +3,10 @@ var fs = require('fs');
 var pa = require('path');
 var Sync = require('sync');
 var mm = require('musicmetadata');
-var Song = require('./Songs').song;
-
-mongoose.createConnection('mongodb://localhost/music');
+var Song = require('./model/songs').Song;
+var title1,filename;
+//mongoose.createConnection('mongodb://localhost/music');
+mongoose.connect('mongodb://localhost/music');
 
 function endsWith(str, suffix) {
    return str.indexOf(suffix, str.length - suffix.length) !== -1;
@@ -18,6 +19,11 @@ function capitalizeFirstLetter(string) {
    return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+//console.log('666666666',Song);
+//Song.find({}).exec(function(err, songs) {
+   //if (err) throw err;
+   //console.log(songs);
+//});
 /*
    function to remove url from the string  
    write regex for it
@@ -27,6 +33,7 @@ function delete_info(str){
    str = str.replace(/\[[0-9 a-z _ : , @ .]+\]/gi,""); //for anything beetween [word]
    str = str.replace(/[']+/,""); //for ' "
    str = str.replace(/["]+/,""); //for ' "
+   str = str.replace(/[#]+/,""); //for ' "
    str = str.replace(/www\.[0-9 a-z]+\.com/gi,""); //for ' "
    str = str.replace(/www\.[0-9 a-z]+\.org/gi,""); //for ' "
    str = str.replace(/www\.[0-9 a-z]+\.pk/gi,""); //for ' "
@@ -113,12 +120,12 @@ var name;
 
 //--------------------Hindi-----------------------------------
 //var lang='hindi';
-//var path= "/myfile/dc/lanify/Hindi/";
-//var path1="Hindi/";
+//var path= "/myfile/dc/lanify/Hindi2/";
+//var path1="Hindi2/";
 //---------------------English--------------------------
 var lang='english';
-var path= "/myfile/dc/lanify/English/";
-var path1="English/";
+var path= "/myfile/dc/lanify/English2/";
+var path1="English2/";
 //----------------telugu----------------------------------
 //var lang='telugu';
 //var path= "/myfile/dc/lanify/Telugu/";
@@ -132,18 +139,18 @@ Sync(function(){
       var folder = path+song_folder_arr[j];
 
       song_arr = fs.readdirSync(folder);
-      console.log(folder);
+      //console.log(folder);
       console.log(song_arr,song_arr.length);
       var tags;
       for(var i=0;i<song_arr.length;i++)
       {
          var file = song_arr[i];
-         console.log(file);
+         //console.log(file);
          if(endsWith(file, ".mp3"))
             {
                cnt++;
-               if(cnt<=9000)
-                  continue;
+               //if(cnt<=596)
+                  //continue;
                var pat = path1+song_folder_arr[j]+'/'+file;
                var time,metadata;
                try{
@@ -157,27 +164,34 @@ Sync(function(){
                //console.log('hello',metadata);
                //console.log('hello1');
                time = calculate_length(time);
-               if(isBlank(metadata.title)||isBlank(metadata.artist)||isBlank(metadata.album))
-                  {
-                     //console.log("----------->the string was empty");
-                     continue;
-                  }
-                  console.log('hello1');
+               title1 = metadata.title;
+               //console.log(title1);
+               if(isBlank(metadata.title)){
+                  title1 = file.replace(".mp3","");
+               }
+               //if(isBlank(title1)||isBlank(metadata.artist)||isBlank(metadata.album))
+                  //{
+                     ////console.log("----------->the string was empty");
+                     //continue;
+                  //}
+                  //console.log('hello1');
                   arr_artist=split_Artist(metadata.artist);
                   //console.log('hello2');
-                  var title = delete_info(metadata.title);
+                  var title = delete_info(title1);
                   var album = delete_info(metadata.album);
                   var year = metadata.year;
 
-                  if(isBlank(metadata.title))
+                  console.log('---->',title);
+                  if(isBlank(title))
                      {
-                        //console.log("----------->the string was empty");
+                        console.log("----------->the string was empty");
                         continue;
                      }
                      Song.update({"title":title},
                                  {
-                                    "title":title,
-                                    "album":album,
+                                    $set: {
+                                    title:title,
+                                    album:album,
                                     artist:arr_artist,
                                     genre:metadata.genre,
                                     path:pat,
@@ -190,8 +204,12 @@ Sync(function(){
                                     release_date:year,
                                     length:time,
                                     language:lang
+                                    },
+                                    $currentDate: {
+                                               lastModified: true,
+                                                            }
                                  },
-                                 { upsert:true },function(err,write){
+                                 { upsert:true }).exec(function(err,write){
                                     if(err)
                                        console.log('updated');
                                     else{
@@ -199,6 +217,7 @@ Sync(function(){
                                        //cnt++;
                                     }
                                  });
+                                 //console.log('skipping');
 
             }
       }

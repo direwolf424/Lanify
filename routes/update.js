@@ -1,12 +1,9 @@
-/**
- * Created by Saurabh on 16-Feb-16.
- */
 var express = require('express');
 var router = express.Router();
 var url = require('url');
 var mongoose = require('mongoose');
-var db = require('./db').Song;
-var db_ip = require('./db').Ip;
+var db = require('../model/songs').Song;
+var db_ip = require('../model/ip_table').Ip;
 mongoose.createConnection('mongodb://localhost/music');
 var path,album,artist,songs;
 
