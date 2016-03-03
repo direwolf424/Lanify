@@ -16,6 +16,7 @@ router.get('/',function(req,res,next){
    var finishRequest = function() {
       res.send(result);
    };
+   var char;
    var q1 = function(fn) {
       db.collection.group(group.key,group.cond,group.initial,group.reduce,group.finalise,true,function(err,results) {
          if (err) throw err;
@@ -34,13 +35,12 @@ router.get('/',function(req,res,next){
    };
 
    var q4 = function(fn) {
-      db.find({}).sort({views: -1}).limit(30).exec(function(err, results) {
+      db.find({}).sort({views: -1}).limit(1000).exec(function(err, results) {
          if (err) throw err;
          songs = results;
          return fn && fn(null,songs);
       });
    };
-
    //Standard nested callbacks
 
    if(x == "album")
@@ -95,7 +95,6 @@ router.get('/',function(req,res,next){
                   finishRequest(result);
                });
             }
-
 });
 
 module.exports = router;
