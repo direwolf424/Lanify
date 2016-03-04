@@ -201,7 +201,7 @@ $(document).ready(function() {
          var name = document.getElementById("jp-song-name");
          var player_album = document.getElementById("jp-album-name");
          view(name.innerHTML);
-         view(player_album.innerHTML);
+         //view(player_album.innerHTML);
          highlight(name.innerHTML,"play",playlist[playlist_index]);
       });
       $("#jquery_jplayer_1").bind($.jPlayer.event.pause, function(event) {
@@ -251,7 +251,7 @@ function view(song)
 {
    var url="/update/"+song;
    $.get(url, function(data, status) {
-      console.log(data);
+      //console.log(data);
    });
 }
 

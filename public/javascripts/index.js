@@ -94,7 +94,7 @@ $(document).ready(function(){
    });
 
    $('.nav-stacked').click(function() {
-      history.pushState(null, null, "http://192.168.159.28:1234/db");
+      history.pushState(null, null, "http://192.168.159.28:3000/db");
       //history.pushState(null, null, "http://192.168.159.234:1234/db");
    });
 
@@ -115,8 +115,8 @@ $(function () {
    $("#bar").autocomplete({
       source: function (request, response) {
          $.ajax({
-            url: "http://192.168.159.234:1234/search",
-//            url: "http://192.168.159.28:1234/search",
+            //url: "http://192.168.159.28:1234/search",
+           url: "http://192.168.159.28:3000/search",
             type: "GET",
             data: request,  // request is the value of search input
             success: function (data) {
@@ -292,6 +292,6 @@ function submit_request(){
          bugs:e3,
          features:e4
       },
-      url: "http://192.168.159.28:1234/request",
+      url: "http://192.168.159.28:3000/request",
    });
 }
