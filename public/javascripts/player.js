@@ -148,6 +148,8 @@ function play1(song){
                name.innerHTML = title;
                var pass = JSON.stringify("load_album('/album/"+album+"'); return false;");
                player_album.innerHTML = "<a class='album_click' href='' onclick="+pass+">"+album+"</a>";
+               check_album_song();
+               check_song_song();
                return false;
 }
 
@@ -172,9 +174,12 @@ $(document).ready(function() {
    if(playlist.length>0)
       {
          var title = playlist[0].title;
+         var album = playlist[0].album;
          var loc = playlist[0].path;
          var name = document.getElementById("jp-song-name");
+         var player_album = document.getElementById("jp-album-name");
          name.innerHTML = title;
+         player_album.innerHTML = album;
          player = $("#jquery_jplayer_1");
          highlight(title,"pause",playlist[0]);
 
@@ -262,7 +267,6 @@ function highlight(title,status,song)
       {
          var i=0;
          var table = document.getElementById('table_now_playing');
-         var table_songs = document.getElementById('table_songs');
 
          $('#now_playing table tr').each(function(){
             var val1 = $(table.rows[i].cells[1]).text();
@@ -368,6 +372,8 @@ function add_to_queue(song) {
                current_queue.push(song);
                localStorage.setItem('queue', JSON.stringify(current_queue));
             }
+            check_album_song();
+            check_song_song();
             return false;
 }
 

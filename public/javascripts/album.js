@@ -1,6 +1,7 @@
 /**
  * Created by Saurabh on 30-Jan-16.
  */
+var album_data;
 function play_album(data) {
    clear_queue();
    player = $("#jquery_jplayer_1");
@@ -27,6 +28,7 @@ function add_to_queue_album(data) {
 function load_album(url)
 {
    $.get(url, function(data, status){
+      album_data = song;
       //        history.pushState(null, null, url);
       var elem = document.getElementById("album_single_image");
       var pass = JSON.stringify(data[0].album_art);
@@ -55,7 +57,7 @@ function load_album(url)
 
             cell1=row.insertCell(2);
             for(var j=0;j<song.artist.length;j++){
-            cell1.innerHTML += "<a href='' onclick='load_artist("+JSON.stringify('/artist/'+song.artist[j])+");return false;'>"+song.artist[j]+" </a>";
+               cell1.innerHTML += "<a href='' onclick='load_artist("+JSON.stringify('/artist/'+song.artist[j])+");return false;'>"+song.artist[j]+" </a>";
             }
 
             cell1=row.insertCell(3);
@@ -70,6 +72,7 @@ function load_album(url)
 
          }
          $('.nav-stacked a[href="#album_single"]').tab('show');
+         check_album_song();
    });
 
    $(window).bind('popstate', function() {
@@ -77,4 +80,44 @@ function load_album(url)
          $('.nav-stacked a[href="#home"]').tab('show');
       }});
    });
+}
+
+function check_album_song()
+{
+   var album_table = document.getElementById("album_single_songs");
+   var now_playing = document.getElementById('table_now_playing');
+   var name = document.getElementById("jp-song-name");
+   var song_playing = name.innerHTML;
+   var i=0;
+   $('#album_single table tr').each(function(){
+      var song_name = $(album_table.rows[i].cells[1]).text();
+      //console.log(song_name);
+      var j=0,flag=0;
+      $('#now_playing table tr').each(function(){
+         var now_playing_song_name = $(now_playing.rows[j].cells[1]).text();
+         //console.log(now_playing_song_name);
+         //console.log(song_name+ " " +now_playing_song_name);
+         if(song_name == now_playing_song_name){
+            flag=1;
+            return false;
+         }
+         j++;
+      });
+         if(flag==1)
+            $(this).addClass('success');
+         i++;
+   });
+   return false;
+}
+
+function album_pause(elem,song)
+{
+   player = $("#jquery_jplayer_1");
+   player.jPlayer("pause");
+   var table = document.getElementById('album_single_songs');
+   var i = elem.parentNode.parentNode.rowIndex;
+   var cell1 = table.rows[i].cells[0];
+   var play = table.rows[i].cells[1].firstElementChild.getAttribute('onclick');
+   cell1.innerHTML = "<a href='' onclick='"+play+"'>  <span class='glyphicon glyphicon-play'> </span> </a>";
+   return false;
 }

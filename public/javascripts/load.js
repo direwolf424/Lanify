@@ -395,7 +395,6 @@ function load_more_song()
       }
    }
 
-
    return false;
 }
 
@@ -542,10 +541,11 @@ function filter_char(letter)
             cell1=row.insertCell(6);
             cell1.innerHTML = "<a href='' onclick='add_to_queue("+song_json+"); return false;'>  <span class='glyphicon glyphicon-plus'> </span> </a>";
          }
+               check_song_song();
 
          return;
       }
-      if(letter=="hindi")
+      if(letter=="hindi" || letter == "english" || letter == "telugu")
          {
                var filter = $.grep(song_data, function(item) {
                   return item.language === letter;
@@ -586,97 +586,10 @@ function filter_char(letter)
                   cell1=row.insertCell(6);
                   cell1.innerHTML = "<a href='' onclick='add_to_queue("+song_json+"); return false;'>  <span class='glyphicon glyphicon-plus'> </span> </a>";
                }
+               check_song_song();
 
             return;
          }
-         if(letter=="english")
-            {
-               var filter = $.grep(song_data, function(item) {
-                  return item.language === letter;
-               });
-               var songs = filter;
-               songs_all = songs;
-               var table = document.getElementById("table_songs");
-               $("#table_songs tr").remove();
-                  for (var i=0;i<20 && i<songs.length;i++)
-                  {
-                     var row=table.insertRow(table.rows.length);
-                     var song = songs[i];
-                     var cell1=row.insertCell(0);
-                     var song_json = JSON.stringify(song);
-                     cell1.innerHTML = "<a href='' onclick='play1("+song_json+"); return false;'>  <span class='glyphicon glyphicon-play'> </span> </a>";
-
-                     cell1=row.insertCell(1);
-                     cell1.innerHTML = "<a href='' onclick='play1("+song_json+"); return false;'>"+song.title+"</a>";
-
-                     cell1=row.insertCell(2);
-                     var pass = JSON.stringify("load_album('/album/"+song.album+"'); return false;");
-                     cell1.innerHTML = "<a class='album_click' href='' onclick="+pass+">"+song.album+"</a>";
-
-                     cell1=row.insertCell(3);
-                     cell1.innerHTML = "";
-
-                     for (var j=0;j<song.artist.length;j++)
-                     {
-                        cell1.innerHTML += " <a href='' onclick='load_artist("+JSON.stringify('/artist/'+song.artist[j])+"); return false;'>"+song.artist[j]+"</a> ";
-                     }
-
-                     cell1=row.insertCell(4);
-                     cell1.innerHTML = song.length;
-
-                     cell1=row.insertCell(5);
-                     cell1.innerHTML = '<a href="" class="add_tags" data-id="'+song._id+'" data-toggle="modal" data-target="#myModal">Add Tags</a>';
-
-                     cell1=row.insertCell(6);
-                     cell1.innerHTML = "<a href='' onclick='add_to_queue("+song_json+"); return false;'>  <span class='glyphicon glyphicon-plus'> </span> </a>";
-                  }
-
-               return;
-            }
-            if(letter=="telugu")
-               {
-               var filter = $.grep(song_data, function(item) {
-                  return item.language === letter;
-               });
-               var songs = filter;
-               songs_all = songs;
-               var table = document.getElementById("table_songs");
-               $("#table_songs tr").remove();
-               for (var i=0;i<20 && i<songs.length;i++)
-               {
-                  var row=table.insertRow(table.rows.length);
-                  var song = songs[i];
-                  var cell1=row.insertCell(0);
-                  var song_json = JSON.stringify(song);
-                  cell1.innerHTML = "<a href='' onclick='play1("+song_json+"); return false;'>  <span class='glyphicon glyphicon-play'> </span> </a>";
-
-                  cell1=row.insertCell(1);
-                  cell1.innerHTML = "<a href='' onclick='play1("+song_json+"); return false;'>"+song.title+"</a>";
-
-                  cell1=row.insertCell(2);
-                  var pass = JSON.stringify("load_album('/album/"+song.album+"'); return false;");
-                  cell1.innerHTML = "<a class='album_click' href='' onclick="+pass+">"+song.album+"</a>";
-
-                  cell1=row.insertCell(3);
-                  cell1.innerHTML = "";
-
-                  for (var j=0;j<song.artist.length;j++)
-                  {
-                     cell1.innerHTML += " <a href='' onclick='load_artist("+JSON.stringify('/artist/'+song.artist[j])+"); return false;'>"+song.artist[j]+"</a> ";
-                  }
-
-                  cell1=row.insertCell(4);
-                  cell1.innerHTML = song.length;
-
-                  cell1=row.insertCell(5);
-                  cell1.innerHTML = '<a href="" class="add_tags" data-id="'+song._id+'" data-toggle="modal" data-target="#myModal">Add Tags</a>';
-
-                  cell1=row.insertCell(6);
-                  cell1.innerHTML = "<a href='' onclick='add_to_queue("+song_json+"); return false;'>  <span class='glyphicon glyphicon-plus'> </span> </a>";
-               }
-
-                  return;
-               }
                var filter = $.grep(song_data, function(item) {
                   return item.title[0] === letter;
                });
@@ -716,4 +629,36 @@ function filter_char(letter)
                   cell1=row.insertCell(6);
                   cell1.innerHTML = "<a href='' onclick='add_to_queue("+song_json+"); return false;'>  <span class='glyphicon glyphicon-plus'> </span> </a>";
                }
+               check_song_song();
+}
+
+
+
+function check_song_song()
+{
+   var song_table = document.getElementById("table_songs");
+   var now_playing = document.getElementById('table_now_playing');
+   var i=0;
+   $('#songs table tr').each(function(){
+      var song_name = $(song_table.rows[i].cells[1]).text();
+      //console.log(song_name);
+      var j=0,flag=0;
+      $('#now_playing table tr').each(function(){
+         var now_playing_song_name = $(now_playing.rows[j].cells[1]).text();
+         //console.log(now_playing_song_name);
+         //console.log(song_name+ " " +now_playing_song_name);
+         if(song_name == now_playing_song_name){
+            flag=1;
+            return false;
+         }
+         j++;
+      });
+         if(flag==1)
+            $(this).addClass('success');
+         else
+            $(this).removeClass('success');
+
+         i++;
+   });
+   return false;
 }
