@@ -266,14 +266,14 @@ $(document).keydown(function(e) {
    e.preventDefault(); // prevent the default action (scroll / move caret);
 });
 
-//$(window).on("load", function() {
+$(window).on("load", function() {
    setTimeout(function(){
       $('body').addClass('loaded');
       $('h1').css('color','#222222');
       $('.navbar-fixed-bottom').css('position','fixed');
       $('.navbar-fixed-top').css('position','fixed');
    }, 1000);
-//});
+});
 
 function submit_request(){
    var e1 = $('#name').val();
@@ -281,7 +281,7 @@ function submit_request(){
    var e3 = $('#bugs').val();
    var e4 = $('#features').val();
    alert("Thanks for your feedback");
-   $('#name').val('');
+   //$('#name').val('');
    $('#songname').val('');
    $('#bugs').val('');
    $('#features').val('');

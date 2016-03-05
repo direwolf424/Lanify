@@ -48,14 +48,14 @@ function load_artist(url)
         var album_arts = data[3];
         elem = document.getElementById("artist_single_albums");
         elem.innerHTML="";
+      var x = JSON.stringify("this.src='/image/image.jpg'");
         for(i in albums)
         {
             var album = albums[i];
             var album_art = album_arts[i];
            elem = document.getElementById("artist_single_albums");
-            elem.innerHTML += "<div class='col-md-3 song'> <div class='song_image'> <img class ='image_size' onError='this.onerror=null;this.src=\"image/image.jpg\";' src='"+album_art+"'> </img> </div> <div class='song_name'> <a onclick='load_album("+JSON.stringify('/album/'+album)+"); return false;'>"+album+"</a> </div> </div>";
-            //elem = document.getElementById("artist_single_albums");
-            //elem.innerHTML += "<div class='col-md-3 song'> <div class='song_image'> <img class='image_size' src='"+album_art+"'> </img> </div> <div class='song_name'> <a onclick='load_album("+JSON.stringify('/album/'+album)+"); return false;'>"+album+"</a> </div> </div>";
+            elem.innerHTML += "<a href='' onclick='load_album("+JSON.stringify('/album/'+album)+"); return false;' > <div title='"+album+"' class='album col-md-5ths'> <div class='song_image'> <img onerror="+x+" src='"+album_art+"'> </img> </div> <div class='ellip_name'> "+album+" </div> </div> </a> ";
+
         }
         $('.nav-stacked a[href="#artist_single"]').tab('show');
     });

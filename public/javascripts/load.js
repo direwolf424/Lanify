@@ -399,8 +399,8 @@ function load_more_song()
 }
 
 function tag_lang(data,lang,tag){
-   console.log('tagging');
-   console.log(data);
+   //console.log('tagging');
+   //console.log(data);
    var elem = document.getElementById("tag_single_image_"+lang);
    var temp_arr = [];
    elem.innerHTML = "<img class ='image_size' src='image/image.jpg'>";
@@ -423,7 +423,7 @@ function tag_lang(data,lang,tag){
       cell1.innerHTML = "<a href='' onclick='play1("+song_json+"); return false'>"+data[song].title+"</a>";
 
       cell1=row.insertCell(2);
-      var pass = JSON.stringify("load_album('/album/"+song.album+"'); return false;");
+      var pass = JSON.stringify("load_album('/album/"+data[song].album+"'); return false;");
       cell1.innerHTML = "<a class='album_click' href='' onclick="+pass+">"+data[song].album+"</a>";
 
       cell1=row.insertCell(3);
@@ -467,7 +467,7 @@ function load_tag_songs(tag){
             else if(song.language == "hindi")
                data_hindi.push(song);
             else{
-               console.log(song);
+               //console.log(song);
                data_telugu.push(song);
             }
          }
