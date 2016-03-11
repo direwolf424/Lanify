@@ -94,8 +94,8 @@ $(document).ready(function(){
    });
 
    $('.nav-stacked').click(function() {
-      history.pushState(null, null, "http://192.168.159.28:3000/db");
-      //history.pushState(null, null, "http://192.168.159.234:1234/db");
+      //history.pushState(null, null, "http://192.168.159.28:3000/db");
+      history.pushState(null, null, "http://192.168.159.234:1234/db");
    });
 
    $('body').click(function(event) {
@@ -245,6 +245,12 @@ $(document).keydown(function(e) {
          case 27:
             $('#search_result').css("visibility","hidden");
             $('#search_result').css("display","none");
+            break;
+         case 82: //right
+            $('.jp-repeat').click();
+            break;
+         case 83: //right
+            $('.jp-shuffle').click();
             break;
 
 

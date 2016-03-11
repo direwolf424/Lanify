@@ -69,15 +69,8 @@ a {
 }
 
 .song_name {
-   widrh: 20px;
    word-wrap:break-word;
 }
-/*.song_name{*/
-/*wirth:130px;*/
-/*word-wrap:break-word;*/
-/*[>height:25px;<]*/
-/*[>text-overflow: ellipsis;<]*/
-/*}*/
 
 .main_content{
    /* border-left: solid;
@@ -88,23 +81,15 @@ a {
    //  overflow:auto;
 }
 
-#albums,#artists{
+#artists{
    padding-top: 2%;
    padding-right: 5%;
 }
 
 
-#songs{
-   padding-top: 3%;
-   padding-right: 5%;
-}
-
 .song{
    margin-top:1%;
    margin-bottom:1%;
-   //  border: solid;
-   //  border-radius: 2%;
-   //  margin-right: 1%;
 }
 
 td{
@@ -219,10 +204,6 @@ td{
 
 }
 .slick_image1{
-   /*
-   height :75%;
-   width:75%;
-    */
    height :110px;
    width:120px;
 }
@@ -275,17 +256,16 @@ td{
 
 .clear_queue
 {
-   margin-top:1%;
-   /*position: fixed;*/
+   margin-right: 5%;
+   position: fixed;
+   z-index: 200;
+   width: 80%;
+   background-color: white;
 }
 
 #table_now_playing{
    //  margin-top: 2%;
    //  position: relative;
-}
-
-.now_playing_div{
-
 }
 
 #artist_single_songs_table{
@@ -382,13 +362,13 @@ td{
 
 .filter_letter:hover{
    color:#0d88c1;
-   font-size: larger;
    text-decoration: initial;
 }
 
 #alphabet_songs
 {
-   margin-bottom: 2%;
+   margin-top: 1%;
+   margin-bottom: 1%;
    text-align: center;
 }
 .cd-user-modal {
@@ -400,4 +380,26 @@ td{
 .cd-user-modal.is-visible {
    visibility: visible;
    opacity: 1;
+}
+
+.album_container, .alphabet_container{
+   width: 80%;
+   padding-bottom: 0.5%;
+   margin-top: 0;
+   position: fixed;
+   z-index: 200;
+   background-color: white;
+}
+
+.songs_div, .now_playing_div{
+   padding-top: 5%;
+}
+
+.album_container .container{
+   margin-top: 1%;
+   width: 100%;
+}
+
+button#clear_queue{
+   margin-top: 1%;
 }

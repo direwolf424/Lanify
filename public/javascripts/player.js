@@ -2,24 +2,46 @@ var player;
 var playlist=[];
 var playlist_index=0;
 var flag_repeat=true;
+var flag_shuffle=false;
+var original_playlist = [];
 function remove_song(element){
 
    var index = element.parentNode.parentNode.rowIndex;
+   var table = document.getElementById('table_now_playing');
+   var title = table.rows[index].cells[1].textContent;
+   table.deleteRow(index);
+   if(flag_shuffle)
+   {
+      for(var i=0;i<playlist.length;i++)
+      {
+         if(title==playlist[i].title)
+         {
+            index = i;
+            break;
+         }
+      }
+   }
    if(index==playlist_index)
       {
          if(playlist_index==0 && playlist.length==1)
-            {
-               clear_queue();
-               return false;
-            }
-            else
-               {
-                  player = $("#jquery_jplayer_1");
-                  play_next();
-                  player.jPlayer("pause");
-                  if(playlist_index>0)
-                     playlist_index--;               
-               }
+         {
+            clear_queue();
+            return false;
+         }
+         else if(playlist_index==playlist.length-1)
+         {
+            player = $("#jquery_jplayer_1");
+            play1(playlist[0]);
+            player.jPlayer("pause");
+         }
+         else
+         {
+            player = $("#jquery_jplayer_1");
+            play_next();
+            player.jPlayer("pause");
+            if(playlist_index>0)
+               playlist_index--;
+         }
       }
       else
          {
@@ -27,11 +49,11 @@ function remove_song(element){
                playlist_index--;
          }
          playlist.splice(index, 1);
-         console.log(playlist);
+         for(i=0;i<playlist.length;i++)
+         {
+            console.log(playlist[i].title);
+         }
          console.log(playlist_index);
-         var table = document.getElementById('table_now_playing');
-         var title = table.rows[index].cells[1].textContent;
-         table.deleteRow(index);
          var current_queue = [];
          if (typeof localStorage === "undefined" || localStorage === null) {
             var LocalStorage = require('node-localstorage').LocalStorage;
@@ -61,11 +83,11 @@ function remove_song(element){
 function repeat(){
    var e = document.getElementsByClassName('jp-repeat')[0];
    if(flag_repeat){
-      e.setAttribute('title','repeat off');
+      e.setAttribute('title','Turn Repeat On (R)');
       e.setAttribute('style','background:url("/skin/blue.monday/image/jplayer.blue.monday.jpg") 0 -290px no-repeat;');
    }
    else{
-      e.setAttribute('title','repeat on');
+      e.setAttribute('title','Turn Repeat Off (R)');
       e.setAttribute('style','background:url("/skin/blue.monday/image/jplayer.blue.monday.jpg") -30px -290px no-repeat;');
    }
    flag_repeat = !flag_repeat;
@@ -110,14 +132,13 @@ function play1(song){
       else
          {
             current_queue= JSON.parse(localStorage["queue"]);
-            for(var i in current_queue)
+            for(var i in playlist)
                {
-                  play_song = current_queue[i];
+                  play_song = playlist[i];
                   if(play_song.title == title)
                      {
                         index=i;
                         flag = false;
-                        current_queue.splice(i, 1);
                         break;
                      }
                }
@@ -138,8 +159,16 @@ function play1(song){
                      mp3: loc
                   });
                   player.jPlayer("play", 0);
-                  playlist_index = playlist.length;
-                  playlist.push(song);
+                  if(flag_shuffle)
+                  {
+                     playlist.splice(playlist_index,0,song);
+                     playlist_index++;
+                  }
+                  else
+                  {
+                     playlist_index = playlist.length;
+                     playlist.push(song);
+                  }
                   now_playing(song);
                }
                player.jPlayer("play");
@@ -168,6 +197,9 @@ $(document).ready(function() {
    });
    $('.jp-repeat').click( function() {
       repeat();
+   });
+   $('.jp-shuffle').click( function() {
+      shuffle();
    });
    load_playlist();
 
@@ -231,13 +263,10 @@ function play_next()
       }
       else
          {
-            playlist_index=0;
-            var song = playlist[playlist_index];
             if(flag_repeat){
+               playlist_index=0;
+               var song = playlist[playlist_index];
                play1(song);
-            }
-            else{
-               player.jplayer("pause");
             }
          }
 }
@@ -433,6 +462,7 @@ function load_playlist()
       else
          {
             current_queue= JSON.parse(localStorage["queue"]);
+            original_playlist = current_queue.splice();
             for(var i in current_queue)
                {
                   var song = current_queue[i];
@@ -450,4 +480,78 @@ function load_playlist()
                }
          }
          return false;
+}
+
+function shuffle_help(array) {
+   for (var i = array.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var temp = array[i];
+      array[i] = array[j];
+      array[j] = temp;
+   }
+   return array;
+}
+
+function shuffle(){
+   var e = document.getElementsByClassName('jp-shuffle')[0];
+   console.log(playlist.length);
+   if(flag_shuffle){
+
+      flag_shuffle = !flag_shuffle;
+      e.setAttribute('title','Turn Shuffle On (S)');
+      e.setAttribute('style','background:url("/skin/blue.monday/image/jplayer.blue.monday.jpg") 0 -270px no-repeat;');
+      if(playlist.length==0)
+      {
+         return;
+      }
+      if (typeof localStorage === "undefined" || localStorage === null) {
+         var LocalStorage = require('node-localstorage').LocalStorage;
+         localStorage = new LocalStorage('./scratch');
+      }
+      if(localStorage.getItem("queue")===null)
+      {
+         original_playlist = [];
+      }
+      else
+      {
+         original_playlist = JSON.parse(localStorage["queue"]);
+      }
+
+      var cur_song = playlist[playlist_index];
+      playlist = original_playlist.slice();
+      for(var i=0;i<playlist.length;i++)
+      {
+         if(playlist[i].title==cur_song.title)
+         {
+            playlist_index = i;
+            console.log("play index"+playlist_index);
+//            break;
+         }
+         console.log(playlist[i].title);
+      }
+   }
+   else
+   {
+      flag_shuffle = !flag_shuffle;
+      e.setAttribute('title','Turn Shuffle Off (S)');
+      e.setAttribute('style','background:url("/skin/blue.monday/image/jplayer.blue.monday.jpg") -30px -270px no-repeat;');
+      if(playlist.length==0)
+      {
+         return;
+      }
+      cur_song = playlist[playlist_index];
+      playlist.splice(playlist_index,1);
+      playlist = shuffle_help(playlist);
+      playlist.splice(0,0,cur_song);
+      for(i=0;i<playlist.length;i++)
+      {
+         if(playlist[i].title==cur_song.title)
+         {
+            playlist_index = i;
+            console.log("play index"+playlist_index);
+//            break;
+         }
+         console.log(i+'-> '+playlist[i].title);
+      }
+   }
 }

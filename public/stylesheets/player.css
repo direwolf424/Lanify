@@ -80,8 +80,14 @@
 
 .jp-repeat {
    width: 28px;
-   height: 28px;
+   height: 20px;
    margin-top: 6px;
    margin-left:3%;
 }
 
+.jp-shuffle{
+   width: 28px;
+   height: 20px;
+   margin-top: 6px;
+   margin-left: 2%;
+}

@@ -160,15 +160,15 @@
                   </div>
                </div>
                <div class="tab-pane" id="albums">
-                  <div class="container">
-                     <ul class="nav nav-pills nav-justified">
-                        <li class="active"><a href="#album_english_div" data-toggle="tab">English</a></li>
-                        <li><a href="#album_hindi_div" data-toggle="tab">Hindi</a></li>
-                        <li><a href="#album_telugu_div" data-toggle="tab">Telugu</a></li>
-                     </ul>
+                  <div class="album_container">
+                     <div class="container">
+                        <ul class="nav nav-pills nav-justified">
+                           <li class="active"><a href="#album_english_div" data-toggle="tab">English</a></li>
+                           <li><a href="#album_hindi_div" data-toggle="tab">Hindi</a></li>
+                           <li><a href="#album_telugu_div" data-toggle="tab">Telugu</a></li>
+                        </ul>
+                     </div>
                   </div>
-                  <!--<div class="albums_all_language">-->
-                  <!--</div>-->
                   <div class="tab-content clearfix" >
                      <div class="tab-pane active" id="album_english_div">
                         <div class="albums_all_english"></div>
@@ -198,10 +198,13 @@
                   </div>
                </div>
                <div class="tab-pane" id="songs">
-                  <div id="alphabet_songs">
+                  <div class="alphabet_container">
+                     <div id="alphabet_songs"> </div>
                   </div>
-                  <table class="table table-striped" id="table_songs">
+                  <div class="songs_div">
+                     <table class="table table-striped" id="table_songs">
                   </table>
+                  </div>
                   <div class="load_more">
                      <button class="btn-primary" onclick="load_more_song(); return false;"> Load More </button>
                   </div>
@@ -482,6 +485,7 @@
 
          </div>
       </div>
+
       <div class="audio_player_container">
          <div id="jquery_jplayer_1" class="jp-jplayer"></div>
          <div id="jp_container_1" class="jp-audio audio_player" role="application" aria-label="media player">
@@ -500,17 +504,17 @@
                   </div>
 
                   <div class="jp-controls">
-                     <button class="jp-previous" role="button" tabindex="0">previous</button>
-                     <button class="jp-play" role="button" tabindex="0">play</button>
-                     <button class="jp-pause" role="button" tabindex="0">pause</button>
-                     <button class="jp-next" role="button" tabindex="0">next</button>
-                     <button title="repeat on" class="jp-repeat" role="button" tabindex="0">repeat</button>
-                     <!--<button title="shuffle" class="jp-shuffle" role="button" tabindex="0">shuffle</button>-->
+                     <button title="Left Arrow" class="jp-previous" role="button" tabindex="0">previous</button>
+                     <button title="Spacebar" class="jp-play" role="button" tabindex="0">play</button>
+                     <button title="Spacebar" class="jp-pause" role="button" tabindex="0">pause</button>
+                     <button title="Right Arrow" class="jp-next" role="button" tabindex="0">next</button>
+                     <button title="Repeat On (R)" class="jp-repeat" role="button" tabindex="0">repeat</button>
+                     <button title="Turn Shuffle On (S)" class="jp-shuffle" role="button" tabindex="0">shuffle</button>
                   </div>
                   <div class="jp-volume-controls">
                      <button class="jp-mute" role="button" tabindex="0">mute</button>
                      <button class="jp-volume-max" role="button" tabindex="0">max volume</button>
-                     <div class="jp-volume-bar">
+                     <div title="Up/Down" class="jp-volume-bar">
                         <div class="jp-volume-bar-value"></div>
                      </div>
                   </div>
