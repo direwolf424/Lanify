@@ -12,6 +12,8 @@ function play_album(data) {
       }
       playlist_index = -1;
       $( ".jp-next" ).click();
+      flag_shuffle = false;
+      shuffle();
       return false;
 }
 
