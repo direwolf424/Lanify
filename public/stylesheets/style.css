@@ -403,3 +403,6 @@ td{
 button#clear_queue{
    margin-top: 1%;
 }
+#albums .tab-content{
+   padding-top:5%;
+}

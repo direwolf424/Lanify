@@ -118,6 +118,7 @@ function load_more_album3(url)
    if(flag_album_telugu){
       $.get(url, function(data, status){
          var result = data[0];
+         album_data_telugu = result;
          flag_album_telugu = false;
          var elem = document.getElementsByClassName("albums_all_"+lang)[0];
          var count = document.getElementsByClassName("album_"+lang).length;
