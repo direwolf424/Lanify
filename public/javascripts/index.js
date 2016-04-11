@@ -11,6 +11,7 @@ function hack(){
    $('.next3').click();
    $('.prev3').click();
 }
+
 $(document).ready(function(){
 
    repeat();
@@ -22,8 +23,10 @@ $(document).ready(function(){
    load_more_album1('/users/album/english');
    load_more_album2('/users/album/hindi');
    load_more_album3('/users/album/telugu');
+   load_playlist();
+   dragdrop();
+
    var img = document.getElementsByTagName('img');
-   //    alert(img.length);
    for(var i =0;i< img.length;i++)
    {
       img[i].setAttribute("onerror","this.src='/image/image.jpg'");
@@ -54,16 +57,6 @@ $(document).ready(function(){
    window.onbeforeunload = function(e) {
       return 'Reloading the page will stop your music.';
    };
-
-
-
-   /*
-
-      function disableF5(e) { if ((e.which || e.keyCode) == 116 || (e.which || e.keyCode) == 82)
-      e.preventDefault(); };
-
-      $(document).on("keydown", disableF5);
-      */
 
    $('.album_slick').slick({
       lazyLoad: 'ondemand',
@@ -107,8 +100,11 @@ $(document).ready(function(){
       }
    });
 
-});
+   $(".backup_picture").error(function(){
+      $(this).attr('src', '/image/image.jpg');
+   });
 
+});
 
 $(function () {
 
@@ -190,13 +186,6 @@ $(function () {
    });
 
 });
-
-$(document).ready(function()
-                  {
-                     $(".backup_picture").error(function(){
-                        $(this).attr('src', '/image/image.jpg');
-                     });
-                  });
 
 /* functions to bind various keys for music player */
 $(document).keydown(function(e) {
@@ -300,4 +289,27 @@ function submit_request(){
       },
       url: "http://192.168.159.28:3000/request",
    });
+}
+
+function dragdrop() {
+
+   var table = document.getElementById('table_now_playing');
+   var tableDnD = new TableDnD();
+   tableDnD.init(table);
+   tableDnD.onDrop = function(table, row) {
+      var rows = this.table.tBodies[0].rows;
+      var song = playlist[playlist_index];
+      playlist = [];
+      for (var i=0; i<rows.length; i++) {
+         var play = rows[i].cells[1].firstElementChild.getAttribute('onclick');
+         play = play.substr(6,play.length-6-16);
+         var play_obj = JSON.parse(play);
+         playlist.push(play_obj);
+         if(play_obj.path==song.path)
+         {
+            playlist_index=i;
+         }
+      }
+      localStorage.setItem('queue', JSON.stringify(playlist));
+   }
 }

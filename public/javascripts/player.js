@@ -201,7 +201,6 @@ $(document).ready(function() {
    $('.jp-shuffle').click( function() {
       shuffle();
    });
-   load_playlist();
 
    if(playlist.length>0)
       {
@@ -403,6 +402,7 @@ function add_to_queue(song) {
             }
             check_album_song();
             check_song_song();
+            dragdrop();
             return false;
 }
 
@@ -494,7 +494,6 @@ function shuffle_help(array) {
 
 function shuffle(){
    var e = document.getElementsByClassName('jp-shuffle')[0];
-   console.log(playlist.length);
    if(flag_shuffle){
 
       flag_shuffle = !flag_shuffle;
@@ -524,10 +523,7 @@ function shuffle(){
          if(playlist[i].title==cur_song.title)
          {
             playlist_index = i;
-            console.log("play index"+playlist_index);
-//            break;
          }
-         console.log(playlist[i].title);
       }
    }
    else
@@ -548,10 +544,7 @@ function shuffle(){
          if(playlist[i].title==cur_song.title)
          {
             playlist_index = i;
-            console.log("play index"+playlist_index);
-//            break;
          }
-         console.log(i+'-> '+playlist[i].title);
       }
    }
 }
