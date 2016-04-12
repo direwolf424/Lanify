@@ -4,7 +4,8 @@ var Schema = mongoose.Schema;
 var ip_table = new Schema({
    ip:String,
    clicks:Number,
-   songs:Array
+   songs:Array,
+   lastModified: { type: Date, default: Date.now }
 },{ collection: 'ip_info' });
 
 

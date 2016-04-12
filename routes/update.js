@@ -40,7 +40,7 @@ router.get('/',function(req,res,next){
 
    var q3 = function(fn) {
       //db_ip.find({"ip":req.ip}).exec( function(err, ip) {
-      db_ip.update({"ip":req.ip},{$addToSet:{songs:x}}, function(err, ip1) {
+      db_ip.update({"ip":req.ip},{$addToSet:{songs:x},$currentDate: {lastModified:true }}, function(err, ip1) {
          //db_ip.insert({"ip":req.ip}, function(err, ip) {
          if (err) throw err;
          //console.log("ip added to database ---->",ip);

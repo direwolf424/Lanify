@@ -14,6 +14,7 @@ var search = require('./routes/search');
 var request = require('./routes/request');
 var playlist = require('./routes/playlist');
 var update = require('./routes/update');
+var register = require('./routes/register');
 var user = require('./model/user').user;
 var tags = require('./routes/tags');
 var mongoose = require('mongoose');
@@ -44,7 +45,7 @@ function(req, username, password, done) {
                    }
                    // User exists but wrong password, log the error 
                    //if (!isValidPassword(user, password)){
-                   if ((password!=user.password)){
+                   if ((!user.validPassword(password))){
                       console.log('Invalid Password');
                       return done(null, false, 
                                   req.flash('message', 'Invalid Password'));
@@ -102,35 +103,41 @@ app.use(new RegExp('^\/update\/.*$'), update);
 app.use(new RegExp('^\/tags\/.*$'), tags);
 app.use(new RegExp('^\/playlist\/.*$'), playlist);
 app.use('/request',request);
-app.use('/db',db.Route);
+app.use('/lanify',db.Route);
 app.use('/search',search);
+app.use('/register',register);
 
 var isAuthenticated = function (req, res, next) {
    if (req.isAuthenticated())
       return next();
-   res.redirect('/login');
+   res.redirect('/db');
 };
 
 //req.login(user, function(err) {
-   //if (err) { return next(err); }
-   //return res.redirect('/users/' + req.user.username);
+//if (err) { return next(err); }
+//return res.redirect('/users/' + req.user.username);
 //});
+
+app.get('/db',function(req,res){
+   res.redirect('/lanify');
+});
 app.get('/logout', function(req, res){
-   //console.log('loggggggggggggggggggggggggggggggggggggggggggggggggggiinggn');
+   console.log('loggggggggggggggggggggggggggggggggggggggggggggggggggiinggn');
    req.logout();
-   res.redirect('/login');
+   res.redirect('/db');
 });
-app.get('/login',function(req,res,next){
-   if(!req.user)
-      res.render('login');
-   else
-      res.redirect('/db');
-});
+//app.get('/login',function(req,res,next){
+//if(!req.user)
+//res.render('login');
+//else
+//res.redirect('/db');
+//});
 app.post('/login',
          passport.authenticate('login'),
-         function(req, res) {
+         function(req, res,next) {
             // If this function gets called, authentication was successful.
             // `req.user` contains the authenticated user.
+            console.log('User logged in successfully');
             res.redirect('/db');
          });
 

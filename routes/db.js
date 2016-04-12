@@ -39,10 +39,10 @@ router.get('/',function(req, res, next) {
    //console.log('------------------------------------------>>>>>>>>',req.ip);
    //console.log('------------------------',req.user);
    if(req.user){
-      res.render('db', {username:req.user.username,songs:songs_all, artists:artist ,dirname:__dirname,albums:albums,album_arts:album_arts });
+      res.render('db', {username:req.user.username,songs:songs_all, artists:artist ,dirname:__dirname,albums:albums,album_arts:album_arts,message:'' });
    }
    else{
-      res.render('db', {username:'GUEST',songs:songs_all, artists:artist ,dirname:__dirname,albums:albums,album_arts:album_arts });
+      res.render('db', {username:'',songs:songs_all, artists:artist ,dirname:__dirname,albums:albums,album_arts:album_arts,message:'' });
    }
 });
 

@@ -22,6 +22,8 @@ $(document).ready(function(){
    load_more_album1('/users/album/english');
    load_more_album2('/users/album/hindi');
    load_more_album3('/users/album/telugu');
+   load_playlist();
+   dragdrop();
    var img = document.getElementsByTagName('img');
    //    alert(img.length);
    for(var i =0;i< img.length;i++)
@@ -51,9 +53,9 @@ $(document).ready(function(){
          // Check the length here, e.g. this.value.length
    }
 
-   window.onbeforeunload = function(e) {
-      return 'Reloading the page will stop your music.';
-   };
+   //window.onbeforeunload = function(e) {
+   //return 'Reloading the page will stop your music.';
+   //};
 
 
 
@@ -93,10 +95,10 @@ $(document).ready(function(){
       nextArrow: $('.next3')
    });
 
-   $('.nav-stacked').click(function() {
-      //history.pushState(null, null, "http://192.168.159.28:3000/db");
-      history.pushState(null, null, "http://192.168.159.234:1234/db");
-   });
+   //$('.nav-stacked').click(function() {
+   ////history.pushState(null, null, "http://192.168.159.28:3000/db");
+   //history.pushState(null, null, "http://192.168.159.234:1234/db");
+   //});
 
    $('body').click(function(event) {
       if(!$(event.target).is('.search_block')) {
@@ -116,7 +118,8 @@ $(function () {
       source: function (request, response) {
          $.ajax({
             //url: "http://192.168.159.28:1234/search",
-           url: "http://192.168.159.28:3000/search",
+            //url: "http://192.168.159.28:3000/search",
+            url: "http://192.168.0.2:1234/search",
             type: "GET",
             data: request,  // request is the value of search input
             success: function (data) {
@@ -203,7 +206,7 @@ $(document).keydown(function(e) {
    //alert(e.target.tagName.toLowerCase() );
    var target = e.target || e.srcElement;
    //if ( target.tagName == "TEXTAREA" ) {
-      //alert('hello');
+   //alert('hello');
    //}
    if(e.target.tagName.toLowerCase() != 'input' && target.tagName != "TEXTAREA" ){
       switch(e.which) {
@@ -273,12 +276,12 @@ $(document).keydown(function(e) {
 });
 
 $(window).on("load", function() {
-   setTimeout(function(){
-      $('body').addClass('loaded');
-      $('h1').css('color','#222222');
-      $('.navbar-fixed-bottom').css('position','fixed');
-      $('.navbar-fixed-top').css('position','fixed');
-   }, 1000);
+setTimeout(function(){
+   $('body').addClass('loaded');
+   $('h1').css('color','#222222');
+   $('.navbar-fixed-bottom').css('position','fixed');
+   $('.navbar-fixed-top').css('position','fixed');
+}, 1000);
 });
 
 function submit_request(){
@@ -298,6 +301,99 @@ function submit_request(){
          bugs:e3,
          features:e4
       },
-      url: "http://192.168.159.28:3000/request",
+      //url: "http://192.168.159.28:3000/request",
+      url: "http://192.168.159.28:1234/request",
    });
+}
+
+$(document).ready(function(){
+   $("#signinBtn").click(function(){
+      $("#signinModal").modal();
+   });
+   $("#signupBtn").click(function(){
+      $("#signupModal").modal();
+   });
+   $("#logoutBtn").click(function(){
+      window.location="http://192.168.159.28:1234/logout";
+   });
+   $("#register_form").submit(function(event) {
+
+      /* stop form from submitting normally */
+      event.preventDefault();
+
+      /* get some values from elements on the page: */
+      var $form = $( this ),
+         url = $form.attr( 'action' );
+
+         /* Send the data using post */
+         var posting = $.post( url, { username: $('#username').val(), password: $('#password').val(),rollno: $('#rollno').val(), mobileno: $('#mobileno').val()  } );
+
+         /* Alerts the results */
+         posting.done(function( data ) {
+            //alert(data.message);
+            var ele=document.getElementById("eregister");
+            ele.style.display="inline-block";
+            ele.innerHTML=data.message;
+            setTimeout(function(){
+               if(data.flag == 1){
+                  mswitch(1);
+               }},1000);
+         });
+   });
+   $("#login_form").submit(function(event) {
+
+      /* stop form from submitting normally */
+      event.preventDefault();
+
+      /* get some values from elements on the page: */
+      var $form = $( this ),
+         url = $form.attr( 'action' );
+
+         /* Send the data using post */
+         var posting = $.post( url, { username: $('#username1').val(), password: $('#password1').val() } );
+         var elog = 1;
+         /* Alerts the results */
+         posting.done(function( data ) {
+            elog=0;
+            window.location="http://192.168.159.28:1234/db";
+         })
+         .fail(function(){
+            var ele=document.getElementById("elogin");
+            ele.style.display="inline-block";
+            ele.innerHTML="invalid username/password";
+         });
+   });
+});
+function mswitch(val){
+   if(val == 1){
+      $("#signupModal").modal('hide');
+      $("#signinModal").modal('show');
+   }
+   else{
+      $("#signinModal").modal('hide');
+      $("#signupModal").modal('show');
+   }
+}
+
+function dragdrop() {
+
+   var table = document.getElementById('table_now_playing');
+   var tableDnD = new TableDnD();
+   tableDnD.init(table);
+   tableDnD.onDrop = function(table, row) {
+      var rows = this.table.tBodies[0].rows;
+      var song = playlist[playlist_index];
+      playlist = [];
+      for (var i=0; i<rows.length; i++) {
+         var play = rows[i].cells[1].firstElementChild.getAttribute('onclick');
+         play = play.substr(6,play.length-6-16);
+         var play_obj = JSON.parse(play);
+         playlist.push(play_obj);
+         if(play_obj.path==song.path)
+            {
+               playlist_index=i;
+            }
+      }
+      localStorage.setItem('queue', JSON.stringify(playlist));
+   }
 }
