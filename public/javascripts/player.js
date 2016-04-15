@@ -201,6 +201,7 @@ $(document).ready(function() {
    $('.jp-shuffle').click( function() {
       shuffle();
    });
+   //load_playlist();
 
    if(playlist.length>0)
       {
@@ -415,7 +416,7 @@ function now_playing(song){
    album = song.album;
    length = song.length;
 
-   var table = document.getElementById('table_now_playing');
+   var table = document.getElementById('table_now_playing_body');
    var row=table.insertRow(table.rows.length);
 
    var song_json = JSON.stringify(song);
@@ -494,6 +495,7 @@ function shuffle_help(array) {
 
 function shuffle(){
    var e = document.getElementsByClassName('jp-shuffle')[0];
+   //console.log(playlist.length);
    if(flag_shuffle){
 
       flag_shuffle = !flag_shuffle;
@@ -523,7 +525,10 @@ function shuffle(){
          if(playlist[i].title==cur_song.title)
          {
             playlist_index = i;
+            //console.log("play index"+playlist_index);
+//            break;
          }
+         //console.log(playlist[i].title);
       }
    }
    else
@@ -544,7 +549,10 @@ function shuffle(){
          if(playlist[i].title==cur_song.title)
          {
             playlist_index = i;
+            //console.log("play index"+playlist_index);
+//            break;
          }
+         //console.log(i+'-> '+playlist[i].title);
       }
    }
 }

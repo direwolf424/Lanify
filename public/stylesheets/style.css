@@ -406,3 +406,13 @@ button#clear_queue{
 #albums .tab-content{
    padding-top:5%;
 }
+
+.modal-header, h4, .close {
+   background-color: #5cb85c;
+   color:white !important;
+   text-align: center;
+   font-size: 30px;
+}
+.modal-footer {
+   background-color: #f9f9f9;
+}

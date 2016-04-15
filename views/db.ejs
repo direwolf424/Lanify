@@ -8,27 +8,23 @@
       <link rel="stylesheet" href="/stylesheets/normalize.css">
       <link rel="stylesheet" href="/stylesheets/main.css">
       <link rel="stylesheet" href="/stylesheets/loader.css">
-
-
       <script src="/javascripts/jquery.min.js"></script>
-      <script src="/javascripts/jquery/jquery-ui.js"></script>
-
-      <script src="/javascripts/tablednd.js"></script>
-      <script src="/bootstrap/js/bootstrap.min.js"></script>
-      <script src="/javascripts/typeahead.min.js" type="text/javascript"></script>
-      <script type="text/javascript" src="/javascripts/jplayer.playlist.js"></script>
-      <script type="text/javascript" src="/javascripts/jquery.jplayer.min.js"></script>
-      <script type="text/javascript" src="/slick/slick.min.js"></script>
-
-
+      <script src="/javascripts/jquery-sortable.js"></script>
+      <script src="/javascripts/index.js"></script>
       <script src="/javascripts/album.js"></script>
       <script src="/javascripts/artist.js"></script>
       <script src="/javascripts/playlist.js"></script>
       <script src="/javascripts/load.js"></script>
       <script src="/javascripts/tags.js"></script>
       <script src="/javascripts/player.js"></script>
+      <script src="/bootstrap/js/bootstrap.min.js"></script>
+      <script src="/javascripts/jquery/jquery-ui.js"></script>
       <script src="/javascripts/modernizr-2.6.2.min.js"></script>
+      <script src="/javascripts/tablednd.js"></script>
       <link rel='stylesheet' href='/javascripts/jquery/jquery-ui.css' />
+      <script src="/javascripts/typeahead.min.js" type="text/javascript"></script>
+      <script type="text/javascript" src="/javascripts/jplayer.playlist.js"></script>
+      <script type="text/javascript" src="/javascripts/jquery.jplayer.min.js"></script>
       <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
       <link href='/skin/blue.monday/css/jplayer.blue.monday.css' rel="stylesheet" />
       <link rel='stylesheet' href='/stylesheets/style.css' />
@@ -37,8 +33,8 @@
 
       <link rel='stylesheet' href='/slick/slick.css' />
       <link rel='stylesheet' href='/slick/slick-theme.css' />
+      <script type="text/javascript" src="/slick/slick.min.js"></script>
 
-      <script src="/javascripts/index.js"></script>
    </head>
    <body>
 
@@ -52,7 +48,16 @@
 
       <nav class="top_bar navbar-fixed-top">
          <div>
-            <div class="heading_top"><a href="" onclick="load_home(); return false;">La<span class='glyphicon glyphicon-music'></span>ify<sup>β</sup></a></div>
+            <div class="heading_top"><a href="" onclick="load_home(); return false;">La<span class='glyphicon glyphicon-music'></span>ify<sup>β</sup></a>
+               <!--<% if ( username.length <= 0) { %>-->
+               <!--<button type="button" class="btn btn-default btn-lg" id="signinBtn">Login</button>-->
+               <!--<button type="button" class="btn btn-default btn-lg" id="signupBtn">Signup</button>-->
+               <!--<% } %>-->
+               <!--<% if (username.length >0 ){ %>-->
+               <!--<button type="button" class="btn btn-default btn-lg" id="userBtn">Hello <%= username %></button>-->
+               <!--<button type="button" class="btn btn-default btn-lg" id="logoutBtn">Logout</button>-->
+               <!--<% } %>-->
+            </div>
          </div>
          <div id="search_bar">
             <input type="text" id="bar" class="form-control ui-autocomplete-input" placeholder="Search for Arijit Singh, Sunidhi Chauhan, 2 States..."/>
@@ -65,6 +70,83 @@
       </nav>
 
 
+      <!-- Sign In Modal -->
+      <div class="modal fade" id="signinModal" role="dialog">
+         <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+               <div class="modal-header" style="padding:35px 50px;">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4><span class="glyphicon glyphicon-lock"></span> Login</h4>
+               </div>
+               <div id = "elogin" style="display: none;" class="alert alert-danger"></div>
+               <div class="modal-body" style="padding:40px 50px;">
+                  <form id="login_form" action = "/login" method="post" role="form">
+                     <div class="form-group">
+                        <label for="usrname"><span class="glyphicon glyphicon-user"></span> Username</label>
+                        <input type="text" class="form-control" id="username1" name="username" placeholder="Enter username">
+                     </div>
+                     <div class="form-group">
+                        <label for="psw"><span class="glyphicon glyphicon-eye-open"></span> Password</label>
+                        <input type="text" class="form-control" id="password1" name="password" placeholder="Enter password">
+                     </div>
+                     <div class="checkbox">
+                        <label><input type="checkbox" value="" checked>Remember me</label>
+                     </div>
+                     <button type="submit" class="btn btn-success btn-block"><span class="glyphicon glyphicon-off"></span> Login</button>
+                  </form>
+               </div>
+               <div class="modal-footer">
+                  <button type="submit" class="btn btn-danger btn-default pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+                  <p>Not a member? <button onclick="mswitch(2)">Sign Up</button></p>
+                  <!--<p>Forgot <a href="#">Password?</a></p>-->
+               </div>
+            </div>
+
+         </div>
+      </div>
+
+      <!-- Sign Up Modal -->
+      <div class="modal fade" id="signupModal" role="dialog">
+         <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+               <div class="modal-header" style="padding:35px 50px;">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4><span class="glyphicon glyphicon-lock"></span> Register</h4>
+               </div>
+               <div id = "eregister" style="display: none;" class="alert alert-danger"></div>
+               <div class="modal-body" style="padding:40px 50px;">
+                  <form id= "register_form" action = "/register" method="post" role="form">
+                     <div class="form-group">
+                        <label for="usrname"><span class="glyphicon glyphicon-user"></span> Username</label>
+                        <input type="text" class="form-control" id="username" name="username" placeholder="Enter email">
+                     </div>
+                     <div class="form-group">
+                        <label for="psw"><span class="glyphicon glyphicon-eye-open"></span> Password</label>
+                        <input type="text" class="form-control" id="password" name="password" placeholder="Enter password">
+                     </div>
+                     <div class="form-group">
+                        <label for="roll"><span class="glyphicon glyphicon-eye-open"></span> Roll No</label>
+                        <input type="text" class="form-control" id="rollno" name="rollno" placeholder="Enter Roll No">
+                     </div>
+                     <div class="form-group">
+                        <label for="mob"><span class="glyphicon glyphicon-eye-open"></span> Mobile</label>
+                        <input type="text" class="form-control" id= "mobileno" name="mobileno" placeholder="Enter Number">
+                     </div>
+                     <button type="submit" class="btn btn-success btn-block"><span class="glyphicon glyphicon-off"></span> Register</button>
+                  </form>
+               </div>
+               <div class="modal-footer">
+                  <button type="submit" class="btn btn-danger btn-default pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+                  <p >Already Registered <button onclick="mswitch(1)">Login</button></p>
+               </div>
+            </div>
+
+         </div>
+      </div>
       <div class="content row area_content">
 
          <div class="col-md-2 side_content">
@@ -201,7 +283,7 @@
                   </div>
                   <div class="songs_div">
                      <table class="table table-striped" id="table_songs">
-                  </table>
+                     </table>
                   </div>
                   <div class="load_more">
                      <button class="btn-primary" onclick="load_more_song(); return false;"> Load More </button>
@@ -279,7 +361,8 @@
                      </div>
                   </div>
                   <div class="now_playing_div">
-                     <table class="table table-striped" id="table_now_playing">
+                     <table class="table table-striped sorted_table" id="table_now_playing">
+                        <tbody id="table_now_playing_body"></tbody>
                      </table>
                   </div>
                </div>
@@ -289,6 +372,7 @@
                   <div>
                      <!--You can save your playlist , make it public .-->
                      Coming Soon . :D
+                     <%= username %>
                      <!--<button onclick="load_user_playlist()"> click</button>-->
                   </div>
                </div>
@@ -517,9 +601,6 @@
                      </div>
                   </div>
                </div>
-               <!--<div class="jp-details">-->
-               <!--<div class="jp-title" aria-label="title">&nbsp;</div>-->
-               <!--</div>-->
                <div class="jp-no-solution">
                   <span>Update Required</span>
                   To play the media you will need to either update your browser to a recent version or update your <a href="http://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>.
@@ -527,18 +608,21 @@
             </div>
          </div>
       </div>
-<script>
-   /*
-    $(function() {
-    $("#sort2 tbody").sortable();
-    $("#sort2 tbody").disableSelection();
-    });
-    */
-</script>
+      <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
+ga('create', 'UA-75806494-1', {'cookieDomain': 'none'});
+ga('send', 'pageview');
+      </script>
+      <script>
+$(function() {
+   $("#sort2 tbody").sortable();
+   $("#sort2 tbody").disableSelection();
+});
 
+      </script>
    </body>
-
 </html>
-
-

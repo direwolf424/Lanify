@@ -11,7 +11,6 @@ function hack(){
    $('.next3').click();
    $('.prev3').click();
 }
-
 $(document).ready(function(){
 
    repeat();
@@ -25,8 +24,8 @@ $(document).ready(function(){
    load_more_album3('/users/album/telugu');
    load_playlist();
    dragdrop();
-
    var img = document.getElementsByTagName('img');
+   //    alert(img.length);
    for(var i =0;i< img.length;i++)
    {
       img[i].setAttribute("onerror","this.src='/image/image.jpg'");
@@ -54,9 +53,19 @@ $(document).ready(function(){
          // Check the length here, e.g. this.value.length
    }
 
-   window.onbeforeunload = function(e) {
-      return 'Reloading the page will stop your music.';
-   };
+   //window.onbeforeunload = function(e) {
+   //return 'Reloading the page will stop your music.';
+   //};
+
+
+
+   /*
+
+      function disableF5(e) { if ((e.which || e.keyCode) == 116 || (e.which || e.keyCode) == 82)
+      e.preventDefault(); };
+
+      $(document).on("keydown", disableF5);
+      */
 
    $('.album_slick').slick({
       lazyLoad: 'ondemand',
@@ -86,10 +95,10 @@ $(document).ready(function(){
       nextArrow: $('.next3')
    });
 
-   $('.nav-stacked').click(function() {
-      //history.pushState(null, null, "http://192.168.159.28:3000/db");
-      history.pushState(null, null, "http://192.168.159.234:1234/db");
-   });
+   //$('.nav-stacked').click(function() {
+   ////history.pushState(null, null, "http://192.168.159.28:3000/db");
+   //history.pushState(null, null, "http://192.168.159.234:1234/db");
+   //});
 
    $('body').click(function(event) {
       if(!$(event.target).is('.search_block')) {
@@ -100,11 +109,8 @@ $(document).ready(function(){
       }
    });
 
-   $(".backup_picture").error(function(){
-      $(this).attr('src', '/image/image.jpg');
-   });
-
 });
+
 
 $(function () {
 
@@ -112,7 +118,8 @@ $(function () {
       source: function (request, response) {
          $.ajax({
             //url: "http://192.168.159.28:1234/search",
-           url: "http://192.168.159.28:3000/search",
+            //url: "http://192.168.159.28:3000/search",
+            url: "http://192.168.0.2:1234/search",
             type: "GET",
             data: request,  // request is the value of search input
             success: function (data) {
@@ -187,12 +194,19 @@ $(function () {
 
 });
 
+$(document).ready(function()
+                  {
+                     $(".backup_picture").error(function(){
+                        $(this).attr('src', '/image/image.jpg');
+                     });
+                  });
+
 /* functions to bind various keys for music player */
 $(document).keydown(function(e) {
    //alert(e.target.tagName.toLowerCase() );
    var target = e.target || e.srcElement;
    //if ( target.tagName == "TEXTAREA" ) {
-      //alert('hello');
+   //alert('hello');
    //}
    if(e.target.tagName.toLowerCase() != 'input' && target.tagName != "TEXTAREA" ){
       switch(e.which) {
@@ -262,12 +276,12 @@ $(document).keydown(function(e) {
 });
 
 $(window).on("load", function() {
-   setTimeout(function(){
-      $('body').addClass('loaded');
-      $('h1').css('color','#222222');
-      $('.navbar-fixed-bottom').css('position','fixed');
-      $('.navbar-fixed-top').css('position','fixed');
-   }, 1000);
+setTimeout(function(){
+   $('body').addClass('loaded');
+   $('h1').css('color','#222222');
+   $('.navbar-fixed-bottom').css('position','fixed');
+   $('.navbar-fixed-top').css('position','fixed');
+}, 1000);
 });
 
 function submit_request(){
@@ -287,8 +301,78 @@ function submit_request(){
          bugs:e3,
          features:e4
       },
-      url: "http://192.168.159.28:3000/request",
+      //url: "http://192.168.159.28:3000/request",
+      url: "http://192.168.159.28:1234/request",
    });
+}
+
+$(document).ready(function(){
+   $("#signinBtn").click(function(){
+      $("#signinModal").modal();
+   });
+   $("#signupBtn").click(function(){
+      $("#signupModal").modal();
+   });
+   $("#logoutBtn").click(function(){
+      window.location="http://192.168.159.28:1234/logout";
+   });
+   $("#register_form").submit(function(event) {
+
+      /* stop form from submitting normally */
+      event.preventDefault();
+
+      /* get some values from elements on the page: */
+      var $form = $( this ),
+         url = $form.attr( 'action' );
+
+         /* Send the data using post */
+         var posting = $.post( url, { username: $('#username').val(), password: $('#password').val(),rollno: $('#rollno').val(), mobileno: $('#mobileno').val()  } );
+
+         /* Alerts the results */
+         posting.done(function( data ) {
+            //alert(data.message);
+            var ele=document.getElementById("eregister");
+            ele.style.display="inline-block";
+            ele.innerHTML=data.message;
+            setTimeout(function(){
+               if(data.flag == 1){
+                  mswitch(1);
+               }},1000);
+         });
+   });
+   $("#login_form").submit(function(event) {
+
+      /* stop form from submitting normally */
+      event.preventDefault();
+
+      /* get some values from elements on the page: */
+      var $form = $( this ),
+         url = $form.attr( 'action' );
+
+         /* Send the data using post */
+         var posting = $.post( url, { username: $('#username1').val(), password: $('#password1').val() } );
+         var elog = 1;
+         /* Alerts the results */
+         posting.done(function( data ) {
+            elog=0;
+            window.location="http://192.168.159.28:1234/db";
+         })
+         .fail(function(){
+            var ele=document.getElementById("elogin");
+            ele.style.display="inline-block";
+            ele.innerHTML="invalid username/password";
+         });
+   });
+});
+function mswitch(val){
+   if(val == 1){
+      $("#signupModal").modal('hide');
+      $("#signinModal").modal('show');
+   }
+   else{
+      $("#signinModal").modal('hide');
+      $("#signupModal").modal('show');
+   }
 }
 
 function dragdrop() {
@@ -306,9 +390,9 @@ function dragdrop() {
          var play_obj = JSON.parse(play);
          playlist.push(play_obj);
          if(play_obj.path==song.path)
-         {
-            playlist_index=i;
-         }
+            {
+               playlist_index=i;
+            }
       }
       localStorage.setItem('queue', JSON.stringify(playlist));
    }
