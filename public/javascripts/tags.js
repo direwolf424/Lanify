@@ -23,5 +23,5 @@ $(document).ready(function() {
 
 $(document).on("click", ".add_tags", function () {
     var myBookId = $(this).data('id');
-    $(".modal-body #tag_id").val( myBookId );
+    $(".modal-body #tag_id").val(myBookId);
 });

@@ -25,7 +25,6 @@ $(document).ready(function(){
    load_playlist();
    dragdrop();
    var img = document.getElementsByTagName('img');
-   //    alert(img.length);
    for(var i =0;i< img.length;i++)
    {
       img[i].setAttribute("onerror","this.src='/image/image.jpg'");
@@ -50,22 +49,7 @@ $(document).ready(function(){
             res.style.visibility="hidden";
             res.style.display='none';
          }
-         // Check the length here, e.g. this.value.length
    }
-
-   //window.onbeforeunload = function(e) {
-   //return 'Reloading the page will stop your music.';
-   //};
-
-
-
-   /*
-
-      function disableF5(e) { if ((e.which || e.keyCode) == 116 || (e.which || e.keyCode) == 82)
-      e.preventDefault(); };
-
-      $(document).on("keydown", disableF5);
-      */
 
    $('.album_slick').slick({
       lazyLoad: 'ondemand',
@@ -94,11 +78,6 @@ $(document).ready(function(){
       prevArrow: $('.prev3'),
       nextArrow: $('.next3')
    });
-
-   //$('.nav-stacked').click(function() {
-   ////history.pushState(null, null, "http://192.168.159.28:3000/db");
-   //history.pushState(null, null, "http://192.168.159.234:1234/db");
-   //});
 
    $('body').click(function(event) {
       if(!$(event.target).is('.search_block')) {
@@ -137,7 +116,6 @@ $(function () {
                   {
                      var song_json = JSON.stringify(songs[i]);
 
-                     //   var pass = JSON.stringify("play('"+songs[i].path+"',"+"'"+songs[i].title+"',"+"'"+songs[i].artist+"',"+"'"+songs[i].album+"')");
                      res.innerHTML += "<div class=' search_line  ui-menu-item'> <div onclick='play1("+song_json+"); return false;' class='search_name'> <span>"+songs[i].title+" </span> </div> <div class='search_plus'> <a href='' onclick='add_to_queue("+song_json+"); return false;'>  <span class=' search_block glyphicon glyphicon-plus'></span> </a> </div>  </div>";
                      if(i>5)
                         break;
@@ -163,7 +141,6 @@ $(function () {
                         res.innerHTML = "";
                         for(i in artists)
                            {
-                              //console.log(artists[i].length);
                               res.innerHTML += "<p class='ui-menu-item' onclick='load_artist("+JSON.stringify('/artist/'+artists[i])+"); return false;'>"+artists[i]+"<p>";
                               if(i>5)
                                  break;
@@ -195,19 +172,16 @@ $(function () {
 });
 
 $(document).ready(function()
-                  {
-                     $(".backup_picture").error(function(){
-                        $(this).attr('src', '/image/image.jpg');
-                     });
-                  });
+{
+   $(".backup_picture").error(function(){
+      $(this).attr('src', '/image/image.jpg');
+   });
+});
 
 /* functions to bind various keys for music player */
 $(document).keydown(function(e) {
    //alert(e.target.tagName.toLowerCase() );
    var target = e.target || e.srcElement;
-   //if ( target.tagName == "TEXTAREA" ) {
-   //alert('hello');
-   //}
    if(e.target.tagName.toLowerCase() != 'input' && target.tagName != "TEXTAREA" ){
       switch(e.which) {
          case 32: // spacebar
@@ -281,7 +255,7 @@ setTimeout(function(){
    $('h1').css('color','#222222');
    $('.navbar-fixed-bottom').css('position','fixed');
    $('.navbar-fixed-top').css('position','fixed');
-}, 1000);
+}, 0);
 });
 
 function submit_request(){
@@ -306,74 +280,6 @@ function submit_request(){
    });
 }
 
-$(document).ready(function(){
-   $("#signinBtn").click(function(){
-      $("#signinModal").modal();
-   });
-   $("#signupBtn").click(function(){
-      $("#signupModal").modal();
-   });
-   $("#logoutBtn").click(function(){
-      window.location="http://192.168.159.28:1234/logout";
-   });
-   $("#register_form").submit(function(event) {
-
-      /* stop form from submitting normally */
-      event.preventDefault();
-
-      /* get some values from elements on the page: */
-      var $form = $( this ),
-         url = $form.attr( 'action' );
-
-         /* Send the data using post */
-         var posting = $.post( url, { username: $('#username').val(), password: $('#password').val(),rollno: $('#rollno').val(), mobileno: $('#mobileno').val()  } );
-
-         /* Alerts the results */
-         posting.done(function( data ) {
-            //alert(data.message);
-            var ele=document.getElementById("eregister");
-            ele.style.display="inline-block";
-            ele.innerHTML=data.message;
-            setTimeout(function(){
-               if(data.flag == 1){
-                  mswitch(1);
-               }},1000);
-         });
-   });
-   $("#login_form").submit(function(event) {
-
-      /* stop form from submitting normally */
-      event.preventDefault();
-
-      /* get some values from elements on the page: */
-      var $form = $( this ),
-         url = $form.attr( 'action' );
-
-         /* Send the data using post */
-         var posting = $.post( url, { username: $('#username1').val(), password: $('#password1').val() } );
-         var elog = 1;
-         /* Alerts the results */
-         posting.done(function( data ) {
-            elog=0;
-            window.location="http://192.168.159.28:1234/db";
-         })
-         .fail(function(){
-            var ele=document.getElementById("elogin");
-            ele.style.display="inline-block";
-            ele.innerHTML="invalid username/password";
-         });
-   });
-});
-function mswitch(val){
-   if(val == 1){
-      $("#signupModal").modal('hide');
-      $("#signinModal").modal('show');
-   }
-   else{
-      $("#signinModal").modal('hide');
-      $("#signupModal").modal('show');
-   }
-}
 
 function dragdrop() {
 
@@ -397,3 +303,21 @@ function dragdrop() {
       localStorage.setItem('queue', JSON.stringify(playlist));
    }
 }
+
+$('body').on('click', function (e) {
+   $('[data-toggle="popover"]').each(function () {
+      //the 'is' for buttons that trigger popups
+      //the 'has' for icons within a button that triggers a popup
+      if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+         $(this).popover('hide');
+      }
+   });
+});
+
+$('html').on('mouseup', function(e) {
+   if(!$(e.target).closest('.popover').length) {
+      $('.popover').each(function(){
+         $(this.previousSibling).popover('hide');
+      });
+   }
+});
