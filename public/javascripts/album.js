@@ -69,11 +69,18 @@ function load_album(url)
             cell1.innerHTML = '<a href="" class="add_tags" data-id="'+song._id+'" data-toggle="modal" data-target="#myModal">Add Tags</a>';
 
             cell1=row.insertCell(5);
-            cell1.innerHTML = "<a href='' onclick='add_to_queue("+song_json+"); return false;'>  <span class='glyphicon glyphicon-plus'> </span> </a>";
-
+            var y = "<p> <input type='text' name='bookId' class='song_id' value='abc' style='display: none;visibility: hidden;'/> <p> <a href='' onclick='add_to_queue("+song_json+"); return false;'>  Now Playing </a> <p> <a href='' class='new_playlist' onclick='new_playlist(); return false;'> Create New Playlist </a>";
+            var x = '<a class="pop_click" data-song='+song._id+' href="" data-placement="left" data-html="true" data-toggle="popover" data-original-title="Add to" > <span class="glyphicon glyphicon-plus"> </span> </a>';
+            cell1.innerHTML = x;
+            table.rows[i].cells[5].firstElementChild.setAttribute('data-content',y);
 
          }
          $('.nav-stacked a[href="#album_single"]').tab('show');
+         $('[data-toggle="popover"]')
+             .on('click',function(e){
+                e.preventDefault();
+             })
+             .popover({html:true});
          check_album_song();
    });
 
@@ -97,8 +104,6 @@ function check_album_song()
       var j=0,flag=0;
       $('#now_playing table tr').each(function(){
          var now_playing_song_name = $(now_playing.rows[j].cells[1]).text();
-         //console.log(now_playing_song_name);
-         //console.log(song_name+ " " +now_playing_song_name);
          if(song_name == now_playing_song_name){
             flag=1;
             return false;
@@ -123,3 +128,32 @@ function album_pause(elem,song)
    cell1.innerHTML = "<a href='' onclick='"+play+"'>  <span class='glyphicon glyphicon-play'> </span> </a>";
    return false;
 }
+
+
+function new_playlist()
+{
+   var c = document.getElementsByClassName('popover-content')[0];
+   c.childNodes[2].innerHTML = "<p> <input type='text' id='playlist_name'> </input> <a href='' onclick='add_to_new_playlist(this); return false;'> <span class='glyphicon glyphicon-ok'> </span> </a> ";
+}
+
+function add_to_new_playlist() {
+   var x = document.getElementById('playlist_name');
+   var name = x.value;
+   var c = document.getElementsByClassName('popover-content')[0];
+   var song = c.childNodes[0].childNodes[1].getAttribute('value');
+   var url="/playlist/";
+   $.ajax({
+      type: "GET",
+      data: {name:name,song:song},
+      url: url
+   });
+}
+
+$(document).on("click", ".pop_click", function () {
+   var song = $(this).data('song');
+   setTimeout(function()  {
+      var c = document.getElementsByClassName('popover-content')[0];
+      c.childNodes[0].childNodes[1].setAttribute('value',song);
+   },100);
+});
+

@@ -49,11 +49,6 @@ function remove_song(element){
                playlist_index--;
          }
          playlist.splice(index, 1);
-         for(i=0;i<playlist.length;i++)
-         {
-            console.log(playlist[i].title);
-         }
-         console.log(playlist_index);
          var current_queue = [];
          if (typeof localStorage === "undefined" || localStorage === null) {
             var LocalStorage = require('node-localstorage').LocalStorage;
@@ -238,12 +233,10 @@ $(document).ready(function() {
          var name = document.getElementById("jp-song-name");
          var player_album = document.getElementById("jp-album-name");
          view(name.innerHTML);
-         //view(player_album.innerHTML);
          highlight(name.innerHTML,"play",playlist[playlist_index]);
       });
       $("#jquery_jplayer_1").bind($.jPlayer.event.pause, function(event) {
          var name = document.getElementById("jp-song-name");
-         var player_album = document.getElementById("jp-album-name");
          highlight(name.innerHTML,"pause",playlist[playlist_index]);
       });
 
@@ -285,7 +278,6 @@ function view(song)
 {
    var url="/update/"+song;
    $.get(url, function(data, status) {
-      //console.log(data);
    });
 }
 
@@ -495,7 +487,6 @@ function shuffle_help(array) {
 
 function shuffle(){
    var e = document.getElementsByClassName('jp-shuffle')[0];
-   //console.log(playlist.length);
    if(flag_shuffle){
 
       flag_shuffle = !flag_shuffle;
@@ -525,10 +516,7 @@ function shuffle(){
          if(playlist[i].title==cur_song.title)
          {
             playlist_index = i;
-            //console.log("play index"+playlist_index);
-//            break;
          }
-         //console.log(playlist[i].title);
       }
    }
    else
@@ -549,10 +537,7 @@ function shuffle(){
          if(playlist[i].title==cur_song.title)
          {
             playlist_index = i;
-            //console.log("play index"+playlist_index);
-//            break;
          }
-         //console.log(i+'-> '+playlist[i].title);
       }
    }
 }

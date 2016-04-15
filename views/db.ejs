@@ -38,6 +38,15 @@
    </head>
    <body>
 
+   <div id="fb-root"></div>
+   <script>(function(d, s, id) {
+         var js, fjs = d.getElementsByTagName(s)[0];
+         if (d.getElementById(id)) return;
+         js = d.createElement(s); js.id = id;
+         js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.6";
+         fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));</script>
+
       <div id="loader-wrapper">
          <div id="loader"></div>
          <div id="loader1">Lanify</div>
@@ -45,10 +54,10 @@
          <div class="loader-section section-right"></div>
 
       </div>
-
       <nav class="top_bar navbar-fixed-top">
          <div>
-            <div class="heading_top"><a href="" onclick="load_home(); return false;">La<span class='glyphicon glyphicon-music'></span>ify<sup>β</sup></a>
+            <div class="heading_top">
+               <a href="" onclick="load_home(); return false;">La<span class='glyphicon glyphicon-music'></span>ify<sup>β</sup></a>
                <!--<% if ( username.length <= 0) { %>-->
                <!--<button type="button" class="btn btn-default btn-lg" id="signinBtn">Login</button>-->
                <!--<button type="button" class="btn btn-default btn-lg" id="signupBtn">Signup</button>-->
@@ -57,6 +66,17 @@
                <!--<button type="button" class="btn btn-default btn-lg" id="userBtn">Hello <%= username %></button>-->
                <!--<button type="button" class="btn btn-default btn-lg" id="logoutBtn">Logout</button>-->
                <!--<% } %>-->
+<!--
+               <div class="fb-like" data-href="https://www.facebook.com/Lanify/" data-layout="standard" data-action="like" data-show-faces="false" data-share="true"></div>
+               <div class="fb-page"
+                    data-href="https://www.facebook.com/lanify"
+                    data-width="250"
+                    data-height="70"
+                    data-small_header = "true"
+                    data-hide-cover="true"
+                    data-show-facepile="false"
+                    data-show-posts="false"></div>
+-->
             </div>
          </div>
          <div id="search_bar">
@@ -616,13 +636,6 @@ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 
 ga('create', 'UA-75806494-1', {'cookieDomain': 'none'});
 ga('send', 'pageview');
-      </script>
-      <script>
-$(function() {
-   $("#sort2 tbody").sortable();
-   $("#sort2 tbody").disableSelection();
-});
-
       </script>
    </body>
 </html>
