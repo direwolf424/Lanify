@@ -54,6 +54,7 @@ function delete_info(str){
    str = str.replace(/- [0-9 a-z]+\.inf/gi,""); //for ' "
    str = str.replace(/[:]+/gi,''); //for ' "
    str=str.replace(" - DJMaza.Info", "");
+   str=str.replace(" - DJMaza.INFO", "");
    str=str.replace(" - www.Songs.PK", "");
    str=str.replace(" -  www.Songs.PK", "");
    str=str.replace("[www.DJMaza.Com]", "");
