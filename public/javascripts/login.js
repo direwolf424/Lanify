@@ -40,18 +40,18 @@ $(document).ready(function(){
 
         /* stop form from submitting normally */
         event.preventDefault();
+        var c = document.getElementById("remember");
 
         /* get some values from elements on the page: */
         var $form = $( this ),
             url = $form.attr( 'action' );
 
         /* Send the data using post */
-        var posting = $.post( url, { username: $('#username1').val(), password: $('#password1').val() } );
+        var posting = $.post( url, { username: $('#username1').val(), password: $('#password1').val() , remember_me:c.checked } );
         var elog = 1;
         /* Alerts the results */
         posting.done(function( data ) {
-                elog=0;
-                window.location="http://192.168.159.28:1234/db";
+                window.location="http://192.168.159.28:1234/lanify";
             })
             .fail(function(){
                 var ele=document.getElementById("elogin");

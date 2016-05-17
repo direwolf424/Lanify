@@ -15,6 +15,7 @@ $(document).ready(function(){
 
    repeat();
    load_tags();
+   load_user_playlist();
    load_slick_song();
    load_slick_album();
    load_more_artist();
@@ -172,11 +173,11 @@ $(function () {
 });
 
 $(document).ready(function()
-{
-   $(".backup_picture").error(function(){
-      $(this).attr('src', '/image/image.jpg');
-   });
-});
+                  {
+                     $(".backup_picture").error(function(){
+                        $(this).attr('src', '/image/image.jpg');
+                     });
+                  });
 
 /* functions to bind various keys for music player */
 $(document).keydown(function(e) {
@@ -249,14 +250,14 @@ $(document).keydown(function(e) {
    e.preventDefault(); // prevent the default action (scroll / move caret);
 });
 
-$(window).on("load", function() {
+//$(window).on("load", function() {
 setTimeout(function(){
    $('body').addClass('loaded');
    $('h1').css('color','#222222');
    $('.navbar-fixed-bottom').css('position','fixed');
    $('.navbar-fixed-top').css('position','fixed');
-}, 0);
-});
+}, 2000);
+//});
 
 function submit_request(){
    var e1 = $('#name').val();
@@ -276,7 +277,7 @@ function submit_request(){
          features:e4
       },
       //url: "http://192.168.159.28:3000/request",
-      url: "http://192.168.159.28:1234/request",
+      url: "http://127.0.0.1:1234/request",
    });
 }
 
@@ -301,9 +302,15 @@ function dragdrop() {
             }
       }
       localStorage.setItem('queue', JSON.stringify(playlist));
-   }
+   };
 }
 
+$(document).ready(function(){
+   $('#playlist').click(function(){
+      alert('hello');
+      load_user_playlist();
+   });
+});
 $('body').on('click', function (e) {
    $('[data-toggle="popover"]').each(function () {
       //the 'is' for buttons that trigger popups

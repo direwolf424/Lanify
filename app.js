@@ -18,6 +18,7 @@ var register = require('./routes/register');
 var user = require('./model/user').user;
 var tags = require('./routes/tags');
 var mongoose = require('mongoose');
+var RememberMeStrategy = require('passport-remember-me').Strategy;
 var flash = require('connect-flash');
 var app = express();
 var passport = require('passport');
@@ -27,6 +28,22 @@ var LocalStrategy = require('passport-local').Strategy;
 //mongoose.connect('mongodb://localhost/music');
 mongoose.createConnection('mongodb://localhost/music');
 
+passport.use(new RememberMeStrategy(
+   function(token, done) {
+      Token.consume(token, function (err, user) {
+         if (err) { return done(err); }
+         if (!user) { return done(null, false); }
+         return done(null, user);
+      });
+   },
+   function(user, done) {
+      var token = utils.generateToken(64);
+      Token.save(token, { userId: user.id }, function(err) {
+         if (err) { return done(err); }
+         return done(null, token);
+      });
+   }
+));
 passport.use('login', new LocalStrategy({
    passReqToCallback : true
 },
@@ -57,9 +74,11 @@ function(req, username, password, done) {
                 }
                );
 }));
-app.use(expressSession({secret: 'mySecretKey'}));
+app.use(cookieParser());
+app.use(expressSession({ secret: 'my secret', cookie: { maxAge : 1200000 } }));  
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(passport.authenticate('remember-me'));
 
 passport.serializeUser(function(user, done) {
    console.log('serializeing--------',user);
@@ -84,16 +103,15 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 // uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(flash());
 app.use(express.static('public'));
-//app.use(express.static('/myfile/dc/lanify'));
-app.use(express.static('E://Music//Music World'));
+app.use(express.static('/myfile/dc/lanify'));
+//app.use(express.static('E://Music//Music World'));
 
 //app.use('/', routes);
 app.use(new RegExp('^\/album\/.*$'), album);
@@ -110,7 +128,7 @@ app.use('/register',register);
 var isAuthenticated = function (req, res, next) {
    if (req.isAuthenticated())
       return next();
-   res.redirect('/db');
+   res.redirect('/lanify');
 };
 
 //req.login(user, function(err) {
@@ -132,45 +150,64 @@ app.get('/logout', function(req, res){
 //else
 //res.redirect('/db');
 //});
-app.post('/login',
-         passport.authenticate('login'),
-         function(req, res,next) {
-            // If this function gets called, authentication was successful.
-            // `req.user` contains the authenticated user.
-            console.log('User logged in successfully');
-            res.redirect('/db');
-         });
+//app.post('/login',
+         //passport.authenticate('login'),
+         //function(req, res,next) {
+            //// If this function gets called, authentication was successful.
+            //// `req.user` contains the authenticated user.
+            //console.log('User logged in successfully');
+            //res.redirect('/lanify');
+         //});
 
-         // catch 404 and forward to error handler
-         app.use(function(req, res, next) {
-            var err = new Error('Not Found');
-            err.status = 404;
-            next(err);
-         });
+         app.post('/login', 
+                  passport.authenticate('login'),
+                  function(req, res, next) {
+                     // issue a remember me cookie if the option was checked
+                     console.log('yeahhhhhhhhhhhhhhhh  ',req.body.remember_me);
+                     if (!req.body.remember_me) {  res.redirect('/lanify'); }
 
-         // error handlers
+                     var token = utils.generateToken(64);
+                     Token.save(token, { userId: req.user.id }, function(err) {
+                        if (err) { return done(err); }
+                        res.cookie('remember_me', token, { path: '/lanify', httpOnly: true, maxAge: 604800000 }); // 7 days
+                     res.redirect('/lanify');
+                        //return next();
+                     });
+                  },
+                  function(req, res) {
+            //console.log('User logged in successfully');
+                     res.redirect('/lanify');
+                  });
+                  // catch 404 and forward to error handler
+                  app.use(function(req, res, next) {
+                     var err = new Error('Not Found');
+                     err.status = 404;
+                     next(err);
+                  });
 
-         // development* error handler
-         // will print stacktrace
-         if (app.get('env') === 'development') {
-            app.use(function(err, req, res, next) {
-               res.status(err.status || 500);
-               res.render('error', {
-                  message: err.message,
-                  error: err
-               });
-            });
-         }
+                  // error handlers
 
-         // production error handler
-         // no stacktraces leaked to user
-         app.use(function(err, req, res, next) {
-            res.status(err.status || 500);
-            res.render('error', {
-               message: err.message,
-               error: {}
-            });
-         });
+                  // development* error handler
+                  // will print stacktrace
+                  if (app.get('env') === 'development') {
+                     app.use(function(err, req, res, next) {
+                        res.status(err.status || 500);
+                        res.render('error', {
+                           message: err.message,
+                           error: err
+                        });
+                     });
+                  }
+
+                  // production error handler
+                  // no stacktraces leaked to user
+                  app.use(function(err, req, res, next) {
+                     res.status(err.status || 500);
+                     res.render('error', {
+                        message: err.message,
+                        error: {}
+                     });
+                  });
 
 
-         module.exports = app;
+                  module.exports = app;

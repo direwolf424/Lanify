@@ -12,8 +12,9 @@
       <script src="/javascripts/jquery-sortable.js"></script>
       <script src="/javascripts/index.js"></script>
       <script src="/javascripts/album.js"></script>
+      <script src="/javascripts/login.js"></script>
       <script src="/javascripts/artist.js"></script>
-      <script src="/javascripts/playlist.js"></script>
+      <script src="/javascripts/user_playlist.js"></script>
       <script src="/javascripts/load.js"></script>
       <script src="/javascripts/tags.js"></script>
       <script src="/javascripts/player.js"></script>
@@ -38,13 +39,13 @@
    </head>
    <body>
 
-   <div id="fb-root"></div>
-   <script>(function(d, s, id) {
-         var js, fjs = d.getElementsByTagName(s)[0];
-         if (d.getElementById(id)) return;
-         js = d.createElement(s); js.id = id;
-         js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.6";
-         fjs.parentNode.insertBefore(js, fjs);
+      <div id="fb-root"></div>
+      <script>(function(d, s, id) {
+var js, fjs = d.getElementsByTagName(s)[0];
+if (d.getElementById(id)) return;
+js = d.createElement(s); js.id = id;
+js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.6";
+fjs.parentNode.insertBefore(js, fjs);
       }(document, 'script', 'facebook-jssdk'));</script>
 
       <div id="loader-wrapper">
@@ -58,26 +59,26 @@
          <div>
             <div class="heading_top">
                <a href="" onclick="load_home(); return false;">La<span class='glyphicon glyphicon-music'></span>ify<sup>β</sup></a>
-               <!--<% if ( username.length <= 0) { %>-->
-               <!--<button type="button" class="btn btn-default btn-lg" id="signinBtn">Login</button>-->
-               <!--<button type="button" class="btn btn-default btn-lg" id="signupBtn">Signup</button>-->
-               <!--<% } %>-->
-               <!--<% if (username.length >0 ){ %>-->
-               <!--<button type="button" class="btn btn-default btn-lg" id="userBtn">Hello <%= username %></button>-->
-               <!--<button type="button" class="btn btn-default btn-lg" id="logoutBtn">Logout</button>-->
-               <!--<% } %>-->
-<!--
+               <% if ( username.length <= 0) { %>
+               <button type="button" class="btn btn-default btn-lg" id="signinBtn">Login</button>
+               <button type="button" class="btn btn-default btn-lg" id="signupBtn">Signup</button>
+               <% } %>
+               <% if (username.length >0 ){ %>
+               <button type="button" class="btn btn-default btn-lg" id="userBtn">Hello <%= username %></button>
+               <button type="button" class="btn btn-default btn-lg" id="logoutBtn">Logout</button>
+               <% } %>
+
+            <!--<button type="button" class="btn btn-default btn-lg" id="backBtn">Back</button>-->
                <div class="fb-like" data-href="https://www.facebook.com/Lanify/" data-layout="standard" data-action="like" data-show-faces="false" data-share="true"></div>
-               <div class="fb-page"
-                    data-href="https://www.facebook.com/lanify"
-                    data-width="250"
-                    data-height="70"
-                    data-small_header = "true"
-                    data-hide-cover="true"
-                    data-show-facepile="false"
-                    data-show-posts="false"></div>
--->
-            </div>
+               <!--<div class="fb-page"-->
+               <!--data-href="https://www.facebook.com/lanify"-->
+               <!--data-width="250"-->
+               <!--data-height="70"-->
+               <!--data-small_header = "true"-->
+               <!--data-hide-cover="true"-->
+               <!--data-show-facepile="false"-->
+               <!--data-show-posts="false"></div>-->
+               <!--</div>-->
          </div>
          <div id="search_bar">
             <input type="text" id="bar" class="form-control ui-autocomplete-input" placeholder="Search for Arijit Singh, Sunidhi Chauhan, 2 States..."/>
@@ -112,7 +113,7 @@
                         <input type="text" class="form-control" id="password1" name="password" placeholder="Enter password">
                      </div>
                      <div class="checkbox">
-                        <label><input type="checkbox" value="" checked>Remember me</label>
+                        <label><input id = "remember" type="checkbox" value="" checked>Remember me</label>
                      </div>
                      <button type="submit" class="btn btn-success btn-block"><span class="glyphicon glyphicon-off"></span> Login</button>
                   </form>
@@ -203,6 +204,9 @@
                </li>
                <li style="visibility: hidden; display: none;">
                   <a href="#tags_single" data-toggle="tab"> <span class='glyphicon glyphicon-music'></span> Tags Single</a>
+               </li>
+               <li style="visibility: hidden; display: none;">
+                  <a href="#playlist_single" data-toggle="tab"> <span class='glyphicon glyphicon-list-alt'></span> Playlist Single</a>
                </li>
             </ul>
          </div>
@@ -388,103 +392,117 @@
                </div>
 
 
-               <div class="tab-pane" id="playlist">
-                  <div>
-                     <!--You can save your playlist , make it public .-->
-                     Coming Soon . :D
-                     <%= username %>
-                     <!--<button onclick="load_user_playlist()"> click</button>-->
-                  </div>
-               </div>
-               <div class="tab-pane" id="request">
-                  <form class="form-horizontal" style = "margin-top:5%;margin-left:5%" role="form">
-                     <div class="form-group">
-                        <label class="control-label col-sm-2" for="email">Name:</label>
-                        <div class="col-sm-10">
-                           <input class="search_block form-control" id="name" placeholder="Enter Name">
-                        </div>
-                     </div>
-                     <div class="form-group">
-                        <label class="control-label col-sm-2" for="pwd">Song/Album:</label>
-                        <div class="col-sm-10"> 
-                           <input class="search_block form-control" id="songname" placeholder="Enter Song/Album Name">
-                        </div>
-                     </div>
-                     <div class="form-group search_block">
-                        <label for="bugs">Bugs:</label>
-                        <textarea class="form-control search_block" rows="3" id="bugs"></textarea>
-                     </div>
-                     <div class="form-group search_block">
-                        <label for="features">Features:</label>
-                        <textarea class="form-control search_block" rows="3" id="features"></textarea>
-                     </div>
-                     <div class="form-group" style="margin-left:30%"> 
-                        <div class="col-sm-offset-2 col-sm-10">
-                           <button onclick="submit_request();return false;" type="submit" class="btn btn-default">Submit</button>
-                        </div>
-                     </div>
-                  </form>
+               <div class="tab-pane" onclick = "load_user_playlist()" id="playlist">
                </div>
 
-               <div class="tab-pane" id="tags">
-               </div>
-
-               <div class="tab-pane" id="tags_single">
-                  <ul class="nav nav-pills nav-justified">
-                     <li class="active"><a href="#tags_english_div" data-toggle="tab">English</a></li>
-                     <li><a href="#tags_hindi_div" data-toggle="tab">Hindi</a></li>
-                     <li><a href="#tags_telugu_div" data-toggle="tab">Telugu</a></li>
-                  </ul>
+               <div class="tab-pane" id="playlist_single">
                   <div class="tab-content clearfix">
-                     <div class="tab-pane active" id="tags_english_div">
-                        <div id="tag_single_image_english" class="album_image">
+                     <div class="tab-pane active" id="playlist_div">
+                        <div id="playlist_image" class="album_image">
                         </div>
                         <div class="tag_name">
-                           <div id="tag_single_name_english" >
+                           <div id="playlist_name" >
                            </div>
-                              <div class="tag_options">
-                                 <div id="play_tag_english"></div>
-                                 <div id="add_to_queue_tag_english"></div>
+                              <div class="playlist_options">
+                                 <div id="play_playlist"></div>
+                                 <div id="add_to_queue_playlist"></div>
                               </div>
                         </div>
-                        <table class="table-striped table" id="tag_single_songs_english">
-                        </table>
-                     </div>
-
-                     <div class="tab-pane" id="tags_hindi_div">
-                        <div id="tag_single_image_hindi" class="album_image">
-                        </div>
-                        <div class="tag_name">
-                           <div id="tag_single_name_hindi" >
-                           </div>
-                              <div class="tag_options">
-                                 <div id="play_tag_hindi"></div>
-                                 <div id="add_to_queue_tag_hindi"></div>
-                              </div>
-                        </div>
-                        <table class="table-striped table" id="tag_single_songs_hindi">
-                        </table>
-                     </div>
-
-                     <div class="tab-pane" id="tags_telugu_div">
-                        <div id="tag_single_image_telugu" class="album_image">
-                        </div>
-                        <div class="tag_name">
-                           <div id="tag_single_name_telugu" >
-                           </div>
-                              <div class="tag_options">
-                                 <div id="play_tag_telugu"></div>
-                                 <div id="add_to_queue_tag_telugu"></div>
-                              </div>
-                        </div>
-                        <table class="table-striped table" id="tag_single_songs_telugu">
+                        <table class="table-striped table" id="playlist_songs">
                         </table>
                      </div>
                   </div>
                </div>
 
+      <div class="tab-pane" id="request">
+         <form class="form-horizontal" style = "margin-top:5%;margin-left:5%" role="form">
+            <div class="form-group">
+               <label class="control-label col-sm-2" for="email">Name:</label>
+               <div class="col-sm-10">
+                  <input class="search_block form-control" id="name" placeholder="Enter Name">
+               </div>
+            </div>
+            <div class="form-group">
+               <label class="control-label col-sm-2" for="pwd">Song/Album:</label>
+               <div class="col-sm-10"> 
+                  <input class="search_block form-control" id="songname" placeholder="Enter Song/Album Name">
+               </div>
+            </div>
+            <div class="form-group search_block">
+               <label for="bugs">Bugs:</label>
+               <textarea class="form-control search_block" rows="3" id="bugs"></textarea>
+            </div>
+            <div class="form-group search_block">
+               <label for="features">Features:</label>
+               <textarea class="form-control search_block" rows="3" id="features"></textarea>
+            </div>
+            <div class="form-group" style="margin-left:30%"> 
+               <div class="col-sm-offset-2 col-sm-10">
+                  <button onclick="submit_request();return false;" type="submit" class="btn btn-default">Submit</button>
+               </div>
+            </div>
+         </form>
+      </div>
+
+      <div class="tab-pane" id="tags">
+      </div>
+
+      <div class="tab-pane" id="tags_single">
+         <ul class="nav nav-pills nav-justified">
+            <li class="active"><a href="#tags_english_div" data-toggle="tab">English</a></li>
+            <li><a href="#tags_hindi_div" data-toggle="tab">Hindi</a></li>
+            <li><a href="#tags_telugu_div" data-toggle="tab">Telugu</a></li>
+         </ul>
+         <div class="tab-content clearfix">
+            <div class="tab-pane active" id="tags_english_div">
+               <div id="tag_single_image_english" class="album_image">
+               </div>
+               <div class="tag_name">
+                  <div id="tag_single_name_english" >
+                  </div>
+                     <div class="tag_options">
+                        <div id="play_tag_english"></div>
+                        <div id="add_to_queue_tag_english"></div>
+                     </div>
+               </div>
+               <table class="table-striped table" id="tag_single_songs_english">
+               </table>
+            </div>
+
+            <div class="tab-pane" id="tags_hindi_div">
+               <div id="tag_single_image_hindi" class="album_image">
+               </div>
+               <div class="tag_name">
+                  <div id="tag_single_name_hindi" >
+                  </div>
+                     <div class="tag_options">
+                        <div id="play_tag_hindi"></div>
+                        <div id="add_to_queue_tag_hindi"></div>
+                     </div>
+               </div>
+               <table class="table-striped table" id="tag_single_songs_hindi">
+               </table>
+            </div>
+
+            <div class="tab-pane" id="tags_telugu_div">
+               <div id="tag_single_image_telugu" class="album_image">
+               </div>
+               <div class="tag_name">
+                  <div id="tag_single_name_telugu" >
+                  </div>
+                     <div class="tag_options">
+                        <div id="play_tag_telugu"></div>
+                        <div id="add_to_queue_tag_telugu"></div>
+                     </div>
+               </div>
+               <table class="table-striped table" id="tag_single_songs_telugu">
+               </table>
             </div>
          </div>
+      </div>
+
+      </div>
+      </div>
       </div>
 
       <div id="myModal" class="modal fade" role="dialog">

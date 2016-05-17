@@ -2,6 +2,8 @@
  * Created by Saurabh on 30-Jan-16.
  */
 var album_data;
+var loggedin=true;
+var user_playlist_data;
 function play_album(data) {
    clear_queue();
    player = $("#jquery_jplayer_1");
@@ -69,18 +71,25 @@ function load_album(url)
             cell1.innerHTML = '<a href="" class="add_tags" data-id="'+song._id+'" data-toggle="modal" data-target="#myModal">Add Tags</a>';
 
             cell1=row.insertCell(5);
-            var y = "<p> <input type='text' name='bookId' class='song_id' value='abc' style='display: none;visibility: hidden;'/> <p> <a href='' onclick='add_to_queue("+song_json+"); return false;'>  Now Playing </a> <p> <a href='' class='new_playlist' onclick='new_playlist(); return false;'> Create New Playlist </a>";
-            var x = '<a class="pop_click" data-song='+song._id+' href="" data-placement="left" data-html="true" data-toggle="popover" data-original-title="Add to" > <span class="glyphicon glyphicon-plus"> </span> </a>';
+
+            //var y = "<p> <input type='text' name='bookId' class='song_id' value='abc' style='display: none;visibility: hidden;'/> <p> <a href='' onclick='add_to_queue("+song_json+"); return false;'>  Now Playing </a> <p> <a href='' class='new_playlist' onclick='new_playlist(); return false;'> Create New Playlist </a>";
+            //var y1;
+            //for(var p = 0;p<user_playlist_data.length;p++){
+            //y1="<p> <a href='' class='new_playlist' onclick='new_playlist(); return false;'> "+user_playlist_data[p].name+" </a>";
+            //y+=y1;
+            //}
+
+            var x = '<a class="pop_click" data-song='+song._id+' href="" data-placement="left" data-html="true" data-toggle="popover" data-original-title="Add to" > <span onclick="get_user_playlist('+i+','+song_json+')" class="glyphicon glyphicon-plus"> </span> </a>';
             cell1.innerHTML = x;
-            table.rows[i].cells[5].firstElementChild.setAttribute('data-content',y);
+            //table.rows[i].cells[5].firstElementChild.setAttribute('data-content',y);
 
          }
          $('.nav-stacked a[href="#album_single"]').tab('show');
          $('[data-toggle="popover"]')
-             .on('click',function(e){
-                e.preventDefault();
-             })
-             .popover({html:true});
+         .on('click',function(e){
+            e.preventDefault();
+         })
+         .popover({html:true});
          check_album_song();
    });
 
@@ -110,9 +119,9 @@ function check_album_song()
          }
          j++;
       });
-         if(flag==1)
-            $(this).addClass('success');
-         i++;
+      if(flag==1)
+         $(this).addClass('success');
+      i++;
    });
    return false;
 }
@@ -137,14 +146,18 @@ function new_playlist()
 }
 
 function add_to_new_playlist() {
+   if(username.length<=0){
+      alert('Sorry, U need to be logged in to create new playlist');
+   }
+   console.log('sd',JSON.stringify(username.length));
    var x = document.getElementById('playlist_name');
    var name = x.value;
    var c = document.getElementsByClassName('popover-content')[0];
    var song = c.childNodes[0].childNodes[1].getAttribute('value');
-   var url="/playlist/";
+   var url="/playlist/new/";
    $.ajax({
       type: "GET",
-      data: {name:name,song:song},
+      data: {flag:'new',name:name,song:song},
       url: url
    });
 }
@@ -157,3 +170,25 @@ $(document).on("click", ".pop_click", function () {
    },100);
 });
 
+function get_user_playlist(i,song_json){
+   var url ="/playlist/new";
+   $.ajax({
+      type: "GET",
+      data: {flag:'userlist'},
+      url:url,
+      success:function(data){
+         console.log('i got the f playlist',data);
+         user_playlist_data = data;
+         if(data === 0)
+            loggedin = false;
+
+         var y = "<p> <input type='text' name='bookId' class='song_id' value='abc' style='display: none;visibility: hidden;'/> <p> <a href='' onclick='add_to_queue("+song_json+"); return false;'>  Now Playing </a> <p> <a href='' class='new_playlist' onclick='new_playlist(); return false;'> Create New Playlist </a>";
+         var y1;
+         for(var p = 0;p<user_playlist_data.length;p++){
+            y1="<p> <a href='' class='new_playlist' onclick='new_playlist(); return false;'> "+user_playlist_data[p].name+" </a>";
+            y+=y1;
+         }
+         table.rows[i].cells[5].firstElementChild.setAttribute('data-content',y);
+      }
+   });
+}

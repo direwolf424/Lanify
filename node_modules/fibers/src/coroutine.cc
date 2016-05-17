@@ -50,6 +50,28 @@ static bool can_poke(void* addr) {
 #endif
 }
 
+#ifdef USE_V8_SYMBOLS
+// Some distributions of node, most notably Ubuntu, strip the v8 internal symbols and so we don't
+// have access to this stuff. In most cases we will use the more complicated `find_thread_id_key`
+// below, since it tends to work on more platforms.
+namespace v8 {
+	namespace base {
+		class Thread {
+			public: typedef int32_t LocalStorageKey;
+		};
+	}
+
+	namespace internal {
+		class Isolate {
+			public:
+				static base::Thread::LocalStorageKey isolate_key_;
+				static base::Thread::LocalStorageKey per_isolate_thread_data_key_;
+				static base::Thread::LocalStorageKey thread_id_key_;
+		};
+	}
+}
+#endif
+
 #ifndef WINDOWS
 static void* find_thread_id_key(void* arg)
 #else
@@ -62,10 +84,10 @@ static DWORD __stdcall find_thread_id_key(LPVOID arg)
 	isolate->Enter();
 
 	// First pass-- find isolate thread key
-	for (pthread_key_t ii = (coro_thread_key >= 20 ? coro_thread_key - 20 : 0); ii < coro_thread_key; ++ii) {
-		void* tls = pthread_getspecific(ii);
+	for (pthread_key_t ii = coro_thread_key; ii > 0; --ii) {
+		void* tls = pthread_getspecific(ii - 1);
 		if (tls == isolate) {
-			isolate_key = ii;
+			isolate_key = ii - 1;
 			break;
 		}
 	}
@@ -106,9 +128,15 @@ void Coroutine::init(v8::Isolate* isolate) {
 	v8::Unlocker unlocker(isolate);
 	pthread_key_create(&coro_thread_key, NULL);
 	pthread_setspecific(coro_thread_key, &current());
+#ifdef USE_V8_SYMBOLS
+	isolate_key = v8::internal::Isolate::isolate_key_;
+	thread_data_key = v8::internal::Isolate::per_isolate_thread_data_key_;
+	thread_id_key = v8::internal::Isolate::thread_id_key_;
+#else
 	pthread_t thread;
 	pthread_create(&thread, NULL, find_thread_id_key, isolate);
 	pthread_join(thread, NULL);
+#endif
 }
 
 Coroutine& Coroutine::current() {
