@@ -19,7 +19,9 @@
     "musicmetadata": "^2.0.2",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
+    "passport-remember-me": "0.0.1",
     "serve-favicon": "~2.3.0",
-    "sync": "^0.2.5"
+    "sync": "^0.2.5",
+    "webui-popover": "^1.2.8"
   }
 }

@@ -99,7 +99,7 @@ $(function () {
          $.ajax({
             //url: "http://192.168.159.28:1234/search",
             //url: "http://192.168.159.28:3000/search",
-            url: "http://192.168.0.2:1234/search",
+            url: "http://localhost:1234/search",
             type: "GET",
             data: request,  // request is the value of search input
             success: function (data) {
@@ -264,8 +264,15 @@ function submit_request(){
    var e2 = $('#songname').val();
    var e3 = $('#bugs').val();
    var e4 = $('#features').val();
-   alert("Thanks for your feedback");
-   //$('#name').val('');
+   //if(e1.length)
+   $.notify("Thanks For Your Feedback", {
+      animate: {
+         enter: 'animated fadeInRight',
+         exit: 'animated fadeOutRight'
+      },
+      newest_on_top: false,
+      delay: 2000,
+   });
    $('#songname').val('');
    $('#bugs').val('');
    $('#features').val('');
@@ -310,6 +317,8 @@ $(document).ready(function(){
       alert('hello');
       load_user_playlist();
    });
+   //$('#add_to_playlist').webuiPopover({title:'Title',content:'Content'});
+   $('.backBtn').webuiPopover({title:'Title',content:'Content'});
 });
 $('body').on('click', function (e) {
    $('[data-toggle="popover"]').each(function () {
@@ -328,3 +337,4 @@ $('html').on('mouseup', function(e) {
       });
    }
 });
+

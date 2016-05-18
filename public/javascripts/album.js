@@ -1,9 +1,7 @@
-/**
- * Created by Saurabh on 30-Jan-16.
- */
 var album_data;
 var loggedin=true;
 var user_playlist_data;
+var song_id_arr=[];
 function play_album(data) {
    clear_queue();
    player = $("#jquery_jplayer_1");
@@ -44,15 +42,20 @@ function load_album(url)
       elem.innerHTML = " <a href='' onclick='play_album("+JSON.stringify(data)+"); return false;'> <span class='glyphicon glyphicon-play'></span> Play </a>";
       elem = document.getElementById("add_to_queue_album");
       elem.innerHTML = " <a href='' onclick='add_to_queue_album("+JSON.stringify(data)+"); return false;'> <span class='glyphicon glyphicon-play'></span> Add To Queue </a>";
+      elem = document.getElementById("add_to_playlist");
+      elem.innerHTML = " <a href='' onclick=''> <span class='glyphicon glyphicon-play'></span> Add To Playlist </a>";
+      elem = document.getElementById("create_new_playlist");
+      elem.innerHTML = " <a href='' onclick=''> <span class='glyphicon glyphicon-play'></span> Create New Playlist </a>";
       $("#album_single_songs tr").remove();
+      song_id_arr=[];
       for(var i in data)
          {
             var song = data[i];
             var table = document.getElementById("album_single_songs");
             var row=table.insertRow(table.rows.length);
-
             var cell1=row.insertCell(0);
             var song_json=JSON.stringify(song);
+            song_id_arr.push(data[i]._id);
             cell1.innerHTML = "<a href='' onclick='play1("+song_json+"); return false;'>  <span class='glyphicon glyphicon-play'> </span> </a>";
 
             cell1=row.insertCell(1);
@@ -71,7 +74,10 @@ function load_album(url)
             cell1.innerHTML = '<a href="" class="add_tags" data-id="'+song._id+'" data-toggle="modal" data-target="#myModal">Add Tags</a>';
 
             cell1=row.insertCell(5);
+            cell1.innerHTML = "<a href='' onclick='add_to_queue("+song_json+"); return false;'>  <span class='glyphicon glyphicon-plus'> </span> </a>";
 
+            cell1=row.insertCell(6);
+            cell1.innerHTML = "<input type='checkbox' value=''>";
             //var y = "<p> <input type='text' name='bookId' class='song_id' value='abc' style='display: none;visibility: hidden;'/> <p> <a href='' onclick='add_to_queue("+song_json+"); return false;'>  Now Playing </a> <p> <a href='' class='new_playlist' onclick='new_playlist(); return false;'> Create New Playlist </a>";
             //var y1;
             //for(var p = 0;p<user_playlist_data.length;p++){
@@ -79,17 +85,16 @@ function load_album(url)
             //y+=y1;
             //}
 
-            var x = '<a class="pop_click" data-song='+song._id+' href="" data-placement="left" data-html="true" data-toggle="popover" data-original-title="Add to" > <span onclick="get_user_playlist('+i+','+song_json+')" class="glyphicon glyphicon-plus"> </span> </a>';
-            cell1.innerHTML = x;
+            //var x = '<a class="pop_click" data-song='+song._id+' href="" data-placement="left" data-html="true" data-toggle="popover" data-original-title="Add to" > <span onclick="get_user_playlist('+i+','+song_json+')" class="glyphicon glyphicon-plus"> </span> </a>';
             //table.rows[i].cells[5].firstElementChild.setAttribute('data-content',y);
 
          }
          $('.nav-stacked a[href="#album_single"]').tab('show');
-         $('[data-toggle="popover"]')
-         .on('click',function(e){
-            e.preventDefault();
-         })
-         .popover({html:true});
+         //$('[data-toggle="popover"]')
+         //.on('click',function(e){
+         //e.preventDefault();
+         //})
+         //.popover({html:true});
          check_album_song();
    });
 
@@ -139,28 +144,6 @@ function album_pause(elem,song)
 }
 
 
-function new_playlist()
-{
-   var c = document.getElementsByClassName('popover-content')[0];
-   c.childNodes[2].innerHTML = "<p> <input type='text' id='playlist_name'> </input> <a href='' onclick='add_to_new_playlist(this); return false;'> <span class='glyphicon glyphicon-ok'> </span> </a> ";
-}
-
-function add_to_new_playlist() {
-   if(username.length<=0){
-      alert('Sorry, U need to be logged in to create new playlist');
-   }
-   console.log('sd',JSON.stringify(username.length));
-   var x = document.getElementById('playlist_name');
-   var name = x.value;
-   var c = document.getElementsByClassName('popover-content')[0];
-   var song = c.childNodes[0].childNodes[1].getAttribute('value');
-   var url="/playlist/new/";
-   $.ajax({
-      type: "GET",
-      data: {flag:'new',name:name,song:song},
-      url: url
-   });
-}
 
 $(document).on("click", ".pop_click", function () {
    var song = $(this).data('song');
@@ -189,6 +172,69 @@ function get_user_playlist(i,song_json){
             y+=y1;
          }
          table.rows[i].cells[5].firstElementChild.setAttribute('data-content',y);
+      }
+   });
+}
+
+
+$(document).ready(function(){
+   $('#add_to_playlist').webuiPopover({
+      type:'async',
+      url:'/playlist/new?flag=userlist',
+      cache:false,
+      content:function(data){
+         var html;
+         //console.log(data);
+         if(data == 0){
+            //console.log('heyyy');
+            html='<p>plz login to create playlist</p>';
+
+         }
+         else{
+            html = '<ul id="play_content">';
+            for(var key in data){
+               html+='<li onclick="send_song(\''+data[key].name+'\');return false;">'+data[key].name+'</li>';
+            }
+            html+='</ul>';
+         }
+         return html;
+      }
+   });
+   //$('#create_new_playlist').webuiPopover({title:'Title',content:'<p> <input type="text" id="playlist_name"> </input> <a href="" onclick="return add_to_new_playlist(this);"> <span class="glyphicon glyphicon-ok"> </span> </a> '});
+   $('#create_new_playlist').webuiPopover();
+});
+
+function add_to_new_playlist() {
+   var url="/playlist/new/";
+   var name = $("#playlist_name").val();
+   console.log('sad '+name);
+   $.ajax({
+      type: "GET",
+      data: {flag:'new',name:name},
+      //data: {flag:'new'},
+      url: url
+   });
+   //alert('dsd');
+   return false;
+}
+function send_song(name){
+   var song_arr=[];
+   var url="/playlist/new/";
+   var i=0;
+   $('#album_single_songs').find('tr').each(function () {
+      var row = $(this);
+      if (row.find('input[type="checkbox"]').is(':checked')) {
+             //console.log('dsda ',song_id_arr[i]);
+             song_arr.push(song_id_arr[i]);
+          }
+          i++;
+   });
+   $.ajax({
+      type: "POST",
+      data: {flag:'insert',song:song_arr,pname:name},
+      url: url,
+      sucess:function(){
+         alert("songs added succesfullt to ",name);
       }
    });
 }

@@ -98,4 +98,41 @@ router.get('/',function(req,res,next){
    }
 });
 
+router.post('/',function(req,res,next){
+   //console.log("dsdfsdfdsfd",req.body);
+   //console.log("dsdfsdfdsfd  ",req.body["song[]"][0]);
+   if(req.user){
+      if(req.body.flag=='insert'){
+         console.log(req.body["song[]"]);
+         //console.log(req.body.pname);
+         var p_name = req.body.pname;
+         //console.log("------"+p_name);
+         var s_arr = req.body["song[]"];
+         if( typeof s_arr === 'string' ) {
+                s_arr = [ s_arr ];
+         }
+         //console.log("*****"+name);
+         //db.students.update(
+               //{ name: "joe" },
+                  //{ $push: { scores: { $each: [ 90, 92, 85 ] } } }
+         //)
+         var q1 = function(variable) {
+            var ct = variable;
+            playlist.update(
+               {"name":ct,"user_name":req.user.username},
+               { $addToSet: {"song_id": { $each: s_arr } } } ,
+               function(err, ip1) {
+               if (err) console.log(err);
+               console.log("Updated");
+            });
+         };
+         q1(p_name);
+         res.send('');
+      }
+   }
+   else{
+      res.send('0');
+   }
+});
+
 module.exports = router;
