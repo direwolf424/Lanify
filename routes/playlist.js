@@ -15,8 +15,8 @@ router.get('/',function(req,res,next){
    console.log(x);
    if(req.user){
       console.log('hello');
-      if(req.query.flag=='new'){
-         var p_name = req.query.name;
+      if(req.query.flag=='new' ){
+         var p_name = req.query.value;
          //console.log("------"+p_name);
          var s_id = req.query.song;
          //console.log("*****"+name);
@@ -29,6 +29,24 @@ router.get('/',function(req,res,next){
          };
          q1(p_name);
          res.send('');
+      }
+      else if(req.query.flag == 'remove'){
+         console.log(req.query);
+         var id = req.query.id;
+         var pname = req.query.pname;
+         var q11= function() {
+            console.log('executing ');
+            playlist.update(
+               {user_name:req.user.username , name:pname},
+               {$pull: { song_id: id } },
+               {'new': true },function(err,rem){
+                  if(err)
+                     console.log("error while removing song from playlist");
+                  console.log("song removed succesfully");
+               });
+         };
+         q11();
+         res.send(''); 
       }
       else if(req.query.flag=='fetch'){
          console.log('hellllllllll');
@@ -43,13 +61,13 @@ router.get('/',function(req,res,next){
          q2(function(err,play){
             if(err)
                console.log(err);
-            console.log(play);
+            //console.log(play);
             res.send(play);
          });
       }
       else if(req.query.flag=='songs'){
-         console.log(req.query.flag);
-         console.log(req.query.name);
+         //console.log(req.query.flag);
+         //console.log(req.query.name);
          var the_id;
          var q3 = function(fn){
             playlist.find({"user_name":req.user.username,"name":req.query.name}).exec(function(err,plist){
@@ -71,7 +89,7 @@ router.get('/',function(req,res,next){
             songs.find({
                '_id': { $in: play[0].song_id}
             }, function(err, docs){
-               console.log(docs);
+               //console.log(docs);
 
                res.send(docs);
             });
@@ -88,7 +106,7 @@ router.get('/',function(req,res,next){
          q5(function(err,ulist){
             if(err)
                console.log('error occured in retrieving playlist');
-            console.log('the f playlists '+ulist);
+            //console.log('the f playlists '+ulist);
             res.send(ulist);
          });
       }
@@ -103,18 +121,18 @@ router.post('/',function(req,res,next){
    //console.log("dsdfsdfdsfd  ",req.body["song[]"][0]);
    if(req.user){
       if(req.body.flag=='insert'){
-         console.log(req.body["song[]"]);
+         //console.log(req.body["song[]"]);
          //console.log(req.body.pname);
          var p_name = req.body.pname;
          //console.log("------"+p_name);
          var s_arr = req.body["song[]"];
          if( typeof s_arr === 'string' ) {
-                s_arr = [ s_arr ];
+            s_arr = [ s_arr ];
          }
          //console.log("*****"+name);
          //db.students.update(
-               //{ name: "joe" },
-                  //{ $push: { scores: { $each: [ 90, 92, 85 ] } } }
+         //{ name: "joe" },
+         //{ $push: { scores: { $each: [ 90, 92, 85 ] } } }
          //)
          var q1 = function(variable) {
             var ct = variable;
@@ -122,9 +140,9 @@ router.post('/',function(req,res,next){
                {"name":ct,"user_name":req.user.username},
                { $addToSet: {"song_id": { $each: s_arr } } } ,
                function(err, ip1) {
-               if (err) console.log(err);
-               console.log("Updated");
-            });
+                  if (err) console.log(err);
+                  console.log("Updated");
+               });
          };
          q1(p_name);
          res.send('');

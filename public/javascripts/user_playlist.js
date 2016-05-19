@@ -1,7 +1,31 @@
+var current_name;
+function remove_from_playlist(song_json,elem){
+   var id = song_json._id;
+   var table = document.getElementById('playlist_songs');
+   var index = elem.parentNode.parentNode.rowIndex;
+   table.deleteRow(index);
+   //console.log(id);
+   var url="/playlist/";
+   $.ajax({
+      type:"GET",
+      data:{flag:'remove',id:id,pname:current_name},
+      url:url,
+      success:function(data){
+         $.notify("Song Removed "+song_json.title, {
+            animate: {
+               enter: 'animated fadeInRight',
+               exit: 'animated fadeOutRight'
+            },
+            newest_on_top: false,
+            delay: 100,
+         });
+      }
+   });
+}
 function load_user_playlist()
 {
    var url="/playlist/";
-   console.log("Loading Playlist");
+   //console.log("Loading Playlist");
    $.ajax({
       type:"GET",
       data:{flag:'fetch'},
@@ -29,7 +53,8 @@ function load_playlist_songs(play){
       data: {flag:'songs',name:play.name},
       url: url,
       success: function (data,status) {
-         console.log(data);
+         //console.log(data);
+         current_name = play.name;
          play_song(data,play.name);
       },
       error: function (data,status) {
@@ -79,8 +104,11 @@ function play_song(data,tag){
       cell1.innerHTML = data[song].length;
 
       cell1=row.insertCell(5);
-      //var song_json = JSON.stringify(song);
       cell1.innerHTML = "<a href='' onclick='add_to_queue("+song_json+"); return false;'>  <span class='glyphicon glyphicon-plus'> </span> </a>";
+
+      cell1=row.insertCell(6);
+      cell1.innerHTML = "<a href='' onclick='remove_from_playlist("+song_json+",this); return false;'>  <span class='glyphicon glyphicon-remove'> </span> </a>";
+
 
    }
    elem = document.getElementById("play_playlist");
