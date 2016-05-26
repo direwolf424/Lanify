@@ -9,7 +9,8 @@ var user_scheme = new Schema({
    playlist:Array,
    liked_songs:Array,
    disliked_songs:Array,
-   mobile_no:String
+   mobile_no:String,
+   admin_rights:Boolean
 },{collections:'user'});
 
 // methods ======================

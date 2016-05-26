@@ -16,7 +16,9 @@ var playlist = require('./routes/playlist');
 var update = require('./routes/update');
 var register = require('./routes/register');
 var user = require('./model/user').user;
+//var tokens = require('./model/cookie.js').Cookies;
 var tags = require('./routes/tags');
+var utils = require('./routes/utils');
 var mongoose = require('mongoose');
 var RememberMeStrategy = require('passport-remember-me').Strategy;
 var flash = require('connect-flash');
@@ -30,20 +32,38 @@ mongoose.createConnection('mongodb://localhost/music');
 
 passport.use(new RememberMeStrategy(
    function(token, done) {
-      Token.consume(token, function (err, user) {
+      consumeRememberMeToken(token, function(err, uid) {
          if (err) { return done(err); }
-         if (!user) { return done(null, false); }
-         return done(null, user);
+         if (!uid) { return done(null, false); }
+
+         findById(uid, function(err, user) {
+            if (err) { return done(err); }
+            if (!user) { return done(null, false); }
+            return done(null, user);
+         });
       });
    },
-   function(user, done) {
-      var token = utils.generateToken(64);
-      Token.save(token, { userId: user.id }, function(err) {
-         if (err) { return done(err); }
-         return done(null, token);
-      });
-   }
+   issueToken
 ));
+
+//passport.use(new RememberMeStrategy(
+//function(token, done) {
+//Token.consume(token, function (err, user) {
+//if (err) { return done(err); }
+//if (!user) { return done(null, false); }
+//return done(null, user);
+//});
+//},
+//function(user, done) {
+//var token = utils.generateToken(64);
+//Token.save(token, { userId: user.id }, function(err) {
+//if (err) { return done(err); }
+//return done(null, token);
+//});
+//}
+//));
+
+
 passport.use('login', new LocalStrategy({
    passReqToCallback : true
 },
@@ -69,7 +89,7 @@ function(req, username, password, done) {
                    }
                    //User and password both match, return user from 
                    //done method which will be treated like success
-                   console.log('------>>',user);
+                   //console.log('------>>',user);
                    return done(null, user);
                 }
                );
@@ -82,7 +102,7 @@ app.use(passport.authenticate('remember-me'));
 
 passport.serializeUser(function(user, done) {
    console.log('serializeing--------',user);
-   done(null, user);
+   done(null, user._id);
 });
 
 passport.deserializeUser(function(id, done) {
@@ -140,9 +160,10 @@ app.get('/db',function(req,res){
    res.redirect('/lanify');
 });
 app.get('/logout', function(req, res){
-   console.log('loggggggggggggggggggggggggggggggggggggggggggggggggggiinggn');
+   console.log('LogOut');
+   res.clearCookie('remember_me');
    req.logout();
-   res.redirect('/db');
+   res.redirect('/lanify');
 });
 //app.get('/login',function(req,res,next){
 //if(!req.user)
@@ -151,63 +172,153 @@ app.get('/logout', function(req, res){
 //res.redirect('/db');
 //});
 //app.post('/login',
-         //passport.authenticate('login'),
-         //function(req, res,next) {
-            //// If this function gets called, authentication was successful.
-            //// `req.user` contains the authenticated user.
+//passport.authenticate('login'),
+//function(req, res,next) {
+//// If this function gets called, authentication was successful.
+//// `req.user` contains the authenticated user.
+//console.log('User logged in successfully');
+//res.redirect('/lanify');
+//});
+
+
+var tokens = {};
+
+function findById(id, fn) {
+   user.findOne({ '_id' :  id }, 
+                function(err, user) {
+                   // In case of any error, return using the done method
+                   if (err)
+                      fn(new Error('User ' + id + ' does not exist'));
+                   //Username does not exist, log error & redirect back
+                   if (!user){
+                      console.log('User Not Found with user_id '+id);
+                      fn(new Error('User ' + id + ' does not exist'));
+                   }
+                   //User and password both match, return user from 
+                   //done method which will be treated like success
+                   //console.log('------>>',user);
+                   fn(null, user);
+                }
+               );
+               //var idx = id - 1;
+               //if (users[idx]) {
+               //fn(null, users[idx]);
+               //} else {
+               //fn(new Error('User ' + id + ' does not exist'));
+               //}
+}
+function findByUsername(username, fn) {
+   user.findOne({ 'username' :  username }, 
+                function(err, user) {
+                   // In case of any error, return using the done method
+                   if (err)
+                      return fn(null, null);
+                   //Username does not exist, log error & redirect back
+                   if (!user){
+                      console.log('User Not Found with username '+username);
+                      return fn(null, null);
+                   }
+                   //User and password both match, return user from 
+                   //done method which will be treated like success
+                   //console.log('------>>',user);
+                   return fn(null, user);
+                }
+               );
+               //for (var i = 0, len = users.length; i < len; i++) {
+               //var user = users[i];
+               //if (user.username === username) {
+               //return fn(null, user);
+               //}
+               //}
+               //return fn(null, null);
+}
+function consumeRememberMeToken(token, fn) {
+   //tokens.update({},{},function(err,t){
+   //});
+   var uid = tokens[token];
+   // invalidate the single-use token
+   delete tokens[token];
+   return fn(null, uid);
+}
+
+function saveRememberMeToken(token, uid, fn) {
+   tokens[token] = uid;
+   return fn();
+}
+
+function issueToken(user, done) {
+   var token = utils.randomString(64);
+   saveRememberMeToken(token, user.id, function(err) {
+      if (err) { return done(err); }
+      return done(null, token);
+   });
+}
+app.post('/login', 
+         passport.authenticate('login',{ failureRedirect: '/lanify', failureFlash: true }),
+         function(req, res, next) {
+            // issue a remember me cookie if the option was checked
+            console.log('yeahhhhhhhhhhhhhhhh  ',req.body.remember_me);
+            if (req.body.remember_me == 'false') {
+               console.log('remember_me ',req.body.remember_me);
+               return next(); }
+
+               issueToken(req.user, function(err, token) {
+                  if (err) { return next(err); }
+                  res.cookie('remember_me', token, { path: '/lanify', httpOnly: true, maxAge: 604800000 });
+                  return next();
+               });
+               //var token = utils.generateToken(64);
+               //console.log('remember_me2 ',req.body.remember_me);
+               //console.log('token ',token);
+               //Token.save(token, { userId: req.user.id }, function(err) {
+               //if (err) { return done(err); }
+               //res.cookie('remember_me', token, { path: '/lanify', httpOnly: true, maxAge: 604800000 }); // 7 days
+               //res.redirect('/lanify');
+               //return next();
+               //});
+         },
+         function(req, res) {
             //console.log('User logged in successfully');
-            //res.redirect('/lanify');
-         //});
+            res.redirect('/lanify');
+         });
 
-         app.post('/login', 
-                  passport.authenticate('login'),
-                  function(req, res, next) {
-                     // issue a remember me cookie if the option was checked
-                     console.log('yeahhhhhhhhhhhhhhhh  ',req.body.remember_me);
-                     if (!req.body.remember_me) {  res.redirect('/lanify'); }
+         app.get('/status',function(req,res,next){
+            console.log('tokens here ',tokens);
+            if(req.user)
+               res.send('1');
+            else
+               res.send('0');
+         });
+         // catch 404 and forward to error handler
+         app.use(function(req, res, next) {
+            var err = new Error('Not Found');
+            err.status = 404;
+            next(err);
+         });
 
-                     var token = utils.generateToken(64);
-                     Token.save(token, { userId: req.user.id }, function(err) {
-                        if (err) { return done(err); }
-                        res.cookie('remember_me', token, { path: '/lanify', httpOnly: true, maxAge: 604800000 }); // 7 days
-                     res.redirect('/lanify');
-                        //return next();
-                     });
-                  },
-                  function(req, res) {
-            //console.log('User logged in successfully');
-                     res.redirect('/lanify');
-                  });
-                  // catch 404 and forward to error handler
-                  app.use(function(req, res, next) {
-                     var err = new Error('Not Found');
-                     err.status = 404;
-                     next(err);
-                  });
+         // error handlers
 
-                  // error handlers
+         // development* error handler
+         // will print stacktrace
+         if (app.get('env') === 'development') {
+            app.use(function(err, req, res, next) {
+               res.status(err.status || 500);
+               res.render('error', {
+                  message: err.message,
+                  error: err
+               });
+            });
+         }
 
-                  // development* error handler
-                  // will print stacktrace
-                  if (app.get('env') === 'development') {
-                     app.use(function(err, req, res, next) {
-                        res.status(err.status || 500);
-                        res.render('error', {
-                           message: err.message,
-                           error: err
-                        });
-                     });
-                  }
-
-                  // production error handler
-                  // no stacktraces leaked to user
-                  app.use(function(err, req, res, next) {
-                     res.status(err.status || 500);
-                     res.render('error', {
-                        message: err.message,
-                        error: {}
-                     });
-                  });
+         // production error handler
+         // no stacktraces leaked to user
+         app.use(function(err, req, res, next) {
+            res.status(err.status || 500);
+            res.render('error1', {
+               message: err.message,
+               error: {}
+            });
+         });
 
 
-                  module.exports = app;
+         module.exports = app;

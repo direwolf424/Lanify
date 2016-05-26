@@ -1,3 +1,4 @@
+var loggedin;
 function load_home(){
    $('.nav-stacked a[href="#home"]').tab('show');
    return false;
@@ -11,11 +12,21 @@ function hack(){
    $('.next3').click();
    $('.prev3').click();
 }
+$.ajax({
+   type:"GET",
+   url:'/status',
+   success:function(data){
+      if(data==0)
+         loggedin=false;
+      else
+         loggedin=true;
+   }
+});
 $(document).ready(function(){
 
    repeat();
-   load_tags();
-   load_user_playlist();
+   //load_tags();
+   //load_user_playlist();
    load_slick_song();
    load_slick_album();
    load_more_artist();
@@ -172,13 +183,6 @@ $(function () {
 
 });
 
-$(document).ready(function()
-                  {
-                     $(".backup_picture").error(function(){
-                        $(this).attr('src', '/image/image.jpg');
-                     });
-                  });
-
 /* functions to bind various keys for music player */
 $(document).keydown(function(e) {
    //alert(e.target.tagName.toLowerCase() );
@@ -265,14 +269,6 @@ function submit_request(){
    var e3 = $('#bugs').val();
    var e4 = $('#features').val();
    //if(e1.length)
-   $.notify("Thanks For Your Feedback", {
-      animate: {
-         enter: 'animated fadeInRight',
-         exit: 'animated fadeOutRight'
-      },
-      newest_on_top: false,
-      delay: 2000,
-   });
    $('#songname').val('');
    $('#bugs').val('');
    $('#features').val('');
@@ -284,7 +280,17 @@ function submit_request(){
          features:e4
       },
       //url: "http://192.168.159.28:3000/request",
-      url: "http://127.0.0.1:1234/request",
+      url: "http://localhost:1234/request",
+      success:function(data){
+         $.notify("Thanks For Your Feedback", {
+            animate: {
+               enter: 'animated fadeInRight',
+               exit: 'animated fadeOutRight'
+            },
+            newest_on_top: false,
+            delay: 2000,
+         });
+      }
    });
 }
 
@@ -314,7 +320,7 @@ function dragdrop() {
 
 $(document).ready(function(){
    $('#playlist').click(function(){
-      alert('hello');
+      //alert('hello');
       load_user_playlist();
    });
    //$('#add_to_playlist').webuiPopover({title:'Title',content:'Content'});

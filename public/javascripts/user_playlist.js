@@ -22,6 +22,31 @@ function remove_from_playlist(song_json,elem){
       }
    });
 }
+$(document).ready(function(){
+   $.fn.bootstrapSwitch.defaults.size = 'normal';
+   $("[name='my-checkbox']").bootstrapSwitch();
+   $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event, state) {
+      //console.log(this); // DOM element
+      //console.log(event); // jQuery event
+      //console.log(state); // true | false
+      var url="/playlist/";
+      $.ajax({
+         type:"GET",
+         data:{flag:'share',sw:state,pname:current_name},
+         url:url,
+         success:function(data){
+            $.notify("Playlist shared  "+state, {
+               animate: {
+                  enter: 'animated fadeInRight',
+                  exit: 'animated fadeOutRight'
+               },
+               newest_on_top: false,
+               delay: 100,
+            });
+         }
+      });
+   });
+});
 function load_user_playlist()
 {
    var url="/playlist/";
@@ -38,7 +63,12 @@ function load_user_playlist()
          var x = JSON.stringify('/image/image.jpg');
          for(var i=0;i<data.length;i++)
          {
-            elem.innerHTML += "<a href='' onclick='load_playlist_songs("+JSON.stringify(data[i])+"); return false;' > <div class='album tags col-md-5ths'> <div class='song_image'> <img onerror="+x+" src='/image/image.jpg'> </img> </div> <div class='ellip_name'> "+capitalizeFirstLetter(data[i].name)+" </div> </div>  </a>";
+            if(loggedin){
+               elem.innerHTML += "<a href='' onclick='load_playlist_songs("+JSON.stringify(data[i])+"); return false;' > <div class='album tags col-md-5ths'> <div class='song_image'> <img onerror="+x+" src='/image/image.jpg'> </img> </div> <div class='ellip_name'> "+capitalizeFirstLetter(data[i].name)+" </div> </div>  </a>";
+            }
+            else{
+               elem.innerHTML += "<a href='' onclick='load_playlist_songs("+JSON.stringify(data[i])+"); return false;' > <div class='album tags col-md-5ths'> <div class='song_image'> <img onerror="+x+" src='/image/image.jpg'> </img> </div> <div class='ellip_name'> "+capitalizeFirstLetter(data[i].name)+" </div><div class='ellip_name'>By "+data[i].user_name+" </div></div>  </a>";
+            }
          }
       }
    });
@@ -119,3 +149,4 @@ function play_song(data,tag){
    $('.nav-stacked a[href="#playlist_single"]').tab('show');
 
 }
+

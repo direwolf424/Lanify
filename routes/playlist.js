@@ -14,7 +14,7 @@ router.get('/',function(req,res,next){
    var x =decodeURIComponent(req.originalUrl);
    console.log(x);
    if(req.user){
-      console.log('hello');
+      //console.log('hello');
       if(req.query.flag=='new' ){
          var p_name = req.query.value;
          //console.log("------"+p_name);
@@ -68,7 +68,7 @@ router.get('/',function(req,res,next){
       else if(req.query.flag=='songs'){
          //console.log(req.query.flag);
          //console.log(req.query.name);
-         var the_id;
+         //var the_id;
          var q3 = function(fn){
             playlist.find({"user_name":req.user.username,"name":req.query.name}).exec(function(err,plist){
                if(err)
@@ -76,13 +76,13 @@ router.get('/',function(req,res,next){
                return fn && fn(null,plist);
             });
          };
-         var q4 = function(){
-            songs.findById(the_id).exec(function(err,song){
-               if(err)
-                  console.log('Error occured',err);
-               return song; 
-            });
-         };
+         //var q4 = function(){
+         //songs.findById(the_id).exec(function(err,song){
+         //if(err)
+         //console.log('Error occured',err);
+         //return song; 
+         //});
+         //};
          q3(function(err,play){
             if(err)
                console.log(err);
@@ -110,10 +110,83 @@ router.get('/',function(req,res,next){
             res.send(ulist);
          });
       }
+      else if(req.query.flag =='share'){
+         var on_off = req.query.sw;
+         var pname = req.query.pname;
+         if(on_off){
+            console.log(on_off);
+            var q12= function() {
+               console.log('executing shareable');
+               playlist.update(
+                  {user_name:req.user.username , name:pname},
+                  {shared:on_off },
+                  function(err,rem){
+                     if(err)
+                        console.log("error while removing song from playlist");
+                     console.log("playlist shared toggle");
+                  });
+            };
+            q12();
+            res.send(''); 
+         }
+         else{
+            console.log(on_off);
+            res.send('');
+         }
+      }
    }
-   else{
-      res.send('0');
-   }
+      else{
+         if(req.query.flag=='fetch'){
+            console.log('hellllllllll');
+            var q21 = function(fn){
+               playlist.find({shared:true}).exec(function(err,plist){
+                  if(err)
+                     console.log('Error occured',err);
+                  //console.log('Playlist ----------------------->',req.user.username);
+                  return fn && fn(null,plist);
+               });
+            };
+            q21(function(err,play){
+               if(err)
+                  console.log(err);
+               //console.log(play);
+               res.send(play);
+            });
+         }
+         else if(req.query.flag=='songs'){
+            //console.log(req.query.flag);
+            //console.log(req.query.name);
+            //var the_id;
+            var q31 = function(fn){
+               playlist.find({shared:true,"name":req.query.name}).exec(function(err,plist){
+                  if(err)
+                     console.log('Error occured',err);
+                  return fn && fn(null,plist);
+               });
+            };
+            //var q41 = function(){
+            //songs.findById(the_id).exec(function(err,song){
+            //if(err)
+            //console.log('Error occured',err);
+            //return song; 
+            //});
+            //};
+            q31(function(err,play){
+               if(err)
+                  console.log(err);
+               songs.find({
+                  '_id': { $in: play[0].song_id}
+               }, function(err, docs){
+                  //console.log(docs);
+
+                  res.send(docs);
+               });
+            });
+         }
+         else{
+            res.send('0');
+         }
+      }
 });
 
 router.post('/',function(req,res,next){

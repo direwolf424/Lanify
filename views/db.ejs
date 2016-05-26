@@ -36,10 +36,12 @@
       <link rel='stylesheet' href='/slick/slick.css' />
       <link rel='stylesheet' href='/slick/slick-theme.css' />
       <link rel="stylesheet" href="/stylesheets/animate.css">
+      <link rel="stylesheet" href="/stylesheets/bootstrap-switch.min.css">
       <script type="text/javascript" src="/slick/slick.min.js"></script>
       <script src="/javascripts/jquery.webui-popover.min.js"></script>
       <script src="/javascripts/bootstrap-notify.min.js"></script>
       <script src="/javascripts/bootstrap-editable.min.js"></script>
+      <script src="/javascripts/bootstrap-switch.min.js"></script>
    </head>
    <body>
 
@@ -195,10 +197,10 @@ fjs.parentNode.insertBefore(js, fjs);
                   <a href="#artist_single" data-toggle="tab"> <span class='glyphicon glyphicon-music'></span> Artist Single</a>
                </li>
                <li>
-                  <a href="#tags" data-toggle="tab"> <span class='glyphicon glyphicon-book'></span> Tags </a>
+                  <a href="#tags" onclick="load_tags()" data-toggle="tab"> <span class='glyphicon glyphicon-book'></span> Tags </a>
                </li>
                <li>
-                  <a href="#playlist" data-toggle="tab"> <span class='glyphicon glyphicon-list-alt'></span> Playlist</a>
+                  <a href="#playlist" onclick="load_user_playlist()" data-toggle="tab"> <span class='glyphicon glyphicon-list-alt'></span> Playlist</a>
                </li>
                <li>
                   <a href="#now_playing" data-toggle="tab"> <span class='glyphicon glyphicon-headphones'></span> Now Playing</a>
@@ -415,6 +417,7 @@ fjs.parentNode.insertBefore(js, fjs);
                               <div class="playlist_options">
                                  <div id="play_playlist"></div>
                                  <div id="add_to_queue_playlist"></div>
+                                 <label>Share <input type="checkbox" name="my-checkbox"></label>
                               </div>
                         </div>
                         <table class="table-striped table" id="playlist_songs">

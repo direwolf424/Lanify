@@ -1,5 +1,4 @@
 var album_data;
-var loggedin=true;
 var user_playlist_data;
 var song_id_arr=[];
 function play_album(data) {
@@ -84,11 +83,6 @@ function load_album(url)
          check_album_song();
    });
 
-   //$(window).bind('popstate', function() {
-   //$.ajax({url:location.pathname+'?rel=tab',success: function(data){
-   //$('.nav-stacked a[href="#home"]').tab('show');
-   //}});
-   //});
 }
 
 function check_album_song()
@@ -129,40 +123,6 @@ function album_pause(elem,song)
    return false;
 }
 
-
-
-//$(document).on("click", ".pop_click", function () {
-//var song = $(this).data('song');
-//setTimeout(function()  {
-//var c = document.getElementsByClassName('popover-content')[0];
-//c.childNodes[0].childNodes[1].setAttribute('value',song);
-//},100);
-//});
-
-//function get_user_playlist(i,song_json){
-//var url ="/playlist/new";
-//$.ajax({
-//type: "GET",
-//data: {flag:'userlist'},
-//url:url,
-//success:function(data){
-//console.log('i got the f playlist',data);
-//user_playlist_data = data;
-//if(data === 0)
-//loggedin = false;
-
-//var y = "<p> <input type='text' name='bookId' class='song_id' value='abc' style='display: none;visibility: hidden;'/> <p> <a href='' onclick='add_to_queue("+song_json+"); return false;'>  Now Playing </a> <p> <a href='' class='new_playlist' onclick='new_playlist(); return false;'> Create New Playlist </a>";
-//var y1;
-//for(var p = 0;p<user_playlist_data.length;p++){
-//y1="<p> <a href='' class='new_playlist' onclick='new_playlist(); return false;'> "+user_playlist_data[p].name+" </a>";
-//y+=y1;
-//}
-//table.rows[i].cells[5].firstElementChild.setAttribute('data-content',y);
-//}
-//});
-//}
-
-
 $(document).ready(function(){
    $('#add_to_playlist').webuiPopover({
       type:'async',
@@ -186,24 +146,27 @@ $(document).ready(function(){
          return html;
       }
    });
-   //$('#create_new_playlist').webuiPopover({title:'Title',content:'<p> <input type="text" id="playlist_name"> </input> <a href="" onclick="return add_to_new_playlist(this);"> <span class="glyphicon glyphicon-ok"> </span> </a> '});
-   //$('#create_new_playlist').webuiPopover();
-   $('#create_new_playlist').editable({
-      type: 'text',
-      pk: 1,
-      url: '/playlist/new/',
-      title: 'Enter name',
-      ajaxOptions: {
-         type: 'get',
-         dataType: 'json'
-      },
-      autotext:'never',
-      params: function(params) {
-             //originally params contain pk, name and value
-               params.flag = 'new';
-               return params;
-      }
-   });
+   if(loggedin){
+      $('#create_new_playlist').editable({
+         type: 'text',
+         pk: 1,
+         url: '/playlist/new/',
+         title: 'Enter name',
+         ajaxOptions: {
+            type: 'get',
+            dataType: 'json'
+         },
+         autotext:'never',
+         params: function(params) {
+            //originally params contain pk, name and value
+            params.flag = 'new';
+            return params;
+         }
+      });
+   }
+   else{
+      $('#create_new_playlist').webuiPopover({title:'SignUp',content:'Plz login to continue'});
+   }
 });
 
 function add_to_new_playlist() {
@@ -237,7 +200,7 @@ function send_song(name){
       data: {flag:'insert',song:song_arr,pname:name},
       url: url,
       sucess:function(){
-         alert("songs added succesfullt to ",name);
+         alert("songs added succesfully to ",name);
       }
    });
 }

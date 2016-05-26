@@ -6,7 +6,7 @@ var playlist_scheme = new Schema({
    name: String,
    song_id:Array,
    date_created:Date,
-   shared:Number,
+   shared:Boolean,
    likes:Number,
    dislikes:Number,
    user_name:String
