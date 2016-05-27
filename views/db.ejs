@@ -417,7 +417,9 @@ fjs.parentNode.insertBefore(js, fjs);
                               <div class="playlist_options">
                                  <div id="play_playlist"></div>
                                  <div id="add_to_queue_playlist"></div>
+                                 <% if ( username.length > 0) { %>
                                  <label>Share <input type="checkbox" name="my-checkbox"></label>
+                                 <% } %>
                               </div>
                         </div>
                         <table class="table-striped table" id="playlist_songs">

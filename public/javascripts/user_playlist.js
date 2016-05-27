@@ -84,8 +84,9 @@ function load_playlist_songs(play){
       url: url,
       success: function (data,status) {
          //console.log(data);
+         //console.log('hello world');
          current_name = play.name;
-         play_song(data,play.name);
+         play_psong(data,play.name);
       },
       error: function (data,status) {
       },
@@ -97,7 +98,7 @@ function load_playlist_songs(play){
    });
    return false;
 }
-function play_song(data,tag){
+function play_psong(data,tag){
    //console.log('tagging');
    //console.log(data);
    var elem = document.getElementById("playlist_image");
@@ -147,6 +148,6 @@ function play_song(data,tag){
    elem.innerHTML = " <a href='' onclick='add_to_queue_album("+JSON.stringify(temp_arr)+"); return false;'> <span class='glyphicon glyphicon-play'></span> Add To Queue </a>";
 
    $('.nav-stacked a[href="#playlist_single"]').tab('show');
-
+   //return false;
 }
 
