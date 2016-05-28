@@ -47,10 +47,33 @@ $(document).ready(function(){
       });
    });
 });
-function load_user_playlist()
+function load_public_playlist()
 {
    var url="/playlist/";
    //console.log("Loading Playlist");
+   $.ajax({
+      type:"GET",
+      data:{flag:'fetch',share:'true'},
+      url:url,
+      success:function(data){
+         //alert('hello',data);
+         //console.log(data);
+         $("#playlist_public_div").empty();
+         var elem = document.getElementById("playlist_public_div");
+         var x = JSON.stringify('/image/image.jpg');
+         for(var i=0;i<data.length;i++)
+         {
+               elem.innerHTML += "<a href='' onclick='load_playlist_songs("+JSON.stringify(data[i])+"); return false;' > <div class='album tags col-md-5ths'> <div class='song_image'> <img onerror="+x+" src='/image/image.jpg'> </img> </div> <div class='ellip_name'> "+capitalizeFirstLetter(data[i].name)+" </div><div class='ellip_name'>By "+data[i].user_name+" </div></div>  </a>";
+         }
+      }
+   });
+   return false;
+}
+function load_private_playlist()
+{
+   var url="/playlist/";
+   //console.log("Loading Playlist");
+   if(loggedin){
    $.ajax({
       type:"GET",
       data:{flag:'fetch'},
@@ -58,20 +81,20 @@ function load_user_playlist()
       success:function(data){
          //alert('hello',data);
          //console.log(data);
-         $("#playlist").empty();
-         var elem = document.getElementById("playlist");
-         var x = JSON.stringify('/image/image.jpg');
+         $("#playlist_private_div").empty();
+         var elem = document.getElementById("playlist_private_div");
          for(var i=0;i<data.length;i++)
          {
-            if(loggedin){
-               elem.innerHTML += "<a href='' onclick='load_playlist_songs("+JSON.stringify(data[i])+"); return false;' > <div class='album tags col-md-5ths'> <div class='song_image'> <img onerror="+x+" src='/image/image.jpg'> </img> </div> <div class='ellip_name'> "+capitalizeFirstLetter(data[i].name)+" </div> </div>  </a>";
-            }
-            else{
-               elem.innerHTML += "<a href='' onclick='load_playlist_songs("+JSON.stringify(data[i])+"); return false;' > <div class='album tags col-md-5ths'> <div class='song_image'> <img onerror="+x+" src='/image/image.jpg'> </img> </div> <div class='ellip_name'> "+capitalizeFirstLetter(data[i].name)+" </div><div class='ellip_name'>By "+data[i].user_name+" </div></div>  </a>";
-            }
+               elem.innerHTML += "<a href='' onclick='load_playlist_songs("+JSON.stringify(data[i])+"); return false;' > <div class='album tags col-md-5ths'> <div class='song_image'> <img  src='/image/image.jpg'> </img> </div> <div class='ellip_name'> "+capitalizeFirstLetter(data[i].name)+" </div></div>  </a>";
          }
       }
    });
+   }
+   else{
+         $("#playlist_private_div").empty();
+         var elem = document.getElementById("playlist_private_div");
+               elem.innerHTML += "<div class='album tags col-md-5ths'> <div class='song_image'> <img  src='/image/image.jpg'> </img> </div> <div>Please Sign Up to create private playlist </div></div>";
+   }
    return false;
 }
 function load_playlist_songs(play){

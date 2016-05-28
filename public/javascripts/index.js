@@ -319,12 +319,12 @@ function dragdrop() {
 }
 
 $(document).ready(function(){
-   $('#playlist').click(function(){
-      //alert('hello');
-      load_user_playlist();
-   });
+   //$('#playlist').click(function(){
+      ////alert('hello');
+      //load_user_playlist();
+   //});
    //$('#add_to_playlist').webuiPopover({title:'Title',content:'Content'});
-   $('.backBtn').webuiPopover({title:'Title',content:'Content'});
+   //$('.backBtn').webuiPopover({title:'Title',content:'Content'});
 });
 $('body').on('click', function (e) {
    $('[data-toggle="popover"]').each(function () {

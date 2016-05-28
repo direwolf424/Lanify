@@ -13,7 +13,24 @@ router.get('/',function(req,res,next){
 
    var x =decodeURIComponent(req.originalUrl);
    console.log(x);
-   if(req.user){
+   if(req.query.flag=='fetch' && req.query.share=="true"){
+      //console.log('hellllllllll');
+      var q21 = function(fn){
+         playlist.find( {shared:true} ).exec(function(err,plist){
+            if(err)
+               console.log('Error occured',err);
+            //console.log('Playlist ----------------------->',req.user.username);
+            return fn && fn(null,plist);
+         });
+      };
+      q21(function(err,play){
+         if(err)
+            console.log(err);
+         //console.log(play);
+         res.send(play);
+      });
+   }
+   else if(req.user){
       //console.log('hello');
       if(req.query.flag=='new' ){
          var p_name = req.query.value;
@@ -135,58 +152,58 @@ router.get('/',function(req,res,next){
          }
       }
    }
-      else{
-         if(req.query.flag=='fetch'){
-            console.log('hellllllllll');
-            var q21 = function(fn){
-               playlist.find({shared:true}).exec(function(err,plist){
-                  if(err)
-                     console.log('Error occured',err);
-                  //console.log('Playlist ----------------------->',req.user.username);
-                  return fn && fn(null,plist);
-               });
-            };
-            q21(function(err,play){
-               if(err)
-                  console.log(err);
-               //console.log(play);
-               res.send(play);
-            });
-         }
-         else if(req.query.flag=='songs'){
-            //console.log(req.query.flag);
-            //console.log(req.query.name);
-            //var the_id;
-            var q31 = function(fn){
-               playlist.find({shared:true,"name":req.query.name}).exec(function(err,plist){
-                  if(err)
-                     console.log('Error occured',err);
-                  return fn && fn(null,plist);
-               });
-            };
-            //var q41 = function(){
-            //songs.findById(the_id).exec(function(err,song){
-            //if(err)
-            //console.log('Error occured',err);
-            //return song; 
+   else{
+      //if(req.query.flag=='fetch'){
+         //console.log('hellllllllll');
+         //var q21 = function(fn){
+            //playlist.find({shared:true}).exec(function(err,plist){
+               //if(err)
+                  //console.log('Error occured',err);
+               ////console.log('Playlist ----------------------->',req.user.username);
+               //return fn && fn(null,plist);
             //});
-            //};
-            q31(function(err,play){
+         //};
+         //q21(function(err,play){
+            //if(err)
+               //console.log(err);
+            ////console.log(play);
+            //res.send(play);
+         //});
+      //}
+      if(req.query.flag=='songs'){
+         //console.log(req.query.flag);
+         //console.log(req.query.name);
+         //var the_id;
+         var q31 = function(fn){
+            playlist.find({shared:true,"name":req.query.name}).exec(function(err,plist){
                if(err)
-                  console.log(err);
-               songs.find({
-                  '_id': { $in: play[0].song_id}
-               }, function(err, docs){
-                  //console.log(docs);
-
-                  res.send(docs);
-               });
+                  console.log('Error occured',err);
+               return fn && fn(null,plist);
             });
-         }
-         else{
-            res.send('0');
-         }
+         };
+         //var q41 = function(){
+         //songs.findById(the_id).exec(function(err,song){
+         //if(err)
+         //console.log('Error occured',err);
+         //return song; 
+         //});
+         //};
+         q31(function(err,play){
+            if(err)
+               console.log(err);
+            songs.find({
+               '_id': { $in: play[0].song_id}
+            }, function(err, docs){
+               //console.log(docs);
+
+               res.send(docs);
+            });
+         });
       }
+      else{
+         res.send('0');
+      }
+   }
 });
 
 router.post('/',function(req,res,next){
