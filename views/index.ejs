@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-    <audio controls>
-      <source src="jane nahi.mp3" type="audio/ogg">
-      Your browser does not support the audio element.
-    </audio>
-  </body>
+   <head>
+      <script src="/javascripts/admin.js"></script>
+      <script src="/javascripts/musicmetadata.js"></script>
+      <script src="/javascripts/jquery.min.js"></script>
+      <script src="/javascripts/jquery/jquery-ui.js"></script>
+   </head>
+   <body>
+      <a href='/lanify/admin/upload'>UPLOAD_SINGLE</a><br>
+      <a href='/lanify/admin/upload_folder'>UPLOAD_FOLDER</a><br>
+      <a href='/lanify/admin/rename'>EDIT_DETAILS</a><br>
+      <a href='/lanify/admin/delete'>DELETE</a><br>
+   </body>
 </html>

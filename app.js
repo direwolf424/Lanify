@@ -14,6 +14,7 @@ var search = require('./routes/search');
 var request = require('./routes/request');
 var playlist = require('./routes/playlist');
 var update = require('./routes/update');
+var admin = require('./routes/admin');
 var register = require('./routes/register');
 var user = require('./model/user').user;
 //var tokens = require('./model/cookie.js').Cookies;
@@ -23,6 +24,7 @@ var mongoose = require('mongoose');
 var RememberMeStrategy = require('passport-remember-me').Strategy;
 var flash = require('connect-flash');
 var app = express();
+var multer = require('multer');
 var passport = require('passport');
 var expressSession = require('express-session');
 var LocalStrategy = require('passport-local').Strategy;
@@ -144,6 +146,7 @@ app.use('/request',request);
 app.use('/lanify',db.Route);
 app.use('/search',search);
 app.use('/register',register);
+app.use('/lanify/admin',admin);
 
 var isAuthenticated = function (req, res, next) {
    if (req.isAuthenticated())
@@ -161,7 +164,7 @@ app.get('/db',function(req,res){
 });
 app.get('/logout', function(req, res){
    console.log('LogOut');
-   res.clearCookie('remember_me');
+   res.clearCookie('remember_me',{path: '/lanify'});
    req.logout();
    res.redirect('/lanify');
 });
@@ -285,9 +288,9 @@ app.post('/login',
          app.get('/status',function(req,res,next){
             console.log('tokens here ',tokens);
             if(req.user)
-               res.send('1');
+               res.send(tokens);
             else
-               res.send('0');
+               res.send(tokens);
          });
          // catch 404 and forward to error handler
          app.use(function(req, res, next) {

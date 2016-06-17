@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <script src="/javascripts/admin.js"></script>
+      <script src="/javascripts/musicmetadata.js"></script>
+      <script src="/javascripts/jquery.min.js"></script>
+      <script src="/javascripts/jquery/jquery-ui.js"></script>
+   </head>
+   <body>
+      <input type="search"/><br>
+      <br>
+      <div id="search"></div>
+      <form id="uploadForm"
+            action="/lanify/admin/upload"
+            method="post">
+         Song Title: <input type="text" required id="title" name="title"><br>
+         Song Album: <input type="text" required id="album" name="album"><br>
+         Song Artist: <input type="text" required id="artist" name="artist"><br>
+         <input type="radio" name="language" id="" value="english" required> English<br>
+         <input type="radio" name="language" value="hindi"> Hindi<br>
+         <input type="radio" name="language" value="telugu"> Telugu<br>
+         <input type="submit" value="Confirm Rename" name="submit"><br>
+      </form>
+   </body>
+</html>

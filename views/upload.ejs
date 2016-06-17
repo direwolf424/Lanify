@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>Upload music</title>
+      <script src="/javascripts/admin.js"></script>
+      <script src="/javascripts/musicmetadata.js"></script>
+      <script src="/javascripts/jquery.min.js"></script>
+      <script src="/javascripts/jquery/jquery-ui.js"></script>
+   </head>
+   <body>
+      <form id="uploadForm"
+            enctype="multipart/form-data"
+            action="/lanify/admin/upload"
+            method="post">
+         <input type="file" id="myFile" name="music" onchange="myFunction()" /><br>
+         <p id="demo"></p>
+         <span id = "status"></span>
+         Song Title: <input type="text" required id="title" name="title"><br>
+         Song Album: <input type="text" required id="album" name="album"><br>
+         Song Artist: <input type="text" required id="artist" name="artist"><br>
+         Year: <input type="text" required id="year" name="year"><br>
+         <input type="radio" name="language" id="" value="english" required> English<br>
+         <input type="radio" name="language" value="hindi"> Hindi<br>
+         <input type="radio" name="language" value="telugu"> Telugu<br>
+         <input type="submit" value="Upload music" name="submit"><br>
+      </form>
+      <img id="myImg"></img>
+      <div id="info"></div>
+   </body>
+</html>

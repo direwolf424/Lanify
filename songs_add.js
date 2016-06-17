@@ -19,15 +19,6 @@ function capitalizeFirstLetter(string) {
    return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-//console.log('666666666',Song);
-//Song.find({}).exec(function(err, songs) {
-   //if (err) throw err;
-   //console.log(songs);
-//});
-/*
-   function to remove url from the string  
-   write regex for it
-   */
 function delete_info(str){
    str = str.replace(/\([0-9]+\)/gi,""); //for format (1234)
    str = str.replace(/\[[0-9 a-z _ : , @ .]+\]/gi,""); //for anything beetween [word]
@@ -151,7 +142,7 @@ Sync(function(){
             {
                cnt++;
                //if(cnt<=596)
-                  //continue;
+               //continue;
                var pat = path1+song_folder_arr[j]+'/'+file;
                var time,metadata;
                try{
@@ -171,26 +162,26 @@ Sync(function(){
                   title1 = file.replace(".mp3","");
                }
                //if(isBlank(title1)||isBlank(metadata.artist)||isBlank(metadata.album))
-                  //{
-                     ////console.log("----------->the string was empty");
-                     //continue;
-                  //}
-                  //console.log('hello1');
-                  arr_artist=split_Artist(metadata.artist);
-                  //console.log('hello2');
-                  var title = delete_info(title1);
-                  var album = delete_info(metadata.album);
-                  var year = metadata.year;
+               //{
+               ////console.log("----------->the string was empty");
+               //continue;
+               //}
+               //console.log('hello1');
+               arr_artist=split_Artist(metadata.artist);
+               //console.log('hello2');
+               var title = delete_info(title1);
+               var album = delete_info(metadata.album);
+               var year = metadata.year;
 
-                  console.log('---->',title);
-                  if(isBlank(title))
-                     {
-                        console.log("----------->the string was empty");
-                        continue;
-                     }
-                     Song.update({"title":title},
-                                 {
-                                    $set: {
+               console.log('---->',title);
+               if(isBlank(title))
+                  {
+                     console.log("----------->the string was empty");
+                     continue;
+                  }
+                  Song.update({"title":title},
+                              {
+                                 $set: {
                                     title:title,
                                     album:album,
                                     artist:arr_artist,
@@ -205,20 +196,20 @@ Sync(function(){
                                     release_date:year,
                                     length:time,
                                     language:lang
-                                    },
-                                    $currentDate: {
-                                               lastModified: true,
-                                                            }
                                  },
-                                 { upsert:true }).exec(function(err,write){
-                                    if(err)
-                                       console.log('updated');
-                                    else{
-                                       console.log(cnt + ' written ',title+' ',i);
-                                       //cnt++;
-                                    }
-                                 });
-                                 //console.log('skipping');
+                                 $currentDate: {
+                                    lastModified: true,
+                                 }
+                              },
+                              { upsert:true }).exec(function(err,write){
+                                 if(err)
+                                    console.log('updated');
+                                 else{
+                                    console.log(cnt + ' written ',title+' ',i);
+                                    //cnt++;
+                                 }
+                              });
+                              //console.log('skipping');
 
             }
       }

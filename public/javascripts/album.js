@@ -45,6 +45,8 @@ function load_album(url)
       elem.innerHTML = " <a href='' onclick=''> <span class='glyphicon glyphicon-play'></span> Add To Playlist </a>";
       elem = document.getElementById("create_new_playlist");
       elem.innerHTML = " <a href='' onclick=''> <span class='glyphicon glyphicon-play'></span> Create New Playlist </a>";
+      elem = document.getElementById("rename_album");
+      elem.innerHTML = " <a href='' onclick=''> <span class='glyphicon glyphicon-play'></span> Rename Album </a>";
       $("#album_single_songs tr").remove();
       song_id_arr=[];
       for(var i in data)

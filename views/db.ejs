@@ -13,6 +13,7 @@
       <script src="/javascripts/jquery-sortable.js"></script>
       <script src="/javascripts/index.js"></script>
       <script src="/javascripts/album.js"></script>
+      <script src="/javascripts/admin.js"></script>
       <script src="/javascripts/login.js"></script>
       <script src="/javascripts/artist.js"></script>
       <script src="/javascripts/user_playlist.js"></script>
@@ -116,7 +117,8 @@ fjs.parentNode.insertBefore(js, fjs);
                      </div>
                      <div class="form-group">
                         <label for="psw"><span class="glyphicon glyphicon-eye-open"></span> Password</label>
-                        <input type="text" class="form-control" id="password1" name="password" placeholder="Enter password">
+                        <input type="password" class="form-control" id="password1" name="password" placeholder="Enter password">
+
                      </div>
                      <div class="checkbox">
                         <label><input id = "remember" type="checkbox" value="" checked>Remember me</label>
@@ -375,9 +377,7 @@ fjs.parentNode.insertBefore(js, fjs);
                               <div id="add_to_queue_album"></div>
                               <div id="add_to_playlist"></div>
                               <div id="create_new_playlist"></div>
-                              <!--<div class="webui-popover-content">-->
-                              <!--<div><input type="text" id="playlist_name" autofocus> </input> <a href="" onclick="return add_to_new_playlist();"> <span class="glyphicon glyphicon-ok"> </span> </a></div>-->
-                              <!--</div>-->
+                              <div id="rename_album"></div>
                            </div>
                      </div>
                   </div>

@@ -10,33 +10,26 @@ var path,album,artist,songs;
 
 
 router.get('/',function(req,res,next){
-
    var x =decodeURIComponent(req.originalUrl);
    console.log(x);
    if(req.query.flag=='fetch' && req.query.share=="true"){
-      //console.log('hellllllllll');
       var q21 = function(fn){
          playlist.find( {shared:true} ).exec(function(err,plist){
             if(err)
                console.log('Error occured',err);
-            //console.log('Playlist ----------------------->',req.user.username);
             return fn && fn(null,plist);
          });
       };
       q21(function(err,play){
          if(err)
             console.log(err);
-         //console.log(play);
          res.send(play);
       });
    }
    else if(req.user){
-      //console.log('hello');
       if(req.query.flag=='new' ){
          var p_name = req.query.value;
-         //console.log("------"+p_name);
          var s_id = req.query.song;
-         //console.log("*****"+name);
          var q1 = function(variable) {
             var ct = variable;
             playlist.update({"name":ct,"user_name":req.user.username}, {$addToSet:{"song_id":s_id}}, {upsert:true,new:true}, function(err, ip1) {
@@ -83,23 +76,14 @@ router.get('/',function(req,res,next){
          });
       }
       else if(req.query.flag=='songs'){
-         //console.log(req.query.flag);
-         //console.log(req.query.name);
-         //var the_id;
          var q3 = function(fn){
-            playlist.find({"user_name":req.user.username,"name":req.query.name}).exec(function(err,plist){
+            playlist.find({"name":req.query.name}).exec(function(err,plist){
                if(err)
                   console.log('Error occured',err);
+               console.log(plist);
                return fn && fn(null,plist);
             });
          };
-         //var q4 = function(){
-         //songs.findById(the_id).exec(function(err,song){
-         //if(err)
-         //console.log('Error occured',err);
-         //return song; 
-         //});
-         //};
          q3(function(err,play){
             if(err)
                console.log(err);
@@ -153,27 +137,7 @@ router.get('/',function(req,res,next){
       }
    }
    else{
-      //if(req.query.flag=='fetch'){
-         //console.log('hellllllllll');
-         //var q21 = function(fn){
-            //playlist.find({shared:true}).exec(function(err,plist){
-               //if(err)
-                  //console.log('Error occured',err);
-               ////console.log('Playlist ----------------------->',req.user.username);
-               //return fn && fn(null,plist);
-            //});
-         //};
-         //q21(function(err,play){
-            //if(err)
-               //console.log(err);
-            ////console.log(play);
-            //res.send(play);
-         //});
-      //}
       if(req.query.flag=='songs'){
-         //console.log(req.query.flag);
-         //console.log(req.query.name);
-         //var the_id;
          var q31 = function(fn){
             playlist.find({shared:true,"name":req.query.name}).exec(function(err,plist){
                if(err)
@@ -181,21 +145,12 @@ router.get('/',function(req,res,next){
                return fn && fn(null,plist);
             });
          };
-         //var q41 = function(){
-         //songs.findById(the_id).exec(function(err,song){
-         //if(err)
-         //console.log('Error occured',err);
-         //return song; 
-         //});
-         //};
          q31(function(err,play){
             if(err)
                console.log(err);
             songs.find({
                '_id': { $in: play[0].song_id}
             }, function(err, docs){
-               //console.log(docs);
-
                res.send(docs);
             });
          });
