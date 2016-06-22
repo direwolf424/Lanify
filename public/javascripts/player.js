@@ -11,84 +11,84 @@ function remove_song(element){
    var title = table.rows[index].cells[1].textContent;
    table.deleteRow(index);
    if(flag_shuffle)
+   {
+      for(var i=0;i<playlist.length;i++)
       {
-         for(var i=0;i<playlist.length;i++)
+         if(title==playlist[i].title)
          {
-            if(title==playlist[i].title)
-               {
-                  index = i;
-                  break;
-               }
+            index = i;
+            break;
          }
       }
-      if(index==playlist_index)
+   }
+   if(index==playlist_index)
+   {
+      if(playlist_index==0 && playlist.length==1)
+      {
+         clear_queue();
+         $.notify("Song Removed "+title, {
+            animate: {
+               enter: 'animated fadeInRight',
+               exit: 'animated fadeOutRight'
+            },
+            newest_on_top: false,
+            delay: 100,
+         });
+         return false;
+      }
+      else if(playlist_index==playlist.length-1)
+      {
+         player = $("#jquery_jplayer_1");
+         play1(playlist[0]);
+         player.jPlayer("pause");
+      }
+      else
+      {
+         player = $("#jquery_jplayer_1");
+         play_next();
+         player.jPlayer("pause");
+         if(playlist_index>0)
+            playlist_index--;
+      }
+   }
+   else
+   {
+      if(playlist_index>0 && index<playlist_index)
+         playlist_index--;
+   }
+   playlist.splice(index, 1);
+   var current_queue = [];
+   if (typeof localStorage === "undefined" || localStorage === null) {
+      var LocalStorage = require('node-localstorage').LocalStorage;
+      localStorage = new LocalStorage('./scratch');
+   }
+   if(localStorage.getItem("queue")===null)
+   {
+      current_queue = [];
+   }
+   else
+   {
+      current_queue= JSON.parse(localStorage["queue"]);
+      for(var i in current_queue)
+      {
+         var song = current_queue[i];
+         if(song.title == title)
          {
-            if(playlist_index==0 && playlist.length==1)
-               {
-                  clear_queue();
-                  $.notify("Song Removed "+title, {
-                     animate: {
-                        enter: 'animated fadeInRight',
-                        exit: 'animated fadeOutRight'
-                     },
-                     newest_on_top: false,
-                     delay: 100,
-                  });
-                  return false;
-               }
-               else if(playlist_index==playlist.length-1)
-                  {
-                     player = $("#jquery_jplayer_1");
-                     play1(playlist[0]);
-                     player.jPlayer("pause");
-                  }
-                  else
-                     {
-                        player = $("#jquery_jplayer_1");
-                        play_next();
-                        player.jPlayer("pause");
-                        if(playlist_index>0)
-                           playlist_index--;
-                     }
+            current_queue.splice(i, 1);
+            break;
          }
-         else
-            {
-               if(playlist_index>0 && index<playlist_index)
-                  playlist_index--;
-            }
-            playlist.splice(index, 1);
-            var current_queue = [];
-            if (typeof localStorage === "undefined" || localStorage === null) {
-               var LocalStorage = require('node-localstorage').LocalStorage;
-               localStorage = new LocalStorage('./scratch');
-            }
-            if(localStorage.getItem("queue")===null)
-               {
-                  current_queue = [];
-               }
-               else
-                  {
-                     current_queue= JSON.parse(localStorage["queue"]);
-                     for(var i in current_queue)
-                        {
-                           var song = current_queue[i];
-                           if(song.title == title)
-                              {
-                                 current_queue.splice(i, 1);
-                                 break;
-                              }
-                        }
-                  }
-                  localStorage.setItem('queue', JSON.stringify(current_queue));
-                  $.notify("Song Removed "+title, {
-                     animate: {
-                        enter: 'animated fadeInRight',
-                        exit: 'animated fadeOutRight'
-                     },
-                     newest_on_top: false,
-                     delay: 100,
-                  });
-                  return false;
+      }
+   }
+   localStorage.setItem('queue', JSON.stringify(current_queue));
+   $.notify("Song Removed "+title, {
+      animate: {
+         enter: 'animated fadeInRight',
+         exit: 'animated fadeOutRight'
+      },
+      newest_on_top: false,
+      delay: 100,
+   });
+   return false;
 }
 
 function repeat(){
@@ -137,60 +137,60 @@ function play1(song){
       localStorage = new LocalStorage('./scratch');
    }
    if(localStorage.getItem("queue")===null)
+   {
+      current_queue = [];
+   }
+   else
+   {
+      current_queue= JSON.parse(localStorage["queue"]);
+      for(var i in playlist)
       {
-         current_queue = [];
+         play_song = playlist[i];
+         if(play_song.title == title)
+         {
+            index=i;
+            flag = false;
+            break;
+         }
+      }
+   }
+   if(!flag)
+   {
+      player.jPlayer("setMedia", {
+         mp3: loc
+      });
+      player.jPlayer("play");
+      playlist_index = index;
+   }
+   else
+   {
+      current_queue.push(song);
+      localStorage.setItem('queue', JSON.stringify(current_queue));
+      player.jPlayer("setMedia", {
+         mp3: loc
+      });
+      player.jPlayer("play", 0);
+      if(flag_shuffle)
+      {
+         playlist.splice(playlist_index,0,song);
+         playlist_index++;
       }
       else
-         {
-            current_queue= JSON.parse(localStorage["queue"]);
-            for(var i in playlist)
-               {
-                  play_song = playlist[i];
-                  if(play_song.title == title)
-                     {
-                        index=i;
-                        flag = false;
-                        break;
-                     }
-               }
-         }
-         if(!flag)
-            {
-               player.jPlayer("setMedia", {
-                  mp3: loc
-               });
-               player.jPlayer("play");
-               playlist_index = index;
-            }
-            else
-               {
-                  current_queue.push(song);
-                  localStorage.setItem('queue', JSON.stringify(current_queue));
-                  player.jPlayer("setMedia", {
-                     mp3: loc
-                  });
-                  player.jPlayer("play", 0);
-                  if(flag_shuffle)
-                     {
-                        playlist.splice(playlist_index,0,song);
-                        playlist_index++;
-                     }
-                     else
-                        {
-                           playlist_index = playlist.length;
-                           playlist.push(song);
-                        }
-                        now_playing(song);
-               }
-               player.jPlayer("play");
-               var name = document.getElementById("jp-song-name");
-               var player_album = document.getElementById("jp-album-name");
-               name.innerHTML = title;
-               var pass = JSON.stringify("load_album('/album/"+album+"'); return false;");
-               player_album.innerHTML = "<a class='album_click' href='' onclick="+pass+">"+album+"</a>";
-               check_album_song();
-               check_song_song();
-               return false;
+      {
+         playlist_index = playlist.length;
+         playlist.push(song);
+      }
+      now_playing(song);
+   }
+   player.jPlayer("play");
+   var name = document.getElementById("jp-song-name");
+   var player_album = document.getElementById("jp-album-name");
+   name.innerHTML = title;
+   var pass = JSON.stringify("load_album('/album/"+album+"'); return false;");
+   player_album.innerHTML = "<a class='album_click' href='' onclick="+pass+">"+album+"</a>";
+   check_album_song();
+   check_song_song();
+   return false;
 }
 
 $(document).ready(function() {
@@ -215,79 +215,79 @@ $(document).ready(function() {
    //load_playlist();
 
    if(playlist.length>0)
-      {
-         var title = playlist[0].title;
-         var album = playlist[0].album;
-         var loc = playlist[0].path;
-         var name = document.getElementById("jp-song-name");
-         var player_album = document.getElementById("jp-album-name");
-         name.innerHTML = title;
-         player_album.innerHTML = album;
-         player = $("#jquery_jplayer_1");
-         highlight(title,"pause",playlist[0]);
+   {
+      var title = playlist[0].title;
+      var album = playlist[0].album;
+      var loc = playlist[0].path;
+      var name = document.getElementById("jp-song-name");
+      var player_album = document.getElementById("jp-album-name");
+      name.innerHTML = title;
+      player_album.innerHTML = album;
+      player = $("#jquery_jplayer_1");
+      highlight(title,"pause",playlist[0]);
 
-         $("#jquery_jplayer_1").jPlayer({
-            ready: function () {
-               $(this).jPlayer("setMedia", {
-                  title: title,
-                  mp3: loc
-               });
-            },
-            swfPath: "/javascripts",
-            cssSelectorAncestor: "#jp_container_1",
-            supplied: "mp3",
-            useStateClassSkin: true,
-            autoBlur: false,
-            smoothPlayBar: true,
-            keyEnabled: true,
-            remainingDuration: true,
-            toggleDuration: true,
-         });
-      }
+      $("#jquery_jplayer_1").jPlayer({
+         ready: function () {
+            $(this).jPlayer("setMedia", {
+               title: title,
+               mp3: loc
+            });
+         },
+         swfPath: "/javascripts",
+         cssSelectorAncestor: "#jp_container_1",
+         supplied: "mp3",
+         useStateClassSkin: true,
+         autoBlur: false,
+         smoothPlayBar: true,
+         keyEnabled: true,
+         remainingDuration: true,
+         toggleDuration: true,
+      });
+   }
 
-      $("#jquery_jplayer_1").bind($.jPlayer.event.play, function(event) {
-         var name = document.getElementById("jp-song-name");
-         var player_album = document.getElementById("jp-album-name");
-         view(name.innerHTML);
-         highlight(name.innerHTML,"play",playlist[playlist_index]);
-      });
-      $("#jquery_jplayer_1").bind($.jPlayer.event.pause, function(event) {
-         var name = document.getElementById("jp-song-name");
-         highlight(name.innerHTML,"pause",playlist[playlist_index]);
-      });
+   $("#jquery_jplayer_1").bind($.jPlayer.event.play, function(event) {
+      var name = document.getElementById("jp-song-name");
+      var player_album = document.getElementById("jp-album-name");
+      view(name.innerHTML);
+      highlight(name.innerHTML,"play",playlist[playlist_index]);
+   });
+   $("#jquery_jplayer_1").bind($.jPlayer.event.pause, function(event) {
+      var name = document.getElementById("jp-song-name");
+      highlight(name.innerHTML,"pause",playlist[playlist_index]);
+   });
 
-      $("#jquery_jplayer_1").bind($.jPlayer.event.ended, function(event) {
-         play_next();
-      });
+   $("#jquery_jplayer_1").bind($.jPlayer.event.ended, function(event) {
+      play_next();
+   });
 
 });
 
 function play_next()
 {
    if(playlist_index<playlist.length-1)
-      {
-         playlist_index++;
+   {
+      playlist_index++;
+      var song = playlist[playlist_index];
+      play1(song);
+   }
+   else
+   {
+      if(flag_repeat){
+         playlist_index=0;
          var song = playlist[playlist_index];
          play1(song);
       }
-      else
-         {
-            if(flag_repeat){
-               playlist_index=0;
-               var song = playlist[playlist_index];
-               play1(song);
-            }
-         }
+   }
 }
 
 function play_prev()
 {
    if(playlist_index>0)
-      {
-         playlist_index--;
-         var song = playlist[playlist_index];
-         play1(song);
-      }
+   {
+      playlist_index--;
+      var song = playlist[playlist_index];
+      play1(song);
+   }
 }
 
 function view(song)
@@ -301,50 +301,50 @@ function view(song)
 function highlight(title,status,song)
 {
    if(status=="play")
-      {
-         var i=0;
-         var table = document.getElementById('table_now_playing');
+   {
+      var i=0;
+      var table = document.getElementById('table_now_playing');
 
-         $('#now_playing table tr').each(function(){
-            var val1 = $(table.rows[i].cells[1]).text();
-            if (val1 == title)
-               {
-                  $(this).addClass("success");
-                  var cell1 = table.rows[i].cells[0];
-                  cell1.innerHTML = "<a href=''  onclick='pause(this,"+JSON.stringify(song)+"); return false;'>  <span class='glyphicon glyphicon-pause'> </span> </a>";
-               }
-               else
-                  {
-                     if($(this).hasClass("success"))
-                        {
-                           $(this).removeClass("success");
-                           var cell1 = table.rows[i].cells[0];
-                           var play = table.rows[i].cells[1].firstElementChild.getAttribute('onclick');
-                           cell1.innerHTML = "<a href='' onclick='"+play+"'>  <span class='glyphicon glyphicon-play'> </span> </a>";
-                        }
-                  }
-                  i++;
-         });
-      }
-      else
+      $('#now_playing table tr').each(function(){
+         var val1 = $(table.rows[i].cells[1]).text();
+         if (val1 == title)
          {
-            var i=0;
-            var table = document.getElementById('table_now_playing');
-            $('#now_playing table tr').each(function(){
-               var val1 = $(table.rows[i].cells[1]).text();
-               if (val1 == title)
-                  {
-                     if($(this).hasClass("success"))
-                        {
-                           $(this).removeClass("success");
-                           var cell1 = table.rows[i].cells[0];
-                           var play = table.rows[i].cells[1].firstElementChild.getAttribute('onclick');
-                           cell1.innerHTML = "<a href=''onclick='"+play+"'>  <span class='glyphicon glyphicon-play'> </span> </a>";
-                        }
-                  }
-                  i++;
-            });
+            $(this).addClass("success");
+            var cell1 = table.rows[i].cells[0];
+            cell1.innerHTML = "<a href=''  onclick='pause(this,"+JSON.stringify(song)+"); return false;'>  <span class='glyphicon glyphicon-pause'> </span> </a>";
          }
+         else
+         {
+            if($(this).hasClass("success"))
+            {
+               $(this).removeClass("success");
+               var cell1 = table.rows[i].cells[0];
+               var play = table.rows[i].cells[1].firstElementChild.getAttribute('onclick');
+               cell1.innerHTML = "<a href='' onclick='"+play+"'>  <span class='glyphicon glyphicon-play'> </span> </a>";
+            }
+         }
+         i++;
+      });
+   }
+   else
+   {
+      var i=0;
+      var table = document.getElementById('table_now_playing');
+      $('#now_playing table tr').each(function(){
+         var val1 = $(table.rows[i].cells[1]).text();
+         if (val1 == title)
+         {
+            if($(this).hasClass("success"))
+            {
+               $(this).removeClass("success");
+               var cell1 = table.rows[i].cells[0];
+               var play = table.rows[i].cells[1].firstElementChild.getAttribute('onclick');
+               cell1.innerHTML = "<a href=''onclick='"+play+"'>  <span class='glyphicon glyphicon-play'> </span> </a>";
+            }
+         }
+         i++;
+      });
+   }
 }
 
 function pause(elem,song)
@@ -386,41 +386,41 @@ function add_to_queue(song) {
       localStorage = new LocalStorage('./scratch');
    }
    if(localStorage.getItem("queue")===null)
+   {
+      current_queue = [];
+   }
+   else
+   {
+      current_queue= JSON.parse(localStorage["queue"]);
+      for(var i in current_queue)
       {
-         current_queue = [];
-      }
-      else
+         var play_song = current_queue[i];
+         if(play_song.title == song.title)
          {
-            current_queue= JSON.parse(localStorage["queue"]);
-            for(var i in current_queue)
-               {
-                  var play_song = current_queue[i];
-                  if(play_song.title == song.title)
-                     {
-                        flag = false;
-                        break;
-                     }
-               }
+            flag = false;
+            break;
          }
-         if(flag)
-            {
-               playlist.push(song);
-               now_playing(song);
-               current_queue.push(song);
-               localStorage.setItem('queue', JSON.stringify(current_queue));
-            }
-            check_album_song();
-            check_song_song();
-            dragdrop();
-            $.notify("Song Added "+song.title, {
-               animate: {
-                  enter: 'animated fadeInRight',
-                  exit: 'animated fadeOutRight'
-               },
-               newest_on_top: false,
-               delay: 100,
-            });
-            return false;
+      }
+   }
+   if(flag)
+   {
+      playlist.push(song);
+      now_playing(song);
+      current_queue.push(song);
+      localStorage.setItem('queue', JSON.stringify(current_queue));
+   }
+   check_album_song();
+   check_song_song();
+   dragdrop();
+   $.notify("Song Added "+song.title, {
+      animate: {
+         enter: 'animated fadeInRight',
+         exit: 'animated fadeOutRight'
+      },
+      newest_on_top: false,
+      delay: 100,
+   });
+   return false;
 }
 
 function now_playing(song){
@@ -473,30 +473,30 @@ function load_playlist()
       localStorage = new LocalStorage('./scratch');
    }
    if(localStorage.getItem("queue")===null)
+   {
+      current_queue = [];
+   }
+   else
+   {
+      current_queue= JSON.parse(localStorage["queue"]);
+      original_playlist = current_queue.splice();
+      for(var i in current_queue)
       {
-         current_queue = [];
-      }
-      else
+         var song = current_queue[i];
+         playlist.push(song);
+         var new_song =
          {
-            current_queue= JSON.parse(localStorage["queue"]);
-            original_playlist = current_queue.splice();
-            for(var i in current_queue)
-               {
-                  var song = current_queue[i];
-                  playlist.push(song);
-                  var new_song =
-                     {
-                        title:song.title,
-                        artist:song.artist,
-                        mp3:song.path,
-                        poster:song.album_art,
-                        album:song.album
-                     };
-                     play.push(new_song);
-                     now_playing(song);
-               }
-         }
-         return false;
+            title:song.title,
+            artist:song.artist,
+            mp3:song.path,
+            poster:song.album_art,
+            album:song.album
+         };
+         play.push(new_song);
+         now_playing(song);
+      }
+   }
+   return false;
 }
 
 function shuffle_help(array) {
@@ -517,51 +517,51 @@ function shuffle(){
       e.setAttribute('title','Turn Shuffle On (S)');
       e.setAttribute('style','background:url("/skin/blue.monday/image/jplayer.blue.monday.jpg") 0 -270px no-repeat;');
       if(playlist.length==0)
-         {
-            return;
-         }
-         if (typeof localStorage === "undefined" || localStorage === null) {
-            var LocalStorage = require('node-localstorage').LocalStorage;
-            localStorage = new LocalStorage('./scratch');
-         }
-         if(localStorage.getItem("queue")===null)
-            {
-               original_playlist = [];
-            }
-            else
-               {
-                  original_playlist = JSON.parse(localStorage["queue"]);
-               }
+      {
+         return;
+      }
+      if (typeof localStorage === "undefined" || localStorage === null) {
+         var LocalStorage = require('node-localstorage').LocalStorage;
+         localStorage = new LocalStorage('./scratch');
+      }
+      if(localStorage.getItem("queue")===null)
+      {
+         original_playlist = [];
+      }
+      else
+      {
+         original_playlist = JSON.parse(localStorage["queue"]);
+      }
 
-               var cur_song = playlist[playlist_index];
-               playlist = original_playlist.slice();
-               for(var i=0;i<playlist.length;i++)
-               {
-                  if(playlist[i].title==cur_song.title)
-                     {
-                        playlist_index = i;
-                     }
-               }
+      var cur_song = playlist[playlist_index];
+      playlist = original_playlist.slice();
+      for(var i=0;i<playlist.length;i++)
+      {
+         if(playlist[i].title==cur_song.title)
+         {
+            playlist_index = i;
+         }
+      }
    }
    else
+   {
+      flag_shuffle = !flag_shuffle;
+      e.setAttribute('title','Turn Shuffle Off (S)');
+      e.setAttribute('style','background:url("/skin/blue.monday/image/jplayer.blue.monday.jpg") -30px -270px no-repeat;');
+      if(playlist.length==0)
       {
-         flag_shuffle = !flag_shuffle;
-         e.setAttribute('title','Turn Shuffle Off (S)');
-         e.setAttribute('style','background:url("/skin/blue.monday/image/jplayer.blue.monday.jpg") -30px -270px no-repeat;');
-         if(playlist.length==0)
-            {
-               return;
-            }
-            cur_song = playlist[playlist_index];
-            playlist.splice(playlist_index,1);
-            playlist = shuffle_help(playlist);
-            playlist.splice(0,0,cur_song);
-            for(i=0;i<playlist.length;i++)
-            {
-               if(playlist[i].title==cur_song.title)
-                  {
-                     playlist_index = i;
-                  }
-            }
+         return;
       }
+      cur_song = playlist[playlist_index];
+      playlist.splice(playlist_index,1);
+      playlist = shuffle_help(playlist);
+      playlist.splice(0,0,cur_song);
+      for(i=0;i<playlist.length;i++)
+      {
+         if(playlist[i].title==cur_song.title)
+         {
+            playlist_index = i;
+         }
+      }
+   }
 }

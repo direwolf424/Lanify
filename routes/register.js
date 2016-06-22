@@ -4,7 +4,7 @@ var url = require('url');
 var mongoose = require('mongoose');
 var db_user= require('../model/user').user;
 mongoose.createConnection('mongodb://localhost/music');
-var path,album,artist,songs;
+   var path,album,artist,songs;
 
 router.post('/',function(req,res,next){
    var uname = req.body.username;

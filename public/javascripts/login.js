@@ -17,20 +17,20 @@ $(document).ready(function(){
       var $form = $( this ),
          url = $form.attr( 'action' );
 
-         /* Send the data using post */
-         var posting = $.post( url, { username: $('#username').val(), password: $('#password').val(),rollno: $('#rollno').val(), mobileno: $('#mobileno').val()  } );
+      /* Send the data using post */
+      var posting = $.post( url, { username: $('#username').val(), password: $('#password').val(),rollno: $('#rollno').val(), mobileno: $('#mobileno').val()  } );
 
-         /* Alerts the results */
-         posting.done(function( data ) {
-            //alert(data.message);
-            var ele=document.getElementById("eregister");
-            ele.style.display="inline-block";
-            ele.innerHTML=data.message;
-            setTimeout(function(){
-               if(data.flag == 1){
-                  mswitch(1);
-               }},1000);
-         });
+      /* Alerts the results */
+      posting.done(function( data ) {
+         //alert(data.message);
+         var ele=document.getElementById("eregister");
+         ele.style.display="inline-block";
+         ele.innerHTML=data.message;
+         setTimeout(function(){
+            if(data.flag == 1){
+               mswitch(1);
+            }},1000);
+      });
    });
    $("#login_form").submit(function(event) {
 
@@ -42,13 +42,13 @@ $(document).ready(function(){
       var $form = $( this ),
          url = $form.attr( 'action' );
 
-         /* Send the data using post */
-         var posting = $.post( url, { username: $('#username1').val(), password: $('#password1').val() , remember_me:c.checked } );
-         var elog = 1;
-         /* Alerts the results */
-         posting.done(function( data ) {
-            window.location="http://localhost:1234/lanify";
-         })
+      /* Send the data using post */
+      var posting = $.post( url, { username: $('#username1').val(), password: $('#password1').val() , remember_me:c.checked } );
+      var elog = 1;
+      /* Alerts the results */
+      posting.done(function( data ) {
+         window.location="http://localhost:1234/lanify";
+      })
          .fail(function(){
             var ele=document.getElementById("elogin");
             ele.style.display="inline-block";

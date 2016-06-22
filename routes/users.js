@@ -4,7 +4,7 @@ var url = require('url');
 var mongoose = require('mongoose');
 var db = require('../model/songs').Song;
 mongoose.createConnection('mongodb://localhost/music');
-var path,album,artist,songs;
+   var path,album,artist,songs;
 
 router.get('/',function(req,res,next){
 
@@ -55,17 +55,17 @@ router.get('/',function(req,res,next){
          if (err) throw err;
          songs = results;
          return fn && fn(null,songs);
-      });
-   };
-   var q6 = function(fn){
-      db.count({}, function(err, count){
-         console.log( "Number of docs: ", count );
-         return fn && fn(null,count);
-      });
-   };
-   //Standard nested callbacks
+         });
+      };
+      var q6 = function(fn){
+         db.count({}, function(err, count){
+            console.log( "Number of docs: ", count );
+            return fn && fn(null,count);
+         });
+      };
+      //Standard nested callbacks
 
-   if(x == "album")
+      if(x == "album")
       {
          group =  {
             key:{'album':1,'album_art':1},
@@ -82,58 +82,58 @@ router.get('/',function(req,res,next){
          });
       }
       else if(x.indexOf("album")>-1)
-         {
-            lang=x.substr(6,x.length-6);
-            group =  {
-               key:{'album':1,'album_art':1},
-               reduce : function (a) {},
-               initial : {},
-               cond: {language:lang},
-               finalise : {}
-            };
-            q1(function (err, albums) {
+      {
+         lang=x.substr(6,x.length-6);
+         group =  {
+            key:{'album':1,'album_art':1},
+            reduce : function (a) {},
+            initial : {},
+            cond: {language:lang},
+            finalise : {}
+         };
+         q1(function (err, albums) {
+            if (err)
+               throw err;
+            result.push(albums);
+            finishRequest(result);
+         });
+      }
+
+      else if(x=="artists")
+      {
+         q3(function (err, artist) {
+            if (err)
+               throw err;
+            result.push(artist);
+            finishRequest(result);
+         });
+      }
+      else if(x=="songs")
+      {
+         if(req.query.flag == "random"){
+            console.log("hello");
+            q6(function(err,cnt){
+               if(err)
+                  console.log("error in taking out count of documents ",err);
+               cnt_doc = cnt;
+               q5(function (err, songs) {
+                  if (err)
+                     throw err;
+                  //res.json(songs);
+                  result.push(songs);
+                  finishRequest(result);
+               });
+            });
+         }
+         else{
+            q4(function (err, songs) {
                if (err)
                   throw err;
-               result.push(albums);
+               result.push(songs);
                finishRequest(result);
             });
          }
+      }
+      });
 
-         else if(x=="artists")
-            {
-               q3(function (err, artist) {
-                  if (err)
-                     throw err;
-                  result.push(artist);
-                  finishRequest(result);
-               });
-            }
-            else if(x=="songs")
-               {
-                  if(req.query.flag == "random"){
-                     console.log("hello");
-                     q6(function(err,cnt){
-                        if(err)
-                           console.log("error in taking out count of documents ",err);
-                        cnt_doc = cnt;
-                        q5(function (err, songs) {
-                           if (err)
-                              throw err;
-                           //res.json(songs);
-                           result.push(songs);
-                           finishRequest(result);
-                        });
-                     });
-                  }
-                  else{
-                     q4(function (err, songs) {
-                        if (err)
-                           throw err;
-                        result.push(songs);
-                        finishRequest(result);
-                     });
-                  }
-               }
-});
-
-module.exports = router;
+      module.exports = router;

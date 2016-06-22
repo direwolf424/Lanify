@@ -56,11 +56,11 @@ $(document).ready(function(){
 
    function inputChanged () {
       if(this.value.length<2)
-         {
-            var res = document.getElementById('search_result');
-            res.style.visibility="hidden";
-            res.style.display='none';
-         }
+      {
+         var res = document.getElementById('search_result');
+         res.style.visibility="hidden";
+         res.style.display='none';
+      }
    }
 
    $('.album_slick').slick({
@@ -111,9 +111,9 @@ $(function () {
             //url: "http://192.168.159.28:1234/search",
             //url: "http://192.168.159.28:3000/search",
             url: "http://localhost:1234/search",
-            type: "GET",
-            data: request,  // request is the value of search input
-            success: function (data) {
+               type: "GET",
+               data: request,  // request is the value of search input
+               success: function (data) {
                var res = document.getElementById('search_result');
                res.style.visibility="visible";
                res.style.display='block';
@@ -125,38 +125,38 @@ $(function () {
                res.style.display='block';
                res.innerHTML = "";
                for(var i in songs)
-                  {
-                     var song_json = JSON.stringify(songs[i]);
+               {
+                  var song_json = JSON.stringify(songs[i]);
 
-                     res.innerHTML += "<div class=' search_line  ui-menu-item'> <div onclick='play1("+song_json+"); return false;' class='search_name'> <span>"+songs[i].title+" </span> </div> <div class='search_plus'> <a href='' onclick='add_to_queue("+song_json+"); return false;'>  <span class=' search_block glyphicon glyphicon-plus'></span> </a> </div>  </div>";
-                     if(i>5)
-                        break;
-                  }
-                  res = document.getElementById('search_album');
-                  res.style.visibility="visible";
-                  res.style.display='block';
-                  res.innerHTML = "";
-                  if(albums.length===0)
-                     {
-                        res.innerHTML = "No Albums Found";
-                     }
-                     for(i in albums)
-                        {
-                           var pass = JSON.stringify("load_album('/album/"+albums[i]+"')");
-                           res.innerHTML += "<p class='ui-menu-item' onclick="+pass+">"+albums[i]+"<p>";
-                           if(i>5)
-                              break;
-                        }
-                        res = document.getElementById('search_artist');
-                        res.style.visibility="visible";
-                        res.style.display='block';
-                        res.innerHTML = "";
-                        for(i in artists)
-                           {
-                              res.innerHTML += "<p class='ui-menu-item' onclick='load_artist("+JSON.stringify('/artist/'+artists[i])+"); return false;'>"+artists[i]+"<p>";
-                              if(i>5)
-                                 break;
-                           }
+                  res.innerHTML += "<div class=' search_line  ui-menu-item'> <div onclick='play1("+song_json+"); return false;' class='search_name'> <span>"+songs[i].title+" </span> </div> <div class='search_plus'> <a href='' onclick='add_to_queue("+song_json+"); return false;'>  <span class=' search_block glyphicon glyphicon-plus'></span> </a> </div>  </div>";
+                  if(i>5)
+                     break;
+               }
+               res = document.getElementById('search_album');
+               res.style.visibility="visible";
+               res.style.display='block';
+               res.innerHTML = "";
+               if(albums.length===0)
+               {
+                  res.innerHTML = "No Albums Found";
+               }
+               for(i in albums)
+               {
+                  var pass = JSON.stringify("load_album('/album/"+albums[i]+"')");
+                  res.innerHTML += "<p class='ui-menu-item' onclick="+pass+">"+albums[i]+"<p>";
+                  if(i>5)
+                     break;
+               }
+               res = document.getElementById('search_artist');
+               res.style.visibility="visible";
+               res.style.display='block';
+               res.innerHTML = "";
+               for(i in artists)
+               {
+                  res.innerHTML += "<p class='ui-menu-item' onclick='load_artist("+JSON.stringify('/artist/'+artists[i])+"); return false;'>"+artists[i]+"<p>";
+                  if(i>5)
+                     break;
+               }
             }
          });
       },
@@ -310,9 +310,9 @@ function dragdrop() {
          var play_obj = JSON.parse(play);
          playlist.push(play_obj);
          if(play_obj.path==song.path)
-            {
-               playlist_index=i;
-            }
+         {
+            playlist_index=i;
+         }
       }
       localStorage.setItem('queue', JSON.stringify(playlist));
    };
@@ -320,8 +320,8 @@ function dragdrop() {
 
 $(document).ready(function(){
    //$('#playlist').click(function(){
-      ////alert('hello');
-      //load_user_playlist();
+   ////alert('hello');
+   //load_user_playlist();
    //});
    //$('#add_to_playlist').webuiPopover({title:'Title',content:'Content'});
    //$('.backBtn').webuiPopover({title:'Title',content:'Content'});

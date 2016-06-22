@@ -7,7 +7,7 @@ var Song = require('../model/songs').Song;
 var express = require('express');
 var router = express.Router();
 mongoose.connect('mongodb://localhost/music');
-var path,songs_all,albums,album_arts,name;
+   var path,songs_all,albums,album_arts,name;
 
 var isAuthenticated = function (req, res, next) {
    if (req.user)

@@ -62,81 +62,81 @@ router.post('/upload', upload.single('music'), function (req, res, next) {
       //time = calculate_length(time);
       //var year = metadata.year;
       db_song.update({"title":title},
-                     {
-                        $set: {
-                           title:title,
-                           album:album,
-                           artist:arr_artist,
-                           genre:'',
-                           path:target_path,
-                           album_art_small:'/cover/FRONT_COVER.jpg',
-                           album_art:'/cover/FRONT_COVER.jpg',
-                           rating:0,
-                           views:0,
-                           likes:0,
-                           dislikes:0,
-                           release_date:year,
-                           length:time,
-                           language:lang
-                        },
-                        $currentDate: {
-                           lastModified: true,
-                        }
-                     },
-                     { upsert:true }).exec(function(err,write){
-                        if(err)
-                           console.log('updated');
-                        else{
-                           console.log(' written ',title);
-                        }
-                     });
-                     res.status(200).send('successfully uploaded');
+         {
+         $set: {
+            title:title,
+            album:album,
+            artist:arr_artist,
+            genre:'',
+            path:target_path,
+            album_art_small:'/cover/FRONT_COVER.jpg',
+            album_art:'/cover/FRONT_COVER.jpg',
+            rating:0,
+            views:0,
+            likes:0,
+            dislikes:0,
+            release_date:year,
+            length:time,
+            language:lang
+         },
+         $currentDate: {
+            lastModified: true,
+         }
+      },
+      { upsert:true }).exec(function(err,write){
+         if(err)
+            console.log('updated');
+         else{
+            console.log(' written ',title);
+         }
+      });
+      res.status(200).send('successfully uploaded');
    });
 });
 
 router.get('/rename',function(req,res,next){
    if(req.query.flag == "album"){
-   var old_album = req.query.album_name;
-   var new_album = req.query.value;
-   db_song.update({"album":old_album},
-                  {
-                     $set: {
-                        album:new_album,
-                     },
-                     $currentDate: {
-                        lastModified: true,
-                     }
-                  },
-                  { upsert:true,
-                     multi:true }).exec(function(err,write){
-                        if(err)
-                           console.log('updated');
-                        else{
-                           console.log(' updated album '+old_album+' '+new_album);
-                        }
-                     });
-                     res.status(200).send('Done');
+      var old_album = req.query.album_name;
+      var new_album = req.query.value;
+      db_song.update({"album":old_album},
+         {
+         $set: {
+            album:new_album,
+         },
+         $currentDate: {
+            lastModified: true,
+         }
+      },
+      { upsert:true,
+         multi:true }).exec(function(err,write){
+         if(err)
+            console.log('updated');
+         else{
+            console.log(' updated album '+old_album+' '+new_album);
+         }
+      });
+      res.status(200).send('Done');
    }
    if(req.query.flag == "artist"){
-   var old_artist = req.query.artist_name;
-   var new_artist = req.query.value;
-   db_song.update({"artist":old_artist},
-                  {
-                     $set: {
-                        "artist.$":new_artist,
-                     },
-                     $currentDate: {
-                        lastModified: true,
-                     }
-                  },
-                  {multi:true }).exec(function(err,write){
-                        if(err)
-                           console.log('updated');
-                        else{
-                           console.log(' updated artist '+old_artist+' '+new_artist);
-                        }
-                     });
-                     res.status(200).send('Done');
+      var old_artist = req.query.artist_name;
+      var new_artist = req.query.value;
+      db_song.update({"artist":old_artist},
+         {
+         $set: {
+            "artist.$":new_artist,
+         },
+         $currentDate: {
+            lastModified: true,
+         }
+      },
+      {multi:true }).exec(function(err,write){
+         if(err)
+            console.log('updated');
+         else{
+            console.log(' updated artist '+old_artist+' '+new_artist);
+         }
+      });
+      res.status(200).send('Done');
    }
 });
 

@@ -5,7 +5,7 @@ var mongoose = require('mongoose');
 var db = require('../model/songs').Song;
 var db_ip = require('../model/ip_table').Ip;
 mongoose.createConnection('mongodb://localhost/music');
-var path,album,artist,songs;
+   var path,album,artist,songs;
 
 
 
@@ -35,32 +35,32 @@ router.get('/',function(req,res,next){
          if (err) throw err;
          //console.log("ip added to database ---->",ip);
          return fn && fn(null,"Updated");
-      });
-   };
-
-   var q3 = function(fn) {
-      //db_ip.find({"ip":req.ip}).exec( function(err, ip) {
-      db_ip.update({"ip":req.ip},{$addToSet:{songs:x},$currentDate: {lastModified:true }}, function(err, ip1) {
-         //db_ip.insert({"ip":req.ip}, function(err, ip) {
-         if (err) throw err;
-         //console.log("ip added to database ---->",ip);
-         return fn && fn(null,"added");
-      });
-   };
-   q1(function (err, result) {
-      if (err)
-         throw err;
-      q2(function(err,result1){
-         if(err)
-            throw err;
-         //finishRequest(result);
-         q3(function(err,result2){
-            if(err)
-               throw err;
-            finishRequest(result);
          });
-      });
-   });
-});
+      };
 
-module.exports = router;
+      var q3 = function(fn) {
+         //db_ip.find({"ip":req.ip}).exec( function(err, ip) {
+         db_ip.update({"ip":req.ip},{$addToSet:{songs:x},$currentDate: {lastModified:true }}, function(err, ip1) {
+            //db_ip.insert({"ip":req.ip}, function(err, ip) {
+            if (err) throw err;
+            //console.log("ip added to database ---->",ip);
+            return fn && fn(null,"added");
+            });
+         };
+         q1(function (err, result) {
+            if (err)
+               throw err;
+            q2(function(err,result1){
+               if(err)
+                  throw err;
+               //finishRequest(result);
+               q3(function(err,result2){
+                  if(err)
+                     throw err;
+                  finishRequest(result);
+               });
+            });
+         });
+         });
+
+         module.exports = router;
