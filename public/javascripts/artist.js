@@ -1,6 +1,3 @@
-/**
- * Created by Saurabh on 15-Jan-16.
- */
 function load_artist(url)
 {
     $.get(url, function(data, status){
@@ -9,6 +6,8 @@ function load_artist(url)
         var elem_image = document.getElementById("artist_single_image");
         elem_image.innerHTML='<img class="image_size" src="image/image.jpg"></img>';
         elem.innerHTML = data[0];
+      elem = document.getElementById("rename_artist");
+      elem.innerHTML = " <a href='' onclick=''> <span class='glyphicon glyphicon-play'></span> Rename Artist </a>";
 
         $("#artist_single_albums_table tr").remove();
         $("#artist_single_songs_table tr").remove();

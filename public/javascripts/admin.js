@@ -34,6 +34,23 @@ $(document).ready(function() {
          return params;
       }
    });
+   $('#rename_artist').editable({
+      type: 'text',
+      pk: 1,
+      url: '/lanify/admin/rename',
+      title: 'Enter valid name',
+      ajaxOptions: {
+         type: 'get',
+         dataType: 'json'
+      },
+      autotext:'never',
+      params: function(params) {
+         //originally params contain pk, name and value
+         params.flag = 'artist';
+         params.artist_name = $("#artist_single_name").html();
+         return params;
+      }
+   });
 });
 
 

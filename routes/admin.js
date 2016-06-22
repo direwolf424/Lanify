@@ -117,6 +117,27 @@ router.get('/rename',function(req,res,next){
                      });
                      res.status(200).send('Done');
    }
+   if(req.query.flag == "artist"){
+   var old_artist = req.query.artist_name;
+   var new_artist = req.query.value;
+   db_song.update({"artist":old_artist},
+                  {
+                     $set: {
+                        "artist.$":new_artist,
+                     },
+                     $currentDate: {
+                        lastModified: true,
+                     }
+                  },
+                  {multi:true }).exec(function(err,write){
+                        if(err)
+                           console.log('updated');
+                        else{
+                           console.log(' updated artist '+old_artist+' '+new_artist);
+                        }
+                     });
+                     res.status(200).send('Done');
+   }
 });
 
 module.exports = router;
