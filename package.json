@@ -8,6 +8,7 @@
   "dependencies": {
     "body-parser": "~1.13.2",
     "connect-flash": "^0.1.1",
+    "connect-mongo": "^1.2.1",
     "cookie-parser": "~1.3.5",
     "debug": "^2.2.0",
     "ejs": "~2.3.3",
@@ -20,7 +21,6 @@
     "musicmetadata": "^2.0.2",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
-    "passport-remember-me": "0.0.1",
     "serve-favicon": "~2.3.0",
     "sync": "^0.2.5",
     "webui-popover": "^1.2.8"
