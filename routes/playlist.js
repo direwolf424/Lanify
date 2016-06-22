@@ -135,6 +135,29 @@ router.get('/',function(req,res,next){
             res.send('');
          }
       }
+      if(req.query.flag == "rename"){
+         var old_playlist = req.query.playlist_name;
+         var new_playlist = req.query.value;
+         console.log('renaming playlist-----. ',old_playlist,new_playlist);
+         playlist.update({"name":old_playlist,"user_name":req.user.username}, 
+            {"name":new_playlist},function(err,write){
+            if(err)
+               console.log('updated');
+            else{
+               console.log(' updated playlist '+old_playlist+' '+new_playlist);
+         res.status(200).send('Done');
+            }
+         });
+      }
+      if(req.query.flag == "delete"){
+         var del_playlist = req.query.name;
+         playlist.remove({name:del_playlist,user_name:req.user.username},function(err,result){
+            if(err)
+               console.log("error in deleting playlist");
+            console.log("playlist deleted succesfully ",del_playlist);
+            res.status(200).send('Done');
+         });
+      }
    }
    else{
       if(req.query.flag=='songs'){
