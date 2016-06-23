@@ -190,6 +190,11 @@ function play1(song){
    player_album.innerHTML = "<a class='album_click' href='' onclick="+pass+">"+album+"</a>";
    check_album_song();
    check_song_song();
+   $.ajax({
+      type:'GET',
+      url:'/playlist/',
+      data:{flag:'default_playlist',song:song._id}
+   });
    return false;
 }
 

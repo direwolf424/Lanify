@@ -4,9 +4,10 @@ var router = express.Router();
 var url = require('url');
 var mongoose = require('mongoose');
 var playlist = require('../model/playlist').Playlist;
+var dplaylist = require('../model/default_playlist').Playlist_default;
 var songs = require('../model/songs').Song;
 mongoose.createConnection('mongodb://localhost/music');
-   var path,album,artist,songs;
+var path,album,artist,songs;
 
 
 router.get('/',function(req,res,next){
@@ -68,12 +69,44 @@ router.get('/',function(req,res,next){
                return fn && fn(null,plist);
             });
          };
+         var f_def = function(play){
+            dplaylist.find({"user_name":req.user.username}).exec(function(err,plist){
+               if(err)
+                  console.log(err);
+               var new_plist=plist.concat(play);
+               res.send(new_plist);
+            });
+         };
          q2(function(err,play){
             if(err)
                console.log(err);
             //console.log(play);
-            res.send(play);
+           f_def(play);
+            //res.send(play);
          });
+      }
+      else if(req.query.flag=='default_playlist'){
+         console.log('hellllllllll default');
+         var sid = req.query.song; 
+         var default_playlist = function(uname) {
+            var ct = 'Top 100 Songs';
+            dplaylist.update({"name":ct,"user_name":uname},
+               //{$addToSet:{"song":{"song_id":sid,count:0},$slice:100 }},
+               {$addToSet:{"song":sid,$slice:100 }},
+               {upsert:true,new:true}, function(err, result) {
+               if (err) console.log(err);
+               console.log("Updated");
+
+               dplaylist.update({"name":ct,"user_name":uname},
+                  {$push:{"song":{$each:[],$slice:5 }}},
+                  {upsert:true,new:true}, function(err, result) {
+                  if(err)
+                     console.log('error in slicing');
+                  res.status(200).send('');
+               });
+            });
+         };
+         default_playlist(req.user.username);
       }
       else if(req.query.flag=='songs'){
          var q3 = function(fn){
@@ -91,6 +124,27 @@ router.get('/',function(req,res,next){
                '_id': { $in: play[0].song_id}
             }, function(err, docs){
                //console.log(docs);
+
+               res.send(docs);
+            });
+         });
+      }
+      else if(req.query.flag=='auto_songs'){
+         var q3 = function(fn){
+            dplaylist.find({"name":req.query.name,user_name:req.user.username}).exec(function(err,plist){
+               if(err)
+                  console.log('Error occured',err);
+               console.log(plist);
+               return fn && fn(null,plist);
+            });
+         };
+         q3(function(err,play){
+            if(err)
+               console.log(err);
+            songs.find({
+               '_id': { $in: play[0].song}
+            }, function(err, docs){
+               console.log(docs);
 
                res.send(docs);
             });
