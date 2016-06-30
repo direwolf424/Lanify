@@ -7,7 +7,7 @@ var Song = require('../model/songs').Song;
 var express = require('express');
 var router = express.Router();
 mongoose.connect('mongodb://localhost/music');
-   var path,songs_all,albums,album_arts,name;
+   var path,songs_all,albums,album_arts,name,count;
 
 var isAuthenticated = function (req, res, next) {
    if (req.user)
@@ -34,15 +34,20 @@ Song.collection.distinct("artist", function(err, results){
    if (err) throw err;
    artist = results;
 });
+Song.count().exec(function(err,cnt){
+   if(err) console.log(err);
+   count = cnt;
+   console.log("the count is -------->",cnt);
+});
 /* GET home page. */
 router.get('/',function(req, res, next) {
    //console.log('------------------------------------------>>>>>>>>',req.ip);
    //console.log('------------------------',req.user);
    if(req.user){
-      res.render('db', {username:req.user.username,songs:songs_all, artists:artist ,dirname:__dirname,albums:albums,album_arts:album_arts,message:'' });
+      res.render('db', {username:req.user.username,songs:songs_all, artists:artist ,dirname:__dirname,albums:albums,album_arts:album_arts,count:count });
    }
    else{
-      res.render('db', {username:'',songs:songs_all, artists:artist ,dirname:__dirname,albums:albums,album_arts:album_arts,message:'' });
+      res.render('db', {username:'',songs:songs_all, artists:artist ,dirname:__dirname,albums:albums,album_arts:album_arts,count:count });
    }
 });
 

@@ -3,8 +3,9 @@ var router = express.Router();
 var url = require('url');
 var mongoose = require('mongoose');
 var db_user= require('../model/user').user;
+var dplaylist = require('../model/default_playlist').Playlist_default;
 mongoose.createConnection('mongodb://localhost/music');
-   var path,album,artist,songs;
+var path,album,artist,songs;
 
 router.post('/',function(req,res,next){
    var uname = req.body.username;
@@ -32,6 +33,15 @@ router.post('/',function(req,res,next){
             res.send({message:'Registration Successfull',flag:1});
             console.log('Registration Successfull');
          });
+         //create a default playlist for logged in users
+         //var default_playlist = function() {
+            //var ct = 'Top 100 Songs';
+            //dplaylist.update({"name":ct,"user_name":uname}, {$addToSet:{"song":{"song_id":'',count:0}}}, {upsert:true,new:true}, function(err, ip1) {
+               //if (err) console.log(err);
+               //console.log("Updated");
+            //});
+         //};
+         //default_playlist();
       }
    });
 });

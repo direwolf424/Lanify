@@ -13,6 +13,7 @@ var artist = require('./routes/artist');
 var search = require('./routes/search');
 var request = require('./routes/request');
 var playlist = require('./routes/playlist');
+var rate_playlist = require('./routes/rate_playlist');
 var update = require('./routes/update');
 var admin = require('./routes/admin');
 var register = require('./routes/register');
@@ -61,10 +62,10 @@ function(req, username, password, done) {
 app.use(cookieParser());
 
 app.use(session({
-    secret:'secret',
-    maxAge: new Date(Date.now() + 3600000),
-    store: new MongoStore({ mongooseConnection: connection })
-    }));
+   secret:'secret',
+   maxAge: new Date(Date.now() + 3600000),
+   store: new MongoStore({ mongooseConnection: connection })
+}));
 //app.use(expressSession({ secret: 'my secret', cookie: { maxAge : 1200000 } }));  
 app.use(passport.initialize());
 app.use(passport.session());
@@ -108,6 +109,7 @@ app.use('/lanify',db.Route);
 app.use('/search',search);
 app.use('/register',register);
 app.use('/lanify/admin',admin);
+app.use('/rate_playlist',rate_playlist);
 
 var isAuthenticated = function (req, res, next) {
    if (req.isAuthenticated())
@@ -185,9 +187,9 @@ function(req, res) {
 app.get('/status',function(req,res,next){
    console.log('tokens here ',tokens);
    if(req.user)
-      res.send(tokens);
+      res.send('true');
    else
-      res.send(tokens);
+      res.send('false');
 });
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

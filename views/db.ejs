@@ -38,11 +38,13 @@
       <link rel='stylesheet' href='/slick/slick-theme.css' />
       <link rel="stylesheet" href="/stylesheets/animate.css">
       <link rel="stylesheet" href="/stylesheets/bootstrap-switch.min.css">
+      <link rel="stylesheet" href="five-star-rating/css/rating.min.css">
       <script type="text/javascript" src="/slick/slick.min.js"></script>
       <script src="/javascripts/jquery.webui-popover.min.js"></script>
       <script src="/javascripts/bootstrap-notify.min.js"></script>
       <script src="/javascripts/bootstrap-editable.min.js"></script>
       <script src="/javascripts/bootstrap-switch.min.js"></script>
+      <script src="five-star-rating/js/rating.min.js"></script>
    </head>
    <body>
 
@@ -65,7 +67,8 @@ fjs.parentNode.insertBefore(js, fjs);
       <nav class="top_bar navbar-fixed-top">
          <div>
             <div class="heading_top">
-               <a href="" onclick="load_home(); return false;">La<span class='glyphicon glyphicon-music'></span>ify<sup>β</sup></a>
+               <!--<a href="" onclick="load_home(); return false;">La<span class='glyphicon glyphicon-music'></span>ify<sup>β</sup></a>-->
+               <a href="" onclick="load_home(); return false;"><img src="image/lanify_logo.jpg" width="150px" height="50px"><img></a>
                <% if ( username.length <= 0) { %>
                <button type="button" class="btn btn-default btn-lg" id="signinBtn">Login</button>
                <button type="button" class="btn btn-default btn-lg" id="signupBtn">Signup</button>
@@ -75,7 +78,7 @@ fjs.parentNode.insertBefore(js, fjs);
                <button type="button" class="btn btn-default btn-lg" id="logoutBtn">Logout</button>
                <% } %>
 
-               <button type="button" class="btn btn-default btn-lg backBtn">Back</button>
+               <!--<button type="button" class="btn btn-default btn-lg backBtn">Back</button>-->
                <div class="fb-like" data-href="https://www.facebook.com/Lanify/" data-layout="standard" data-action="like" data-show-faces="false" data-share="true"></div>
                <!--<div class="fb-page"-->
                <!--data-href="https://www.facebook.com/lanify"-->
@@ -113,11 +116,11 @@ fjs.parentNode.insertBefore(js, fjs);
                   <form id="login_form" action = "/login" method="post" role="form">
                      <div class="form-group">
                         <label for="usrname"><span class="glyphicon glyphicon-user"></span> Username</label>
-                        <input type="text" class="form-control" id="username1" name="username" placeholder="Enter username">
+                        <input type="text" required class="form-control" id="username1" name="username" placeholder="Enter username">
                      </div>
                      <div class="form-group">
                         <label for="psw"><span class="glyphicon glyphicon-eye-open"></span> Password</label>
-                        <input type="password" class="form-control" id="password1" name="password" placeholder="Enter password">
+                        <input type="password" required class="form-control" id="password1" name="password" placeholder="Enter password">
 
                      </div>
                      <div class="checkbox">
@@ -151,19 +154,19 @@ fjs.parentNode.insertBefore(js, fjs);
                   <form id= "register_form" action = "/register" method="post" role="form">
                      <div class="form-group">
                         <label for="usrname"><span class="glyphicon glyphicon-user"></span> Username</label>
-                        <input type="text" class="form-control" id="username" name="username" placeholder="Enter email">
+                        <input type="text" minlength="4" required class="form-control" id="username" name="username" placeholder="Enter Username">
                      </div>
                      <div class="form-group">
                         <label for="psw"><span class="glyphicon glyphicon-eye-open"></span> Password</label>
-                        <input type="text" class="form-control" id="password" name="password" placeholder="Enter password">
+                        <input type="password" required class="form-control" id="password" name="password" placeholder="Enter password">
                      </div>
                      <div class="form-group">
                         <label for="roll"><span class="glyphicon glyphicon-eye-open"></span> Roll No</label>
-                        <input type="text" class="form-control" id="rollno" name="rollno" placeholder="Enter Roll No">
+                        <input type="text" required class="form-control" id="rollno" name="rollno" placeholder="Enter College Roll No">
                      </div>
                      <div class="form-group">
                         <label for="mob"><span class="glyphicon glyphicon-eye-open"></span> Mobile</label>
-                        <input type="text" class="form-control" id= "mobileno" name="mobileno" placeholder="Enter Number">
+                        <input type="number" min="7000000000" max="9999999999" required class="form-control" id= "mobileno" name="mobileno" placeholder="Enter Number">
                      </div>
                      <button type="submit" class="btn btn-success btn-block"><span class="glyphicon glyphicon-off"></span> Register</button>
                   </form>
@@ -209,6 +212,9 @@ fjs.parentNode.insertBefore(js, fjs);
                </li>
                <li>
                   <a href="#request" data-toggle="tab"> <span class='glyphicon glyphicon-envelope'></span> Request</a>
+               </li>
+               <li>
+                  <a href="#own_info" data-toggle="tab"> <span class='glyphicon glyphicon-th-large'></span> Info</a>
                </li>
                <li style="visibility: hidden; display: none;">
                   <a href="#tags_single" data-toggle="tab"> <span class='glyphicon glyphicon-music'></span> Tags Single</a>
@@ -440,8 +446,10 @@ fjs.parentNode.insertBefore(js, fjs);
                            <% if ( username.length > 0) { %>
                            <div id="delete_playlist"></div>
                            <div id="rename_playlist"></div>
-                           <label>Share <input type="checkbox" name="my-checkbox"></label>
                            <% } %>
+                           <label id="share_checkbox">Share <input type="checkbox" name="my-checkbox" ></label>
+                           <div id="rating_status"></div>
+                           <div class="c-rating" id="el"></div>
                         </div>
                   </div>
                   <table class="table-striped table" id="playlist_songs">
@@ -453,7 +461,7 @@ fjs.parentNode.insertBefore(js, fjs);
                      <div class="form-group">
                         <label class="control-label col-sm-2" for="email">Name:</label>
                         <div class="col-sm-10">
-                           <input class="search_block form-control" id="name" placeholder="Enter Name">
+                           <input type="text" class="search_block form-control" required id="name" placeholder="Enter Name">
                         </div>
                      </div>
                      <div class="form-group">
@@ -476,6 +484,16 @@ fjs.parentNode.insertBefore(js, fjs);
                         </div>
                      </div>
                   </form>
+               </div>
+
+               <div class="tab-pane" id="own_info">
+                  <ul class="list-group" style="margin-top:20px">
+                     <li class="list-group-item">The Database consist of <%= count %> Songs . If you are still unable to find the song you can request and we will upload the songs for you .</li>
+                     <li class="list-group-item">We love keyboards and so there is various keyboard shortcuts assigned . If you need more just send a request or a pull request on github we will be happy to merge it .</li>
+                     <li class="list-group-item">If u love designing and want to improve the look of the website message us and we will contact you.</li>
+                     <li class="list-group-item">This website is made by <a target="_blank" href="https://www.facebook.com/pankajagarwal424">Pankaj Agarwal</a> and <a target="_blank" href="https://www.facebook.com/sk.sin28">Saurabh Sinha</a></li>
+                     <li class="list-group-item">The project is open source and can be found in <a target="_blank" href="https://github.com/direwolf424/Lanify">Github</a></li>
+                  </ul>
                </div>
 
                <div class="tab-pane" id="tags">

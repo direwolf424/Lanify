@@ -98,7 +98,7 @@ router.get('/',function(req,res,next){
                console.log("Updated");
 
                dplaylist.update({"name":ct,"user_name":uname},
-                  {$push:{"song":{$each:[],$slice:5 }}},
+                  {$push:{"song":{$each:[],$slice:100 }}},
                   {upsert:true,new:true}, function(err, result) {
                   if(err)
                      console.log('error in slicing');

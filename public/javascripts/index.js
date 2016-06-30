@@ -16,10 +16,11 @@ $.ajax({
    type:"GET",
    url:'/status',
    success:function(data){
-      if(data==0)
-         loggedin=false;
-      else
+      console.log(data);
+      if(data=="true")
          loggedin=true;
+      else
+         loggedin=false;
    }
 });
 $(document).ready(function(){
@@ -111,9 +112,9 @@ $(function () {
             //url: "http://192.168.159.28:1234/search",
             //url: "http://192.168.159.28:3000/search",
             url: "http://localhost:1234/search",
-               type: "GET",
-               data: request,  // request is the value of search input
-               success: function (data) {
+            type: "GET",
+            data: request,  // request is the value of search input
+            success: function (data) {
                var res = document.getElementById('search_result');
                res.style.visibility="visible";
                res.style.display='block';
@@ -269,29 +270,34 @@ function submit_request(){
    var e3 = $('#bugs').val();
    var e4 = $('#features').val();
    //if(e1.length)
-   $('#songname').val('');
-   $('#bugs').val('');
-   $('#features').val('');
-   $.ajax({
-      type: "POST",
-      data: {username:e1,
-         songname:e2,
-         bugs:e3,
-         features:e4
-      },
-      //url: "http://192.168.159.28:3000/request",
-      url: "http://localhost:1234/request",
-      success:function(data){
-         $.notify("Thanks For Your Feedback", {
-            animate: {
-               enter: 'animated fadeInRight',
-               exit: 'animated fadeOutRight'
-            },
-            newest_on_top: false,
-            delay: 2000,
-         });
-      }
-   });
+   if(e1.length == 0 ){
+      alert('Please enter your name and then submit');
+   }
+   else{
+      $('#songname').val('');
+      $('#bugs').val('');
+      $('#features').val('');
+      $.ajax({
+         type: "post",
+         data: {username:e1,
+            songname:e2,
+            bugs:e3,
+            features:e4
+         },
+         //url: "http://192.168.159.28:3000/request",
+         url: "http://localhost:1234/request",
+         success:function(data){
+            $.notify("Thanks For Your Feedback", {
+               animate: {
+                  enter: 'animated fadeInRight',
+                  exit: 'animated fadeOutRight'
+               },
+               newest_on_top: false,
+               delay: 2000,
+            });
+         }
+      });
+   }
 }
 
 

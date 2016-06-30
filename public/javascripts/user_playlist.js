@@ -1,4 +1,5 @@
 var current_name;
+var pub_priv;
 function remove_from_playlist(song_json,elem){
    var id = song_json._id;
    var table = document.getElementById('playlist_songs');
@@ -46,23 +47,25 @@ $(document).ready(function(){
          }
       });
    });
-   $('#rename_playlist').editable({
-      type: 'text',
-      pk: 1,
-      url: '/playlist/',
-      title: 'Enter playlist name',
-      ajaxOptions: {
-         type: 'get',
-         dataType: 'json'
-      },
-      autotext:'never',
-      params: function(params) {
-         //originally params contain pk, name and value
-         params.flag = 'rename';
-         params.playlist_name = $("#playlist_name").html();
-         return params;
-      }
-   });
+   if(loggedin){
+      $('#rename_playlist').editable({
+         type: 'text',
+         pk: 1,
+         url: '/playlist/',
+         title: 'Enter playlist name',
+         ajaxOptions: {
+            type: 'get',
+            dataType: 'json'
+         },
+         autotext:'never',
+         params: function(params) {
+            //originally params contain pk, name and value
+            params.flag = 'rename';
+            params.playlist_name = $("#playlist_name").html();
+            return params;
+         }
+      });
+   }
 });
 function load_public_playlist()
 {
@@ -75,16 +78,32 @@ function load_public_playlist()
       success:function(data){
          //alert('hello',data);
          //console.log(data);
+         pub_priv=true;
          $("#playlist_public_div").empty();
          var elem = document.getElementById("playlist_public_div");
          var x = JSON.stringify('/image/image.jpg');
-         for(var i=0;i<data.length;i++)
-         {
-            elem.innerHTML += "<a href='' onclick='load_playlist_songs("+JSON.stringify(data[i])+"); return false;' > <div class='album tags col-md-5ths'> <div class='song_image'> <img onerror="+x+" src='/image/image.jpg'> </img> </div> <div class='ellip_name'> "+capitalizeFirstLetter(data[i].name)+" </div><div class='ellip_name'>By "+data[i].user_name+" </div></div>  </a>";
+         for(var i=0;i<data.length;i++){
+            addRatingWidget(buildPlaylistItem(data[i],elem), data[i]);
          }
       }
    });
    return false;
+}
+function buildPlaylistItem(data,playlist) {
+   var playlistItem = document.createElement('div');
+
+   var html = "<a href='' onclick='load_playlist_songs("+JSON.stringify(data)+"); return false;' > <div class='album tags col-md-5ths'> <div class='song_image'> <img src='/image/image.jpg'> </img> </div> <div class='ellip_name'> "+capitalizeFirstLetter(data.name)+" </div><div class='ellip_name'>By "+data.user_name+" </div></a><div class='c-rating'>("+data.rating_count+")</div></div>";
+   playlistItem.innerHTML = html;
+   playlist.appendChild(playlistItem);
+
+   return playlistItem;
+}
+function addRatingWidget(playlistItem, data) {
+   var ratingElement = playlistItem.querySelector('.c-rating');
+   var currentRating = Math.floor(data.rating/data.rating_count);
+   var maxRating = 5;
+   var callback = function(rating) { alert(rating); };
+   var r = rating(ratingElement, currentRating, maxRating, callback);
 }
 function load_private_playlist()
 {
@@ -98,12 +117,13 @@ function load_private_playlist()
          success:function(data){
             //alert('hello',data);
             //console.log(data);
+            pub_priv=false;
             $("#playlist_private_div").empty();
             var elem = document.getElementById("playlist_private_div");
             for(var i=0;i<data.length;i++)
             {
                if(i==0){
-               elem.innerHTML += "<a href='' onclick='load_auto_playlist_songs("+JSON.stringify(data[i])+"); return false;' > <div class='album tags col-md-5ths'> <div class='song_image'> <img  src='/image/image.jpg'> </img> </div> <div class='ellip_name'> "+capitalizeFirstLetter(data[i].name)+"(Auto Generated) </div></div>  </a>";
+                  elem.innerHTML += "<a href='' onclick='load_auto_playlist_songs("+JSON.stringify(data[i])+"); return false;' > <div class='album tags col-md-5ths'> <div class='song_image'> <img  src='/image/image.jpg'> </img> </div> <div class='ellip_name'> "+capitalizeFirstLetter(data[i].name)+" </div></div>  </a>";
                }else{
                   elem.innerHTML += "<a href='' onclick='load_playlist_songs("+JSON.stringify(data[i])+"); return false;' > <div class='album tags col-md-5ths'> <div class='song_image'> <img  src='/image/image.jpg'> </img> </div> <div class='ellip_name'> "+capitalizeFirstLetter(data[i].name)+" </div></div>  </a>";
                }
@@ -130,7 +150,7 @@ function load_playlist_songs(play){
          //console.log(data);
          //console.log('hello world');
          current_name = play.name;
-         play_psong(data,play.name);
+         play_psong(data,play.name,play._id);
       },
       error: function (data,status) {
       },
@@ -173,7 +193,11 @@ function play_auto_psong(data,tag){
    var temp_arr = [];
    elem.innerHTML = "<img class ='image_size' src='image/image.jpg'>";
    elem = document.getElementById("playlist_name");
-   elem.innerHTML = tag;
+   elem.innerHTML = tag+" (Auto Generated)";
+   $("#rename_playlist").empty();
+   $("#delete_playlist").empty();
+   var element = document.getElementById("share_checkbox");
+   element.style.display = 'none';  
    $("#playlist_songs tr").remove();
    for(var song=0;song<data.length;song++)
    {
@@ -214,7 +238,7 @@ function play_auto_psong(data,tag){
    $('.nav-stacked a[href="#playlist_single"]').tab('show');
    //return false;
 }
-function play_psong(data,tag){
+function play_psong(data,tag,pid){
    //console.log('tagging');
    //console.log(data);
    var elem = document.getElementById("playlist_image");
@@ -223,11 +247,22 @@ function play_psong(data,tag){
    elem = document.getElementById("playlist_name");
    //elem.innerHTML = capitalizeFirstLetter(tag);
    elem.innerHTML = tag;
-   elem = document.getElementById("rename_playlist");
-   elem.innerHTML = " <a href=''> <span class='glyphicon glyphicon-play'></span> Rename Playlist </a>";
-   elem = document.getElementById("delete_playlist");
-   elem.innerHTML = " <a onclick='delete_playlist_confirm();return false;'> <span class='glyphicon glyphicon-play'></span> Delete Playlist </a>";
+   if(loggedin&&!pub_priv){
+      elem = document.getElementById("rename_playlist");
+      elem.innerHTML = " <a href=''> <span class='glyphicon glyphicon-play'></span> Rename Playlist </a>";
+      elem = document.getElementById("delete_playlist");
+      elem.innerHTML = " <a onclick='delete_playlist_confirm();return false;'> <span class='glyphicon glyphicon-play'></span> Delete Playlist </a>";
+      var element = document.getElementById("share_checkbox");
+      element.style.display = 'inline-block';  
+   }
+   else{
+      $("#rename_playlist").empty();
+      $("#delete_playlist").empty();
+      var element = document.getElementById("share_checkbox");
+      element.style.display = 'none';  
+   }
    $("#playlist_songs tr").remove();
+   rating_playlist(pid);
    for(var song=0;song<data.length;song++)
    {
       //var song = data[i].song[0];
@@ -276,7 +311,7 @@ function play_psong(data,tag){
 function delete_playlist_confirm(){
    var name=$("#playlist_name").html();
    console.log(name);
-   if(confirm('Once deleted the playlist cannot be recovered . Are you suru you want to proceed? ')){
+   if(confirm('Once deleted the playlist cannot be recovered . Are you sure you want to proceed? ')){
       $.ajax({
          type:"GET",
          url:"/playlist/",
@@ -295,3 +330,52 @@ function delete_playlist_confirm(){
    }
 }
 
+function rating_playlist(pid){
+   // target element
+   //alert("rated_it");
+   var txt = document.getElementById("rating_status"); 
+   var el = document.querySelector('#el');
+
+   txt.innerHTML="Rate it...";
+   el.innerHTML="";
+   // current rating, or initial rating
+   var currentRating = 1;
+
+   // max rating, i.e. number of stars you want
+   var maxRating= 5;
+
+   // callback to run after setting the rating
+   var callback = function(rating) { 
+      alert(rating); 
+      $.ajax({
+         url:'/rate_playlist/',
+         data:{flag:'rate',pid:pid,rating:rating},
+         cache:false,
+         success:function(){
+            txt.innerHTML="You Rated it ....";
+            myRating.setRating(rating,false);
+         }
+      });
+   };
+
+   // rating instance
+   var myRating = rating(el, currentRating, maxRating, callback);
+   check_rated(pid,txt,myRating);
+
+}
+function check_rated(pid,txt,myRating){
+   $.ajax({
+      url:'/rate_playlist/',
+      data:{flag:'get',pid:pid},
+      cache:false,
+      success:function(data){
+         //console.log(data[1].rating);
+         //console.log(data[0].flag);
+         //console.log(data[1].flag);
+         if(data[0].flag){
+            txt.innerHTML="You Rated it ....";
+            myRating.setRating(data[1].rating,false);
+         }
+      }
+   });
+}

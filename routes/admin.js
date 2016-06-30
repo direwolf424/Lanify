@@ -43,7 +43,60 @@ router.get('/',function(req, res, next) {
 router.get('/upload',function(req, res, next) {
    res.render('upload');
 });
+router.get('/upload_folder',function(req,res,next){
+   res.render('upload_folder');
+});
 router.post('/upload', upload.single('music'), function (req, res, next) {
+   var tmp_path = req.file.path;
+   var title=req.body.title;
+   var album = req.body.album;
+   var artist = req.body.artist;
+   var year = req.body.year;
+   var arr_artist = split_Artist(artist);
+   var lang = req.body.language;
+   var target_path = 'upload/' + lang + '/' + title+'.mp3';
+   fs.rename(tmp_path, target_path ,function(err)  {
+      if (err) 
+         console.log('error occured in rename file ',err);
+      console.log('renamed complete');
+      //var metadata = mm.sync(null,fs.createReadStream(target_path),{duration:true});
+      //var time=metadata.duration;
+      var time='';
+      //time = calculate_length(time);
+      //var year = metadata.year;
+      db_song.update({"title":title},
+         {
+         $set: {
+            title:title,
+            album:album,
+            artist:arr_artist,
+            genre:'',
+            path:target_path,
+            album_art_small:'/cover/FRONT_COVER.jpg',
+            album_art:'/cover/FRONT_COVER.jpg',
+            rating:0,
+            views:0,
+            likes:0,
+            dislikes:0,
+            release_date:year,
+            length:time,
+            language:lang
+         },
+         $currentDate: {
+            lastModified: true,
+         }
+      },
+      { upsert:true }).exec(function(err,write){
+         if(err)
+            console.log('updated');
+         else{
+            console.log(' written ',title);
+         }
+      });
+      res.status(200).send('successfully uploaded');
+   });
+});
+router.post('/upload_folder', upload.single('music'), function (req, res, next) {
    var tmp_path = req.file.path;
    var title=req.body.title;
    var album = req.body.album;
