@@ -172,11 +172,11 @@ router.get('/rename',function(req,res,next){
    }
    if(req.query.flag == "artist"){
       var old_artist = req.query.artist_name;
-      var new_artist = req.query.value;
+      var new_artist = split_Artist(req.query.value);
       db_song.update({"artist":old_artist},
          {
          $set: {
-            "artist.$":new_artist,
+            artist:new_artist,
          },
          $currentDate: {
             lastModified: true,

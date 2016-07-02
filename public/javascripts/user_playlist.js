@@ -24,7 +24,7 @@ function remove_from_playlist(song_json,elem){
    });
 }
 $(document).ready(function(){
-   $.fn.bootstrapSwitch.defaults.size = 'normal';
+   $.fn.bootstrapSwitch.defaults.size = 'small';
    $("[name='my-checkbox']").bootstrapSwitch();
    $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event, state) {
       //console.log(this); // DOM element
@@ -150,7 +150,7 @@ function load_playlist_songs(play){
          //console.log(data);
          //console.log('hello world');
          current_name = play.name;
-         play_psong(data,play.name,play._id);
+         play_psong(data,play.name,play.shared,play._id);
       },
       error: function (data,status) {
       },
@@ -238,7 +238,7 @@ function play_auto_psong(data,tag){
    $('.nav-stacked a[href="#playlist_single"]').tab('show');
    //return false;
 }
-function play_psong(data,tag,pid){
+function play_psong(data,tag,check,pid){
    //console.log('tagging');
    //console.log(data);
    var elem = document.getElementById("playlist_image");
@@ -254,6 +254,10 @@ function play_psong(data,tag,pid){
       elem.innerHTML = " <a onclick='delete_playlist_confirm();return false;'> <span class='glyphicon glyphicon-play'></span> Delete Playlist </a>";
       var element = document.getElementById("share_checkbox");
       element.style.display = 'inline-block';  
+      if(check)
+         $('input[name="my-checkbox"]').bootstrapSwitch('state', true, true);
+      else
+         $('input[name="my-checkbox"]').bootstrapSwitch('state', false, true);
    }
    else{
       $("#rename_playlist").empty();

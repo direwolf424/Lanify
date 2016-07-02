@@ -1,24 +1,34 @@
 /**
-   * Created by Saurabh on 22-Feb-16.
-   */
+ * Created by Saurabh on 22-Feb-16.
+ */
 $(document).ready(function() {
-   var favorite = [];
-   $("#submit_tags").click(function(){
-      favorite = [];
-      $.each($("input[name='tags']:checked"), function(){
-         favorite.push($(this).val());
-         $(this).attr('checked', false);
-      });
-
-      var id = document.getElementById('tag_id').value;
-      var url="/tags/update/"+id;
-
-      $.ajax({
-         type: "GET",
-         data: {tag:favorite},
-         url: url
-      });
+var favorite = [];
+$("#submit_tags").click(function(){
+   favorite = [];
+   $.each($("input[name='tags']:checked"), function(){
+      favorite.push($(this).val());
+      $(this).attr('checked', false);
    });
+
+   var id = document.getElementById('tag_id').value;
+   var url="/tags/update/"+id;
+
+   $.ajax({
+      type: "GET",
+      data: {tag:favorite},
+      url: url,
+      success:function(){
+         $.notify("Thanks for improving Lanify", {
+            animate: {
+               enter: 'animated fadeInRight',
+               exit: 'animated fadeOutRight'
+            },
+            newest_on_top: false,
+            delay: 100,
+         });
+      }
+   });
+});
 });
 
 $(document).on("click", ".add_tags", function () {

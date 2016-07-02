@@ -447,7 +447,7 @@ function tag_lang(data,lang,tag){
    {
       //var song = data[i].song[0];
       temp_arr.push(data[song]);
-      console.log(data[song]);
+      //console.log(data[song]);
       var table = document.getElementById("tag_single_songs_"+lang);
       var row=table.insertRow(table.rows.length);
 
@@ -525,7 +525,7 @@ function load_tag_songs(tag){
 function load_tags()
 {
    var url="/tags/get";
-   console.log("Loading");
+   //console.log("Loading");
    $.get(url, function(data, status) {
       var elem = document.getElementById("tags");
       var x = JSON.stringify('/image/image.jpg');
@@ -640,7 +640,7 @@ function filter_char(letter)
             songs_all = songs;
             var table = document.getElementById("table_songs");
             $("#table_songs tr").remove();
-            console.log("adsasdasd --->",songs.length);
+            //console.log("adsasdasd --->",songs.length);
             for (var i=0;i<20 && i<songs.length;i++)
             {
                var row=table.insertRow(table.rows.length);

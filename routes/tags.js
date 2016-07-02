@@ -5,7 +5,7 @@ var mongoose = require('mongoose');
 var db = require('../model/songs').Song;
 var db_tag = require('../model/tags').tags;
 mongoose.createConnection('mongodb://localhost/music');
-   var path,album,artist,songs;
+var path,album,artist,songs;
 
 router.get('/',function(req,res,next){
 
@@ -40,48 +40,6 @@ router.get('/',function(req,res,next){
       });
    };
 
-   /*
-      var q2 = function(variable) {
-      var ct = variable;
-      db_tag1.findOne({"name":ct,"songs.id":id}, function(err, res) {
-         if (err) console.log(err);
-         if(res)
-         {
-            console.log("Found");
-            console.log(res);
-         }
-         else
-         {
-            console.log("Not Found");
-            var new_data = {
-               name:ct,
-               songs:[
-                  {
-                     id:id,
-                     count:1
-                  }
-               ]
-            };
-            var temp = new db_tag1(new_data);
-            temp.save(function(error, data) {
-               if (error) {
-                  console.log(error);
-               }
-               else {
-                  console.log(data);
-               }
-            });
-         }
-      });
-      */
-      /*
-         db_tag1.findOneAndUpdate({"name":ct,"songs.id":id},{$addToSet: {"songs": id }, $inc:{"songs.count":1}}, {upsert:true,new:true}, function(err, ip1) {
-         if (err) console.log(err);
-         console.log("Updated");
-         console.log(ip1);
-      });
-   };
-   */
 
    var q3 = function(fn) {
       db_tag.collection.distinct("name", function(err, results){
@@ -90,29 +48,6 @@ router.get('/',function(req,res,next){
          return fn && fn(null,results);
       });
    };
-   /*
-
-      var q3 = function(fn) {
-      db_tag.collection.group(group.key,group.cond,group.initial,group.reduce,group.finalise,true,function(err,results) {
-         if (err) console.log(err);
-         console.log("Result "+results);
-         for(var i=0;i<results.length;i++)
-         {
-            var a = results[i];
-            var tag = a.name;
-            var song_array = a.songs;
-            console.log("Tag "+tag);
-            for(var j=0;j<song_array.length;j++)
-            {
-               var song = song_array[j];
-               console.log("Song "+song);
-               q4(tag,song);
-            }
-         }
-         //            return fn && fn(null,results);
-      });
-   };
-   */
    var vari;
    var q5 = function(fn) {
       db.find({"_id":vari},function(err, res) {
@@ -138,9 +73,9 @@ router.get('/',function(req,res,next){
                if (err)
                   throw err;
                songs_arr.push(r);/*
-                  console.log("Array -->",songs_arr);
-               console.log("Song -->"+ r.song);
-               console.log('i -->',i+' '+cntr);*/
+                                    console.log("Array -->",songs_arr);
+                                    console.log("Song -->"+ r.song);
+                                    console.log('i -->',i+' '+cntr);*/
                cntr++;
                if (cntr>=t.length) {
                   //                        console.log("Array--------- ",i);

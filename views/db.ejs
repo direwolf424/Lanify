@@ -202,7 +202,7 @@ fjs.parentNode.insertBefore(js, fjs);
                   <a href="#artist_single" data-toggle="tab"> <span class='glyphicon glyphicon-music'></span> Artist Single</a>
                </li>
                <li>
-                  <a href="#tags" onclick="load_tags()" data-toggle="tab"> <span class='glyphicon glyphicon-book'></span> Tags </a>
+                  <a href="#tags" onclick="load_tags()" data-toggle="tab"> <span class='glyphicon glyphicon-book'></span> Genre </a>
                </li>
                <li>
                   <a href="#playlist" data-toggle="tab"> <span class='glyphicon glyphicon-list-alt'></span> Playlist</a>
@@ -229,7 +229,7 @@ fjs.parentNode.insertBefore(js, fjs);
                <div class="tab-pane active" id="home">
                   <div class="new_releases">
                      <h1 class="heading">
-                        New Releases
+                        Albums
                      </h1>
                      <div class="arrows">
                         <span class='prev1 slick_arrow glyphicon glyphicon-arrow-left'></span>
@@ -416,7 +416,7 @@ fjs.parentNode.insertBefore(js, fjs);
 
 
                <!--<div class="tab-pane" id="playlist_single">-->
-               <div class="tab-pane"  id="playlist">
+               <div class="tab-pane" id="playlist">
                   <div class="album_container">
                      <div class="container">
                         <ul class="nav nav-pills nav-justified">
@@ -425,7 +425,7 @@ fjs.parentNode.insertBefore(js, fjs);
                         </ul>
                      </div>
                   </div>
-                  <div class="tab-content clearfix" >
+                  <div class="tab-content clearfix" style="padding-top: 3%;" >
                      <div class="tab-pane active"id="playlist_public_div"> 
                      </div>
                      <div class="tab-pane" id="playlist_private_div">
@@ -440,14 +440,14 @@ fjs.parentNode.insertBefore(js, fjs);
                   <div class="tag_name">
                      <div id="playlist_name" >
                      </div>
-                        <div class="playlist_options">
+                        <div class="playlist_options album_options">
                            <div id="play_playlist"></div>
                            <div id="add_to_queue_playlist"></div>
                            <% if ( username.length > 0) { %>
                            <div id="delete_playlist"></div>
                            <div id="rename_playlist"></div>
                            <% } %>
-                           <label id="share_checkbox">Share <input type="checkbox" name="my-checkbox" ></label>
+                           <label id="share_checkbox">Shared <input type="checkbox" id="share_checkbox_box" name="my-checkbox" ></label>
                            <div id="rating_status"></div>
                            <div class="c-rating" id="el"></div>
                         </div>
@@ -461,7 +461,7 @@ fjs.parentNode.insertBefore(js, fjs);
                      <div class="form-group">
                         <label class="control-label col-sm-2" for="email">Name:</label>
                         <div class="col-sm-10">
-                           <input type="text" class="search_block form-control" required id="name" placeholder="Enter Name">
+                           <input type="text" class="search_block form-control" id="name" placeholder="Enter Name">
                         </div>
                      </div>
                      <div class="form-group">
@@ -500,7 +500,7 @@ fjs.parentNode.insertBefore(js, fjs);
                </div>
 
                <div class="tab-pane" id="tags_single">
-                  <ul class="nav nav-pills nav-justified">
+                  <ul class="nav nav-pills nav-justified" style="margin-top: 2%;">
                      <li class="active"><a href="#tags_english_div" data-toggle="tab">English</a></li>
                      <li><a href="#tags_hindi_div" data-toggle="tab">Hindi</a></li>
                      <li><a href="#tags_telugu_div" data-toggle="tab">Telugu</a></li>
@@ -580,7 +580,9 @@ fjs.parentNode.insertBefore(js, fjs);
                      <div class="checkbox">
                         <label><input type="checkbox" value="inspirational" name="tags">Inspirational</label>
                      </div>
-
+                     <div class="checkbox">
+                        <label><input type="checkbox" value="HIGH" name="tags">HIGH</label>
+                     </div>
                      <div class="checkbox">
                         <label><input type="checkbox" value="bollywood 90s" name="tags">Bollywood 90s</label>
                      </div>

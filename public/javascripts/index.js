@@ -35,6 +35,7 @@ $(document).ready(function(){
    load_more_album1('/users/album/english');
    load_more_album2('/users/album/hindi');
    load_more_album3('/users/album/telugu');
+   load_public_playlist();
    load_playlist();
    dragdrop();
    var img = document.getElementsByTagName('img');
