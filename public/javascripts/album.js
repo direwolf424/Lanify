@@ -135,7 +135,10 @@ $(document).ready(function(){
          //console.log(data);
          if(data == 0){
             //console.log('heyyy');
-            html='<p>plz login to create playlist</p>';
+            if(loggedin)
+               html='<p>You dont have any playlist</p>';
+            else
+               html='<p>Please login to create playlist</p>';
 
          }
          else{
@@ -201,7 +204,7 @@ function send_song(name){
       type: "POST",
       data: {flag:'insert',song:song_arr,pname:name},
       url: url,
-      sucess:function(){
+      success:function(){
          alert("songs added succesfully to ",name);
       }
    });

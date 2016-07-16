@@ -34,14 +34,14 @@ router.post('/',function(req,res,next){
             console.log('Registration Successfull');
          });
          //create a default playlist for logged in users
-         //var default_playlist = function() {
-            //var ct = 'Top 100 Songs';
-            //dplaylist.update({"name":ct,"user_name":uname}, {$addToSet:{"song":{"song_id":'',count:0}}}, {upsert:true,new:true}, function(err, ip1) {
-               //if (err) console.log(err);
-               //console.log("Updated");
-            //});
-         //};
-         //default_playlist();
+         var default_playlist = function() {
+            var ct = 'Top 100 Songs';
+            dplaylist.update({"name":ct,"user_name":uname}, {"song":'56cc913ac084711558fe77b5'}, {upsert:true,new:true}, function(err, ip1) {
+               if (err) console.log(err);
+               console.log("Updated");
+            });
+         };
+         default_playlist();
       }
    });
 });
