@@ -58,7 +58,9 @@ router.get('/upload_folder',function(req,res,next){
 router.post('/upload', upload.single('music'), function (req, res, next) {
    var tmp_path = 'upload/added/'+req.file.originalname;
    var title=req.body.title;
+   title=title.trim();
    var album = req.body.album;
+   album=album.trim();
    var artist = req.body.artist;
    var year = req.body.year;
    var arr_artist = split_Artist(artist);
@@ -108,7 +110,9 @@ router.post('/upload', upload.single('music'), function (req, res, next) {
 router.post('/upload_folder', upload.single('music'), function (req, res, next) {
    var tmp_path = req.file.path;
    var title=req.body.title;
+   title=tiltle.trim();
    var album = req.body.album;
+   album = album.trim();
    var artist = req.body.artist;
    var year = req.body.year;
    var arr_artist = split_Artist(artist);
@@ -131,7 +135,7 @@ router.post('/upload_folder', upload.single('music'), function (req, res, next) 
             artist:arr_artist,
             genre:'',
             path:target_path,
-            album_art_small:'/cover/FRONT_COVER.jpg',
+            album_art_small:'cover/FRONT_COVER.jpg',
             album_art:'/cover/FRONT_COVER.jpg',
             rating:0,
             views:0,
