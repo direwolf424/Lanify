@@ -1,4 +1,4 @@
-var loggedin;
+var loggedin,adminp;
 function load_home(){
    $('.nav-stacked a[href="#home"]').tab('show');
    return false;
@@ -21,6 +21,17 @@ $.ajax({
          loggedin=true;
       else
          loggedin=false;
+   }
+});
+$.ajax({
+   type:"GET",
+   url:'/status1',
+   success:function(data){
+      console.log(data);
+      if(data=="true")
+         adminp=true;
+      else
+         adminp=false;
    }
 });
 $(document).ready(function(){
@@ -111,8 +122,8 @@ $(function () {
       source: function (request, response) {
          $.ajax({
             //url: "http://192.168.159.28:1234/search",
-            //url: "http://192.168.159.28:3000/search",
-            url: "http://localhost:1234/search",
+            url: "http://192.168.109.66:1234/search",
+            //url: "http://localhost:1234/search",
             type: "GET",
             data: request,  // request is the value of search input
             success: function (data) {
@@ -264,42 +275,28 @@ setTimeout(function(){
    $('.navbar-fixed-top').css('position','fixed');
 }, 2000);
 //});
-
 function submit_request(){
-   var e1 = $('#name').val();
-   var e2 = $('#songname').val();
-   var e3 = $('#bugs').val();
-   var e4 = $('#features').val();
-   //if(e1.length)
-   if(e1.length == 0 ){
-      alert('Please enter your name and then submit');
-   }
-   else{
-      $('#songname').val('');
-      $('#bugs').val('');
-      $('#features').val('');
-      $.ajax({
-         type: "post",
-         data: {username:e1,
-            songname:e2,
-            bugs:e3,
-            features:e4
-         },
-         //url: "http://192.168.159.28:3000/request",
-         url: "http://localhost:1234/request",
-         success:function(data){
-            $.notify("Thanks For Your Feedback", {
-               animate: {
-                  enter: 'animated fadeInRight',
-                  exit: 'animated fadeOutRight'
-               },
-               newest_on_top: false,
-               delay: 2000,
-            });
-         }
-      });
-   }
+var e1 = $('#name').val();
+var e2 = $('#songname').val();
+var e3 = $('#bugs').val();
+var e4 = $('#features').val();
+alert("Thanks for your feedback");
+//$('#name').val('');
+$('#songname').val('');
+$('#bugs').val('');
+$('#features').val('');
+$.ajax({
+   type: "POST",
+   data: {username:e1,
+      songname:e2,
+      bugs:e3,
+      features:e4
+   },
+   url: "http://192.168.109.66:1234/request",
+   //url: "http://192.168.159.28:1234/request",
+});
 }
+
 
 
 function dragdrop() {

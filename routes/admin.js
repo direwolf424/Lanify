@@ -7,9 +7,18 @@ var mm = require('musicmetadata');
 var multer = require('multer');
 var db_user= require('../model/user').user;
 var db_song = require('../model/songs').Song;
-var upload = multer({ dest: '/myfile/dc/lanify/upload/added'});
+//var upload = multer({ dest: '/myfile/dc/lanify/upload/added'});
 mongoose.createConnection('mongodb://localhost/music');
 
+var storage = multer.diskStorage({
+   destination: function (req, file, cb) {
+      cb(null, '/myfile/dc/lanify/upload/added');
+   },
+   filename: function (req, file, cb) {
+      cb(null, file.originalname );
+   }
+});
+var upload = multer({storage:storage});
 function split_Artist(str){
    str1 = str.split(/[&,]+/);
    return str1;
@@ -47,7 +56,7 @@ router.get('/upload_folder',function(req,res,next){
    res.render('upload_folder');
 });
 router.post('/upload', upload.single('music'), function (req, res, next) {
-   var tmp_path = req.file.path;
+   var tmp_path = 'upload/added/'+req.file.originalname;
    var title=req.body.title;
    var album = req.body.album;
    var artist = req.body.artist;
@@ -55,46 +64,46 @@ router.post('/upload', upload.single('music'), function (req, res, next) {
    var arr_artist = split_Artist(artist);
    var lang = req.body.language;
    var target_path = 'upload/' + lang + '/' + title+'.mp3';
-   fs.rename(tmp_path, target_path ,function(err)  {
-      if (err) 
-         console.log('error occured in rename file ',err);
-      console.log('renamed complete');
-      //var metadata = mm.sync(null,fs.createReadStream(target_path),{duration:true});
-      //var time=metadata.duration;
-      var time='';
-      //time = calculate_length(time);
-      //var year = metadata.year;
-      db_song.update({"title":title},
-         {
-         $set: {
-            title:title,
-            album:album,
-            artist:arr_artist,
-            genre:'',
-            path:target_path,
-            album_art_small:'/cover/FRONT_COVER.jpg',
-            album_art:'/cover/FRONT_COVER.jpg',
-            rating:0,
-            views:0,
-            likes:0,
-            dislikes:0,
-            release_date:year,
-            length:time,
-            language:lang
-         },
-         $currentDate: {
-            lastModified: true,
-         }
+   //fs.rename(tmp_path, target_path ,function(err)  {
+   //if (err) 
+   //console.log('error occured in rename file ',err);
+   //var metadata = mm.sync(null,fs.createReadStream(target_path),{duration:true});
+   //var time=metadata.duration;
+   var time='';
+   //time = calculate_length(time);
+   //var year = metadata.year;
+   db_song.update({"title":title},
+      {
+      $set: {
+         title:title,
+         album:album,
+         artist:arr_artist,
+         genre:'',
+         //path:target_path,
+         path:tmp_path,
+         album_art_small:'/cover/FRONT_COVER.jpg',
+         album_art:'/image/image.jpg',
+         rating:0,
+         views:0,
+         likes:0,
+         dislikes:0,
+         release_date:year,
+         length:time,
+         language:lang
       },
-      { upsert:true }).exec(function(err,write){
-         if(err)
-            console.log('updated');
-         else{
-            console.log(' written ',title);
-         }
-      });
-      res.status(200).send('successfully uploaded');
+      $currentDate: {
+         lastModified: true,
+      }
+   },
+   { upsert:true }).exec(function(err,write){
+      if(err)
+         console.log('error in writing to db',err);
+      else{
+         console.log(' written ',title);
+         res.status(200).send('successfully uploaded');
+      }
    });
+   //});
 });
 router.post('/upload_folder', upload.single('music'), function (req, res, next) {
    var tmp_path = req.file.path;
@@ -148,7 +157,19 @@ router.post('/upload_folder', upload.single('music'), function (req, res, next) 
 });
 
 router.get('/rename',function(req,res,next){
-   if(req.query.flag == "album"){
+   var adminp;
+   user.findOne({ '_id' :  req.user._id }, 
+      function(err, user) {
+      if(err)
+         console.log(err);
+      if(user.admin_rights){
+         adminp = true;
+      }
+      else{
+         adminp=false;
+      }
+   });
+   if(req.query.flag == "album"&&req.user&&adminp){
       var old_album = req.query.album_name;
       var new_album = req.query.value;
       db_song.update({"album":old_album},
@@ -170,7 +191,7 @@ router.get('/rename',function(req,res,next){
       });
       res.status(200).send('Done');
    }
-   if(req.query.flag == "artist"){
+   else if(req.query.flag == "artist"&&req.user&&adminp){
       var old_artist = req.query.artist_name;
       var new_artist = split_Artist(req.query.value);
       db_song.update({"artist":old_artist},
@@ -191,6 +212,8 @@ router.get('/rename',function(req,res,next){
       });
       res.status(200).send('Done');
    }
+   else
+      res.send('cant rename');
 });
 
 module.exports = router;

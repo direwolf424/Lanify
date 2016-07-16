@@ -17,6 +17,7 @@ $(document).ready(function() {
 
       return false;
    });    
+   if(loggedin && adminp ){
    $('#rename_album').editable({
       type: 'text',
       pk: 1,
@@ -51,6 +52,11 @@ $(document).ready(function() {
          return params;
       }
    });
+   }
+   else{
+      $('#rename_album').webuiPopover({title:'Rename',content:'You need admin rights to rename'});
+      $('#rename_artist').webuiPopover({title:'Rename',content:'you need admin rights to rename'});
+   }
 });
 
 

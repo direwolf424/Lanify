@@ -68,7 +68,8 @@ fjs.parentNode.insertBefore(js, fjs);
          <div>
             <div class="heading_top">
                <!--<a href="" onclick="load_home(); return false;">La<span class='glyphicon glyphicon-music'></span>ify<sup>β</sup></a>-->
-               <a href="" onclick="load_home(); return false;"><img src="image/lanify_logo.jpg" width="150px" height="50px"><img></a>
+               <!--<a href="" onclick="load_home(); return false;"><img src="image/lanify_logo.jpg" width="150px" height="50px"><img></a>-->
+               <a href="" onclick="load_home(); return false;">Lanify</a>
                <% if ( username.length <= 0) { %>
                <button type="button" class="btn btn-default btn-lg" id="signinBtn">Login</button>
                <button type="button" class="btn btn-default btn-lg" id="signupBtn">Signup</button>
@@ -333,9 +334,13 @@ fjs.parentNode.insertBefore(js, fjs);
                      <div class="album_description">
                         <div class="album_image" id="artist_single_image">
                         </div>
-                        <div class="album_name" id="artist_single_name">
+                        <div class="album_name">
+                           <div class="album_name" id="artist_single_name">
+                           </div>
+                           <div class="album_options">
+                              <div id="rename_artist"></div>
+                           </div>
                         </div>
-                        <div id="rename_artist"></div>
                      </div>
 
                      <ul  class="nav nav-pills">

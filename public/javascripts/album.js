@@ -167,7 +167,7 @@ $(document).ready(function(){
       });
    }
    else{
-      $('#create_new_playlist').webuiPopover({title:'SignUp',content:'Plz login to continue'});
+      $('#create_new_playlist').webuiPopover({title:'New Playlist',content:'Plz login to continue'});
    }
 });
 

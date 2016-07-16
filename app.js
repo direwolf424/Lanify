@@ -185,9 +185,28 @@ function(req, res) {
 });
 
 app.get('/status',function(req,res,next){
-   console.log('tokens here ',tokens);
    if(req.user)
       res.send('true');
+   else
+      res.send('false');
+});
+
+app.get('/status1',function(req,res,next){
+   if(req.user){
+      user.findOne({ '_id' :  req.user._id }, 
+         function(err, user) {
+         if(err)
+            console.log(err);
+         if(user.admin_rights){
+            console.log('he has admin rights');
+            res.send('true');
+         }
+         else{
+            console.log('no admin rights');
+            res.send('false');
+         }
+      });
+   }
    else
       res.send('false');
 });

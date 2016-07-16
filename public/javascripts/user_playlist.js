@@ -91,6 +91,8 @@ function load_public_playlist()
 }
 function buildPlaylistItem(data,playlist) {
    var playlistItem = document.createElement('div');
+   if(data.rating_count == null)
+      data.rating_count =0;
 
    var html = "<a href='' onclick='load_playlist_songs("+JSON.stringify(data)+"); return false;' > <div class='album tags col-md-5ths'> <div class='song_image'> <img src='/image/image.jpg'> </img> </div> <div class='ellip_name'> "+capitalizeFirstLetter(data.name)+" </div><div class='ellip_name'>By "+data.user_name+" </div></a><div class='c-rating'>("+data.rating_count+")</div></div>";
    playlistItem.innerHTML = html;
@@ -101,8 +103,10 @@ function buildPlaylistItem(data,playlist) {
 function addRatingWidget(playlistItem, data) {
    var ratingElement = playlistItem.querySelector('.c-rating');
    var currentRating = Math.floor(data.rating/data.rating_count);
+   if(currentRating == null)
+      currentRating = 1;
    var maxRating = 5;
-   var callback = function(rating) { alert(rating); };
+   var callback = function(rating) { console.log(rating); };
    var r = rating(ratingElement, currentRating, maxRating, callback);
 }
 function load_private_playlist()
@@ -350,7 +354,7 @@ function rating_playlist(pid){
 
    // callback to run after setting the rating
    var callback = function(rating) { 
-      alert(rating); 
+      if(loggedin){
       $.ajax({
          url:'/rate_playlist/',
          data:{flag:'rate',pid:pid,rating:rating},
@@ -360,6 +364,7 @@ function rating_playlist(pid){
             myRating.setRating(rating,false);
          }
       });
+      }
    };
 
    // rating instance
