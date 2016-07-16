@@ -526,6 +526,7 @@ function load_tags()
 {
    var url="/tags/get";
    //console.log("Loading");
+  $("#tags").empty();
    $.get(url, function(data, status) {
       var elem = document.getElementById("tags");
       var x = JSON.stringify('/image/image.jpg');
