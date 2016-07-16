@@ -113,7 +113,7 @@ router.get('/',function(req,res,next){
             playlist.find({"name":req.query.name}).exec(function(err,plist){
                if(err)
                   console.log('Error occured',err);
-               console.log(plist);
+               //console.log(plist);
                return fn && fn(null,plist);
             });
          };
@@ -134,7 +134,7 @@ router.get('/',function(req,res,next){
             dplaylist.find({"name":req.query.name,user_name:req.user.username}).exec(function(err,plist){
                if(err)
                   console.log('Error occured',err);
-               console.log(plist);
+               //console.log(plist);
                return fn && fn(null,plist);
             });
          };
@@ -169,7 +169,7 @@ router.get('/',function(req,res,next){
          var on_off = req.query.sw;
          var pname = req.query.pname;
          if(on_off){
-            console.log(on_off);
+            //console.log(on_off);
             var q12= function() {
                console.log('executing shareable');
                playlist.update(
@@ -185,7 +185,7 @@ router.get('/',function(req,res,next){
             res.send(''); 
          }
          else{
-            console.log(on_off);
+            //console.log(on_off);
             res.send('');
          }
       }

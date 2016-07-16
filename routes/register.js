@@ -12,7 +12,7 @@ router.post('/',function(req,res,next){
    var psswd = req.body.password;
    var mobno = req.body.mobileno;
    var rollno = req.body.rollno;
-   console.log('----------------------------------------->>',uname,psswd,mobno,rollno);
+   //console.log('----------------------------------------->>',uname,psswd,mobno,rollno);
    db_user.find({"username":uname}).exec(function(err,users){
       if(users.length){
          console.log('User already registred');
@@ -36,7 +36,7 @@ router.post('/',function(req,res,next){
          //create a default playlist for logged in users
          var default_playlist = function() {
             var ct = 'Top 100 Songs';
-            dplaylist.update({"name":ct,"user_name":uname}, {"song":'56cc913ac084711558fe77b5'}, {upsert:true,new:true}, function(err, ip1) {
+            dplaylist.update({"name":ct,"user_name":uname}, {$addToSet:{"song":'56cc913ac084711558fe77b5'}}, {upsert:true,new:true}, function(err, ip1) {
                if (err) console.log(err);
                console.log("Updated");
             });
