@@ -121,6 +121,9 @@ var isAuthenticated = function (req, res, next) {
 app.get('/db',function(req,res){
    res.redirect('/lanify');
 });
+app.get('/',function(req,res){
+   res.redirect('/lanify');
+});
 app.get('/logout', function(req, res){
    console.log('LogOut');
    res.clearCookie('remember_me',{path: '/lanify'});

@@ -462,8 +462,10 @@ function now_playing(song){
 
    cell1=row.insertCell(5);
    cell1.innerHTML = '<a href="" class="add_tags" data-id="'+song._id+'" data-toggle="modal" data-target="#myModal">Add Tags</a>';
+            cell1=row.insertCell(6);
+            cell1.innerHTML = '<a href="" class="add_playlist" data-id1="'+song._id+'" data-toggle="modal" data-target="#myPlaylist"><span class="glyphicon glyphicon-list"></span></a>';
 
-   cell1=row.insertCell(6);
+   cell1=row.insertCell(7);
    pass = JSON.stringify("remove_song(this); return false;");
    cell1.innerHTML = "<a href='' onclick="+pass+">  <span class='glyphicon glyphicon-remove'> </span> </a>";
 

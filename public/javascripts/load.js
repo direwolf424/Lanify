@@ -1,9 +1,9 @@
-
 var flag_album_english=true;
 var flag_album_hindi=true;
 var flag_album_telugu=true;
 var flag_artist=true;
 var flag_song=true;
+var mySongId;
 var album_data,artist_data,song_data,songs_all;
 function capitalizeFirstLetter(string) {
    return string.charAt(0).toUpperCase() + string.slice(1);
@@ -223,6 +223,8 @@ function load_more_song()
             cell1.innerHTML = '<a href="" class="add_tags" data-id="'+song._id+'" data-toggle="modal" data-target="#myModal">Add Tags</a>';
 
             cell1=row.insertCell(6);
+            cell1.innerHTML = '<a href="" class="add_playlist" data-id1="'+song._id+'" data-toggle="modal" data-target="#myPlaylist"><span class="glyphicon glyphicon-list"></span></a>';
+            cell1=row.insertCell(7);
             cell1.innerHTML = "<a href='' onclick='add_to_queue("+song_json+"); return false;'>  <span class='glyphicon glyphicon-plus'> </span> </a>";
 
          }
@@ -262,8 +264,10 @@ function load_more_song()
 
             cell1=row.insertCell(5);
             cell1.innerHTML = '<a href="" class="add_tags" data-id="'+song._id+'" data-toggle="modal" data-target="#myModal">Add Tags</a>';
-
             cell1=row.insertCell(6);
+            cell1.innerHTML = '<a href="" class="add_playlist" data-id1="'+song._id+'" data-toggle="modal" data-target="#myPlaylist"><span class="glyphicon glyphicon-list"></span></a>';
+
+            cell1=row.insertCell(7);
             cell1.innerHTML = "<a href='' onclick='add_to_queue("+song_json+"); return false;'>  <span class='glyphicon glyphicon-plus'> </span> </a>";
 
          }
@@ -303,8 +307,10 @@ function load_more_song()
 
             cell1=row.insertCell(5);
             cell1.innerHTML = '<a href="" class="add_tags" data-id="'+song._id+'" data-toggle="modal" data-target="#myModal">Add Tags</a>';
-
             cell1=row.insertCell(6);
+            cell1.innerHTML = '<a href="" class="add_playlist" data-id1="'+song._id+'" data-toggle="modal" data-target="#myPlaylist"><span class="glyphicon glyphicon-list"></span></a>';
+
+            cell1=row.insertCell(7);
             cell1.innerHTML = "<a href='' onclick='add_to_queue("+song_json+"); return false;'>  <span class='glyphicon glyphicon-plus'> </span> </a>";
 
          }
@@ -344,8 +350,10 @@ function load_more_song()
 
             cell1=row.insertCell(5);
             cell1.innerHTML = '<a href="" class="add_tags" data-id="'+song._id+'" data-toggle="modal" data-target="#myModal">Add Tags</a>';
-
             cell1=row.insertCell(6);
+            cell1.innerHTML = '<a href="" class="add_playlist" data-id1="'+song._id+'" data-toggle="modal" data-target="#myPlaylist"><span class="glyphicon glyphicon-list"></span></a>';
+
+            cell1=row.insertCell(7);
             cell1.innerHTML = "<a href='' onclick='add_to_queue("+song_json+"); return false;'>  <span class='glyphicon glyphicon-plus'> </span> </a>";
 
          }
@@ -385,8 +393,10 @@ function load_more_song()
 
             cell1=row.insertCell(5);
             cell1.innerHTML = '<a href="" class="add_tags" data-id="'+song._id+'" data-toggle="modal" data-target="#myModal">Add Tags</a>';
-
             cell1=row.insertCell(6);
+            cell1.innerHTML = '<a href="" class="add_playlist" data-id1="'+song._id+'" data-toggle="modal" data-target="#myPlaylist"><span class="glyphicon glyphicon-list"></span></a>';
+
+            cell1=row.insertCell(7);
             cell1.innerHTML = "<a href='' onclick='add_to_queue("+song_json+"); return false;'>  <span class='glyphicon glyphicon-plus'> </span> </a>";
 
          }
@@ -424,8 +434,10 @@ function load_more_song()
 
          cell1=row.insertCell(5);
          cell1.innerHTML = '<a href="" class="add_tags" data-id="'+song._id+'" data-toggle="modal" data-target="#myModal">Add Tags</a>';
-
          cell1=row.insertCell(6);
+         cell1.innerHTML = '<a href="" class="add_playlist" data-id1="'+song._id+'" data-toggle="modal" data-target="#myPlaylist"><span class="glyphicon glyphicon-list"></span></a>';
+
+         cell1=row.insertCell(7);
          cell1.innerHTML = "<a href='' onclick='add_to_queue("+song_json+"); return false;'>  <span class='glyphicon glyphicon-plus'> </span> </a>";
 
       }
@@ -471,6 +483,8 @@ function tag_lang(data,lang,tag){
       cell1.innerHTML = data[song].length;
 
       cell1=row.insertCell(5);
+      cell1.innerHTML = '<a href="" class="add_playlist" data-id1="'+data[song]._id+'" data-toggle="modal" data-target="#myPlaylist"><span class="glyphicon glyphicon-list"></span></a>';
+      cell1=row.insertCell(6);
       //var song_json = JSON.stringify(song);
       cell1.innerHTML = "<a href='' onclick='add_to_queue("+song_json+"); return false;'>  <span class='glyphicon glyphicon-plus'> </span> </a>";
 
@@ -526,7 +540,7 @@ function load_tags()
 {
    var url="/tags/get";
    //console.log("Loading");
-  $("#tags").empty();
+   $("#tags").empty();
    $.get(url, function(data, status) {
       var elem = document.getElementById("tags");
       var x = JSON.stringify('/image/image.jpg');
@@ -574,8 +588,10 @@ function filter_char(letter)
 
          cell1=row.insertCell(5);
          cell1.innerHTML = '<a href="" class="add_tags" data-id="'+song._id+'" data-toggle="modal" data-target="#myModal">Add Tags</a>';
-
          cell1=row.insertCell(6);
+         cell1.innerHTML = '<a href="" class="add_playlist" data-id1="'+song._id+'" data-toggle="modal" data-target="#myPlaylist"><span class="glyphicon glyphicon-list"></span></a>';
+
+         cell1=row.insertCell(7);
          cell1.innerHTML = "<a href='' onclick='add_to_queue("+song_json+"); return false;'>  <span class='glyphicon glyphicon-plus'> </span> </a>";
       }
       check_song_song();
@@ -619,8 +635,10 @@ function filter_char(letter)
 
          cell1=row.insertCell(5);
          cell1.innerHTML = '<a href="" class="add_tags" data-id="'+song._id+'" data-toggle="modal" data-target="#myModal">Add Tags</a>';
-
          cell1=row.insertCell(6);
+         cell1.innerHTML = '<a href="" class="add_playlist" data-id1="'+song._id+'" data-toggle="modal" data-target="#myPlaylist"><span class="glyphicon glyphicon-list"></span></a>';
+
+         cell1=row.insertCell(7);
          cell1.innerHTML = "<a href='' onclick='add_to_queue("+song_json+"); return false;'>  <span class='glyphicon glyphicon-plus'> </span> </a>";
       }
       check_song_song();
@@ -670,6 +688,8 @@ function filter_char(letter)
 
                cell1=row.insertCell(5);
                cell1.innerHTML = '<a href="" class="add_tags" data-id="'+song._id+'" data-toggle="modal" data-target="#myModal">Add Tags</a>';
+               cell1=row.insertCell(7);
+               cell1.innerHTML = '<a href="" class="add_playlist" data-id1="'+song._id+'" data-toggle="modal" data-target="#myPlaylist"><span class="glyphicon glyphicon-list"></span></a>';
 
                cell1=row.insertCell(6);
                cell1.innerHTML = "<a href='' onclick='add_to_queue("+song_json+"); return false;'>  <span class='glyphicon glyphicon-plus'> </span> </a>";
@@ -714,8 +734,10 @@ function filter_char(letter)
 
       cell1=row.insertCell(5);
       cell1.innerHTML = '<a href="" class="add_tags" data-id="'+song._id+'" data-toggle="modal" data-target="#myModal">Add Tags</a>';
-
       cell1=row.insertCell(6);
+      cell1.innerHTML = '<a href="" class="add_playlist" data-id1="'+song._id+'" data-toggle="modal" data-target="#myPlaylist"><span class="glyphicon glyphicon-list"></span></a>';
+
+      cell1=row.insertCell(7);
       cell1.innerHTML = "<a href='' onclick='add_to_queue("+song_json+"); return false;'>  <span class='glyphicon glyphicon-plus'> </span> </a>";
    }
    check_song_song();
@@ -751,3 +773,93 @@ function check_song_song()
    });
    return false;
 }
+$(document).on("click", ".add_playlist", function () {
+   $("#modal_playlist_input").css("display","none")
+   mySongId = $(this).data('id1');
+   //alert(myBookId);
+   elem=document.getElementById("get_playlist");
+   $.ajax({
+      type:'get',
+      url:'/playlist/new?flag=userlist',
+      cache:false,
+      success:function(data){
+         console.log(data);
+         var html;
+         if(data == 0){
+            //console.log('heyyy');
+            if(loggedin)
+               html='<p>You dont have any playlist</p>';
+            else
+               html='<p>Please login to create playlist</p>';
+
+         }
+         else{
+            html = '<ul id="play_content">';
+            for(var key in data){
+               html+='<a class="list-group-item"  href="" onclick="send_single_song(\''+data[key].name+'\');return false;">'+data[key].name+'</a>';
+               //html+='<li class="play_list"  onclick="send_single_song(\''+data[key].name,mySongId+'\');return false;">'+data[key].name+'</li>';
+            }
+            html+='</ul>';
+         }
+         elem.innerHTML=html;
+      }
+   });
+});
+function send_single_song(name){
+   var song_arr=[];
+   var url="/playlist/new/";
+   song_arr.push(mySongId);
+   $.ajax({
+      type: "POST",
+      data: {flag:'insert',song:song_arr,pname:name},
+      url: url,
+      success:function(){
+         $('#myPlaylist').modal('hide');
+         $.notify("Song added to Playlist", {
+            animate: {
+               enter: 'animated fadeInRight',
+               exit: 'animated fadeOutRight'
+            },
+            newest_on_top: false,
+            delay: 100,
+         });
+      }
+   });
+}
+$(document).ready(function(){
+   $("#modal_playlist").click(function(){
+      if(loggedin)
+         $("#modal_playlist_input").css("display","block")
+      else{
+         alert('Please SignUp to create exciting Playlist :P');
+         $('#myPlaylist').modal('hide');
+      }
+   });
+   $("#modal_close").click(function(){
+      $("#modal_playlist_input").css("display","none")
+   });
+   $("#submit_new_playlist").click(function(){
+      if(loggedin){
+         var pname=$("#modal_playlist_input").val();
+         $.ajax({
+            type: 'get',
+            url: '/playlist/new/',
+            data: {flag:'new',value:pname},
+            success: function() {
+               $.notify("Playlist created successfully", {
+                  animate: {
+                     enter: 'animated fadeInRight',
+                     exit: 'animated fadeOutRight'
+                  },
+                  newest_on_top: false,
+                  delay: 100,
+               });
+            }
+         });
+      }
+      else{
+         alert('Please SignUp to create exciting Playlist :P');
+      }
+
+   });
+});
