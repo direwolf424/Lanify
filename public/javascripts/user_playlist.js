@@ -145,10 +145,11 @@ function load_private_playlist()
 function load_playlist_songs(play){
 
    var url="/playlist/";
+   console.log(play);
 
    $.ajax({
       type: "GET",
-      data: {flag:'songs',name:play.name},
+      data: {flag:'songs',id:play._id},
       url: url,
       success: function (data,status) {
          //console.log(data);
