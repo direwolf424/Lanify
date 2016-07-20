@@ -42,7 +42,7 @@ router.get('/',function(req,res,next){
          res.send('');
       }
       else if(req.query.flag == 'remove'){
-         console.log(req.query);
+         //console.log(req.query);
          var id = req.query.id;
          var pname = req.query.pname;
          var q11= function() {
@@ -144,7 +144,7 @@ router.get('/',function(req,res,next){
             songs.find({
                '_id': { $in: play[0].song}
             }, function(err, docs){
-               console.log(docs);
+               //console.log(docs);
 
                res.send(docs);
             });

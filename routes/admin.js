@@ -161,19 +161,7 @@ router.post('/upload_folder', upload.single('music'), function (req, res, next) 
 });
 
 router.get('/rename',function(req,res,next){
-   var adminp;
-   user.findOne({ '_id' :  req.user._id }, 
-      function(err, user) {
-      if(err)
-         console.log(err);
-      if(user.admin_rights){
-         adminp = true;
-      }
-      else{
-         adminp=false;
-      }
-   });
-   if(req.query.flag == "album"&&req.user&&adminp){
+   if(req.query.flag == "album"){
       var old_album = req.query.album_name;
       var new_album = req.query.value;
       db_song.update({"album":old_album},
@@ -195,7 +183,7 @@ router.get('/rename',function(req,res,next){
       });
       res.status(200).send('Done');
    }
-   else if(req.query.flag == "artist"&&req.user&&adminp){
+   else if(req.query.flag == "artist"){
       var old_artist = req.query.artist_name;
       var new_artist = split_Artist(req.query.value);
       db_song.update({"artist":old_artist},
