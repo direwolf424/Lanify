@@ -421,3 +421,7 @@ button#clear_queue{
    background-color: #0193b7;
    cursor:pointer;
 }
+
+.rating-container, .rating_count{
+   display: inline-block;
+}

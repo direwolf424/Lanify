@@ -1,5 +1,9 @@
 var current_name;
 var pub_priv;
+
+/*
+ This function removes song from playlist.
+ */
 function remove_from_playlist(song_json,elem){
    var id = song_json._id;
    var table = document.getElementById('playlist_songs');
@@ -24,6 +28,16 @@ function remove_from_playlist(song_json,elem){
    });
 }
 $(document).ready(function(){
+
+   /*
+    This function is called when the user changes the rating for any playlist.
+    */
+   $('#playlist_rating').on('rating.change', function(event, value) {
+      rate_playlist(value);
+   });
+
+   $(".rating-xs").css("fontSize", 20);
+
    $.fn.bootstrapSwitch.defaults.size = 'small';
    $("[name='my-checkbox']").bootstrapSwitch();
    $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event, state) {
@@ -67,6 +81,10 @@ $(document).ready(function(){
       });
    }
 });
+
+/*
+ This function loads all the public playlist.
+ */
 function load_public_playlist()
 {
    var url="/playlist/";
@@ -89,26 +107,37 @@ function load_public_playlist()
    });
    return false;
 }
+
+/*
+ This function builds the playlist.
+ */
 function buildPlaylistItem(data,playlist) {
    var playlistItem = document.createElement('div');
    if(data.rating_count == null)
       data.rating_count =0;
 
-   var html = "<a href='' onclick='load_playlist_songs("+JSON.stringify(data)+"); return false;' > <div class='album tags col-md-5ths'> <div class='song_image'> <img src='/image/image.jpg'> </img> </div> <div class='ellip_name'> "+capitalizeFirstLetter(data.name)+" </div><div class='ellip_name'>By "+data.user_name+" </div></a><div class='c-rating'>("+data.rating_count+")</div></div>";
+   var html = "<a href='' onclick='load_playlist_songs("+JSON.stringify(data)+"); return false;' > <div class='album tags col-md-5ths'> <div class='song_image'> <img src='/image/image.jpg'> </img> </div> <div class='ellip_name'> "+capitalizeFirstLetter(data.name)+" </div><div class='ellip_name'>By "+data.user_name+" </div></a><div class='star-rating'></div><div class='rating_count'>("+data.rating_count+")<div></div>";
    playlistItem.innerHTML = html;
    playlist.appendChild(playlistItem);
 
    return playlistItem;
 }
+
+/*
+ This function adds rating widget for all the playlist.
+ */
 function addRatingWidget(playlistItem, data) {
-   var ratingElement = playlistItem.querySelector('.c-rating');
+   var ratingElement = playlistItem.querySelector('.star-rating');
    var currentRating = Math.floor(data.rating/data.rating_count);
    if(currentRating == null)
       currentRating = 1;
-   var maxRating = 5;
-   var callback = function(rating) { console.log(rating); };
-   var r = rating(ratingElement, currentRating, maxRating, callback);
+   $(ratingElement).rating({showCaption:false, showClear: false, step: 1, size:'xxs', displayOnly: true});
+   $(ratingElement).rating('update', currentRating);
 }
+
+/*
+ This function loads all the private playlist.
+ */
 function load_private_playlist()
 {
    var url="/playlist/";
@@ -142,6 +171,10 @@ function load_private_playlist()
    }
    return false;
 }
+
+/*
+ This function gets the songs for a playlist.
+ */
 function load_playlist_songs(play){
 
    var url="/playlist/";
@@ -154,7 +187,8 @@ function load_playlist_songs(play){
          //console.log(data);
          //console.log('hello world');
          current_name = play.name;
-         play_psong(data,play.name,play.shared,play._id);
+         var currentRating = Math.floor(play.rating/play.rating_count);
+         play_psong(data,play.name,play.shared,play._id,currentRating);
       },
       error: function (data,status) {
       },
@@ -166,6 +200,10 @@ function load_playlist_songs(play){
    });
    return false;
 }
+
+/*
+ This function loads the auto generated playlist.
+ */
 function load_auto_playlist_songs(play){
 
    var url="/playlist/";
@@ -190,6 +228,10 @@ function load_auto_playlist_songs(play){
    });
    return false;
 }
+
+/*
+ This function populates the song table for an automatically generated playlist.
+ */
 function play_auto_psong(data,tag){
    //console.log('tagging');
    //console.log(data);
@@ -200,6 +242,8 @@ function play_auto_psong(data,tag){
    elem.innerHTML = tag+" (Auto Generated)";
    $("#rename_playlist").empty();
    $("#delete_playlist").empty();
+   var rating = document.getElementById("playlist_rating");
+   rating.style.display = 'none';
    var element = document.getElementById("share_checkbox");
    element.style.display = 'none';  
    $("#playlist_songs tr").remove();
@@ -242,22 +286,25 @@ function play_auto_psong(data,tag){
    $('.nav-stacked a[href="#playlist_single"]').tab('show');
    //return false;
 }
-function play_psong(data,tag,check,pid){
-   //console.log('tagging');
-   //console.log(data);
+
+/*
+ This function populates the song table for a playlist.
+ */
+function play_psong(data,tag,check,pid,currentRating){
    var elem = document.getElementById("playlist_image");
+   $("#playlist_id").val(pid);
    var temp_arr = [];
    elem.innerHTML = "<img class ='image_size' src='image/image.jpg'>";
    elem = document.getElementById("playlist_name");
-   //elem.innerHTML = capitalizeFirstLetter(tag);
-   elem.innerHTML = tag;
+   elem.innerHTML = capitalizeFirstLetter(tag);
+   //elem.innerHTML = tag;
    if(loggedin&&!pub_priv){
       elem = document.getElementById("rename_playlist");
       elem.innerHTML = " <a href=''> <span class='glyphicon glyphicon-play'></span> Rename Playlist </a>";
       elem = document.getElementById("delete_playlist");
       elem.innerHTML = " <a onclick='delete_playlist_confirm();return false;'> <span class='glyphicon glyphicon-play'></span> Delete Playlist </a>";
       var element = document.getElementById("share_checkbox");
-      element.style.display = 'inline-block';  
+      element.style.display = 'inline-block';
       if(check)
          $('input[name="my-checkbox"]').bootstrapSwitch('state', true, true);
       else
@@ -270,7 +317,7 @@ function play_psong(data,tag,check,pid){
       element.style.display = 'none';  
    }
    $("#playlist_songs tr").remove();
-   rating_playlist(pid);
+   show_playlist_rating();
    for(var song=0;song<data.length;song++)
    {
       //var song = data[i].song[0];
@@ -301,10 +348,12 @@ function play_psong(data,tag,check,pid){
       cell1=row.insertCell(5);
       cell1.innerHTML = "<a href='' onclick='add_to_queue("+song_json+"); return false;'>  <span class='glyphicon glyphicon-plus'> </span> </a>";
 
-      cell1=row.insertCell(6);
-      cell1.innerHTML = "<a href='' onclick='remove_from_playlist("+song_json+",this); return false;'>  <span class='glyphicon glyphicon-remove'> </span> </a>";
-
-
+      //Do not add remove button for songs in public playlist
+      if(!pub_priv)
+      {
+         cell1=row.insertCell(6);
+         cell1.innerHTML = "<a href='' onclick='remove_from_playlist("+song_json+",this); return false;'>  <span class='glyphicon glyphicon-remove'> </span> </a>";
+      }
    }
    elem = document.getElementById("play_playlist");
    elem.innerHTML = " <a href='' onclick='play_album("+JSON.stringify(temp_arr)+"); return false;'> <span class='glyphicon glyphicon-play'></span> Play </a>";
@@ -316,6 +365,9 @@ function play_psong(data,tag,check,pid){
 }
 
 
+/*
+ This function deletes the playlist.
+ */
 function delete_playlist_confirm(){
    var name=$("#playlist_name").html();
    console.log(name);
@@ -338,52 +390,58 @@ function delete_playlist_confirm(){
    }
 }
 
-function rating_playlist(pid){
-   // target element
-   //alert("rated_it");
-   var txt = document.getElementById("rating_status"); 
-   var el = document.querySelector('#el');
+/*
+This function initialises rating widget for a playlist. Rating is set to zero initially.
+*/
+function show_playlist_rating(){
+   var playlist_rating = document.querySelector('#playlist_rating');
+   var rating_status = document.getElementById("rating_status");
+   rating_status.innerHTML="Rate it...";
+   playlist_rating.innerHTML="";
+   $(playlist_rating).rating({showCaption:false, showClear: false, step: 1, size:'xxs'});
+   $(playlist_rating).rating('update', 0);
+   if(loggedin==false)
+   {
+      rating_status.innerHTML="Login to rate the playlist";
+      $(playlist_rating).rating('refresh', {displayOnly: true});
+   }
+   check_rated();
+}
 
-   txt.innerHTML="Rate it...";
-   el.innerHTML="";
-   // current rating, or initial rating
-   var currentRating = 1;
+/*
+ This function rates the playlist whenever user clicks on rating widget and changes the rating.
+*/
+function rate_playlist(rating){
 
-   // max rating, i.e. number of stars you want
-   var maxRating= 5;
-
-   // callback to run after setting the rating
-   var callback = function(rating) { 
-      if(loggedin){
+   var txt = document.getElementById("rating_status");
+   var pid = document.getElementById('playlist_id').value;
+   if(loggedin){
       $.ajax({
          url:'/rate_playlist/',
          data:{flag:'rate',pid:pid,rating:rating},
          cache:false,
          success:function(){
             txt.innerHTML="You Rated it ....";
-            myRating.setRating(rating,false);
          }
       });
-      }
-   };
-
-   // rating instance
-   var myRating = rating(el, currentRating, maxRating, callback);
-   check_rated(pid,txt,myRating);
-
+   }
 }
-function check_rated(pid,txt,myRating){
+
+/*
+ This function checks whether the user has rated the playlist or not and displays that rating.
+ */
+function check_rated(){
+   var playlist_rating = document.querySelector('#playlist_rating');
+   var rating_status = document.getElementById("rating_status");
+   var playlist_id = document.getElementById('playlist_id').value;
    $.ajax({
       url:'/rate_playlist/',
-      data:{flag:'get',pid:pid},
+      data:{flag:'get',pid:playlist_id},
       cache:false,
       success:function(data){
-         //console.log(data[1].rating);
-         //console.log(data[0].flag);
-         //console.log(data[1].flag);
          if(data[0].flag){
-            txt.innerHTML="You Rated it ....";
-            myRating.setRating(data[1].rating,false);
+            rating_status.innerHTML="You Rated it ....";
+            $(playlist_rating).rating('update', data[1].rating);
          }
       }
    });

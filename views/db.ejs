@@ -10,16 +10,17 @@
       <link rel="stylesheet" href="/stylesheets/loader.css">
       <link rel="stylesheet" href="/stylesheets/jquery.webui-popover.min.css">
       <script src="/javascripts/jquery.min.js"></script>
+      <script src="/javascripts/authenticate.js"></script>
       <script src="/javascripts/jquery-sortable.js"></script>
       <script src="/javascripts/index.js"></script>
       <script src="/javascripts/album.js"></script>
       <script src="/javascripts/admin.js"></script>
       <script src="/javascripts/login.js"></script>
       <script src="/javascripts/artist.js"></script>
-      <script src="/javascripts/user_playlist.js"></script>
       <script src="/javascripts/load.js"></script>
       <script src="/javascripts/tags.js"></script>
       <script src="/javascripts/player.js"></script>
+      <script src="/javascripts/user_playlist.js"></script>
       <script src="/bootstrap/js/bootstrap.min.js"></script>
       <script src="/javascripts/jquery/jquery-ui.js"></script>
       <script src="/javascripts/modernizr-2.6.2.min.js"></script>
@@ -38,13 +39,13 @@
       <link rel='stylesheet' href='/slick/slick-theme.css' />
       <link rel="stylesheet" href="/stylesheets/animate.css">
       <link rel="stylesheet" href="/stylesheets/bootstrap-switch.min.css">
-      <link rel="stylesheet" href="five-star-rating/css/rating.min.css">
+      <link rel="stylesheet" href="star-rating/css/star-rating.css">
       <script type="text/javascript" src="/slick/slick.min.js"></script>
       <script src="/javascripts/jquery.webui-popover.min.js"></script>
       <script src="/javascripts/bootstrap-notify.min.js"></script>
       <script src="/javascripts/bootstrap-editable.min.js"></script>
       <script src="/javascripts/bootstrap-switch.min.js"></script>
-      <script src="five-star-rating/js/rating.min.js"></script>
+      <script src="star-rating/js/star-rating.js"></script>
    </head>
    <body>
 
@@ -65,31 +66,30 @@ fjs.parentNode.insertBefore(js, fjs);
 
       </div>
       <nav class="top_bar navbar-fixed-top">
-         <div>
-            <div class="heading_top">
-               <!--<a href="" onclick="load_home(); return false;">La<span class='glyphicon glyphicon-music'></span>ify<sup>β</sup></a>-->
-               <!--<a href="" onclick="load_home(); return false;"><img src="image/lanify_logo.jpg" width="150px" height="50px"><img></a>-->
-               <a href="" onclick="load_home(); return false;">Lanify</a>
-               <% if ( username.length <= 0) { %>
-               <button type="button" class="btn btn-default btn-lg" id="signinBtn">Login</button>
-               <button type="button" class="btn btn-default btn-lg" id="signupBtn">Signup</button>
-               <% } %>
-               <% if (username.length >0 ){ %>
-               <button type="button" class="btn btn-default btn-lg" id="userBtn">Hello <%= username %></button>
-               <button type="button" class="btn btn-default btn-lg" id="logoutBtn">Logout</button>
-               <% } %>
+         <div class="heading_top">
+            <!--<a href="" onclick="load_home(); return false;">La<span class='glyphicon glyphicon-music'></span>ify<sup>β</sup></a>-->
+            <!--<a href="" onclick="load_home(); return false;"><img src="image/lanify_logo.jpg" width="150px" height="50px"><img></a>-->
+            <a href="" onclick="load_home(); return false;">Lanify</a>
+            <% if ( username.length <= 0) { %>
+            <button type="button" class="btn btn-default btn-lg" id="signinBtn">Login</button>
+            <button type="button" class="btn btn-default btn-lg" id="signupBtn">Signup</button>
+            <% } %>
+            <% if (username.length >0 ){ %>
+            <button type="button" class="btn btn-default btn-lg" id="userBtn">Hello <%= username %></button>
+            <button type="button" class="btn btn-default btn-lg" id="logoutBtn">Logout</button>
+            <% } %>
 
-               <!--<button type="button" class="btn btn-default btn-lg backBtn">Back</button>-->
-               <div class="fb-like" data-href="https://www.facebook.com/Lanify/" data-layout="standard" data-action="like" data-show-faces="false" data-share="true"></div>
-               <!--<div class="fb-page"-->
-               <!--data-href="https://www.facebook.com/lanify"-->
-               <!--data-width="250"-->
-               <!--data-height="70"-->
-               <!--data-small_header = "true"-->
-               <!--data-hide-cover="true"-->
-               <!--data-show-facepile="false"-->
-               <!--data-show-posts="false"></div>-->
-               <!--</div>-->
+            <!--<button type="button" class="btn btn-default btn-lg backBtn">Back</button>-->
+            <div class="fb-like" data-href="https://www.facebook.com/Lanify/" data-layout="standard" data-action="like" data-show-faces="false" data-share="true"></div>
+            <!--<div class="fb-page"-->
+            <!--data-href="https://www.facebook.com/lanify"-->
+            <!--data-width="250"-->
+            <!--data-height="70"-->
+            <!--data-small_header = "true"-->
+            <!--data-hide-cover="true"-->
+            <!--data-show-facepile="false"-->
+            <!--data-show-posts="false"></div>-->
+            <!--</div>-->
          </div>
          <div id="search_bar">
             <input type="text" id="bar" class="form-control ui-autocomplete-input" placeholder="Search for Arijit Singh, Sunidhi Chauhan, 2 States..."/>
@@ -443,8 +443,9 @@ fjs.parentNode.insertBefore(js, fjs);
                   <div id="playlist_image" class="album_image">
                   </div>
                   <div class="tag_name">
-                     <div id="playlist_name" >
+                     <div id="playlist_name">
                      </div>
+                     <input type="text" id="playlist_id" value="" style="display: none;visibility: hidden;"/>
                         <div class="playlist_options album_options">
                            <div id="play_playlist"></div>
                            <div id="add_to_queue_playlist"></div>
@@ -454,7 +455,7 @@ fjs.parentNode.insertBefore(js, fjs);
                            <% } %>
                            <label id="share_checkbox">Shared <input type="checkbox" id="share_checkbox_box" name="my-checkbox" ></label>
                            <div id="rating_status"></div>
-                           <div class="c-rating" id="el"></div>
+                           <div id="playlist_rating"></div>
                         </div>
                   </div>
                   <table class="table-striped table" id="playlist_songs">

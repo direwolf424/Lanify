@@ -1,4 +1,3 @@
-var loggedin,adminp;
 function load_home(){
    $('.nav-stacked a[href="#home"]').tab('show');
    return false;
@@ -12,28 +11,7 @@ function hack(){
    $('.next3').click();
    $('.prev3').click();
 }
-$.ajax({
-   type:"GET",
-   url:'/status',
-   success:function(data){
-      console.log(data);
-      if(data=="true")
-         loggedin=true;
-      else
-         loggedin=false;
-   }
-});
-$.ajax({
-   type:"GET",
-   url:'/status1',
-   success:function(data){
-      console.log(data);
-      if(data=="true")
-         adminp=true;
-      else
-         adminp=false;
-   }
-});
+
 $(document).ready(function(){
 
    repeat();
