@@ -1,8 +1,11 @@
+var arr_title=[],arr_album=[],arr_artist=[],arr_year=[],arr_lang=[];
+var upload_cnt;
 $(document).ready(function() {
 
    $('#uploadForm').submit(function() {
-      $("#status").empty().text("File is uploading...");
-
+      var r = confirm("Please Check the details , If correct then press ok else correct the information");
+      if(r==true){
+      $("#status").empty().text("-------------->File is Uploading...Please be patient :P");
       $(this).ajaxSubmit({
 
          error: function(xhr) {
@@ -14,87 +17,59 @@ $(document).ready(function() {
             $("#status").empty().text(response);
          }
       });
-
+      }
       return false;
    });    
-   if(loggedin && adminp ){
-   $('#rename_album').editable({
-      type: 'text',
-      pk: 1,
-      url: '/lanify/admin/rename',
-      title: 'Enter valid name',
-      ajaxOptions: {
-         type: 'get',
-         dataType: 'json'
-      },
-      autotext:'never',
-      params: function(params) {
-         //originally params contain pk, name and value
-         params.flag = 'album';
-         params.album_name = $("#album_single_name").html();
-         return params;
-      }
-   });
-   $('#rename_artist').editable({
-      type: 'text',
-      pk: 1,
-      url: '/lanify/admin/rename',
-      title: 'Enter valid name',
-      ajaxOptions: {
-         type: 'get',
-         dataType: 'json'
-      },
-      autotext:'never',
-      params: function(params) {
-         //originally params contain pk, name and value
-         params.flag = 'artist';
-         params.artist_name = $("#artist_single_name").html();
-         return params;
-      }
-   });
-   }
-   else{
-      $('#rename_album').webuiPopover({title:'Rename',content:'You need admin rights to rename'});
-      $('#rename_artist').webuiPopover({title:'Rename',content:'you need admin rights to rename'});
-   }
 });
 
-
-function showMetaData(data) {
+function showMetaData(data,i,callback) {
    musicmetadata(data, function (err, result) {
       if (err) throw err;
-      console.log(result);
-      $('#title').val(delete_info(result.title));
-      $('#album').val(delete_info(result.album));
-      $('#artist').val(result.artist);
-      $('#year').val(result.year);
+      //console.log(result);
+      var title=delete_info(result.title);
+      var album=delete_info(result.album);
+      var artist=result.artist;
+      var year=result.year;
       if (result.picture.length > 0) {
          var picture = result.picture[0];
          var url = URL.createObjectURL(new Blob([picture.data], {'type': 'image/' + picture.format}));
          var image = document.getElementById('myImg');
          image.src = url;
       }
-      var div = document.getElementById('info');
-      div.innerText = JSON.stringify(result, undefined, 2);
+      //var div = document.getElementById('info');
+      //div.innerText = JSON.stringify(result, undefined, 2);
+      arr_album[i]=album;
+      arr_artist[i]=artist;
+      arr_year[i]=year;
+      arr_title[i]=title;
+      console.log(i,upload_cnt,title);
+      upload_cnt++;
+      callback('error',title,album,artist,year);
    });
 }
+
 function myFunction(){
    var x = document.getElementById("myFile");
-   var txt = "";
+   var txt = "",html="";
+   $("#song_upload_body tr").remove();
+   upload_cnt=0;
    if ('files' in x) {
       if (x.files.length == 0) {
          txt = "Select one or more files.";
       } else {
-         showMetaData(x.files[0]);
          for (var i = 0; i < x.files.length; i++) {
-            txt += "<br><strong>" + (i+1) + ". file</strong><br>";
+            //txt += "<br><strong>" + (i+1) + ". file</strong><br>";
             var file = x.files[i];
-            if ('name' in file) {
-               txt += "name: " + file.name + "<br>";
-            }
-            if ('size' in file) {
-               txt += "size: " + file.size + " bytes <br>";
-            }
+            //if ('name' in file) {
+            //txt += "name: " + file.name + "<br>";
+            //}
+            //if ('size' in file) {
+            //txt += "size: " + file.size + " bytes <br>";
+            //}
+            showMetaData(x.files[i],i,function(err,title,album,artist,year){
+      if(upload_cnt==x.files.length)
+         assign_value_table();
+            });
          }
       }
    } 
@@ -107,8 +82,25 @@ function myFunction(){
       }
    }
    document.getElementById("demo").innerHTML = txt;
+   //song_table.innerHTML=html;
 }
 
+function assign_value_table(){
+   var table = document.getElementById("song_upload_body");
+   for(var i=0;i<upload_cnt;i++){
+      var row=table.insertRow(table.rows.length);
+      var cell1=row.insertCell(0);
+      cell1.innerHTML = '<input name="title" type="text" value="'+arr_title[i]+'" style="width:100%"></input>';
+      cell1=row.insertCell(1);
+      cell1.innerHTML = '<input name="album" type="text" value="'+arr_album[i]+'" style="width:100%""></input>';
+      cell1=row.insertCell(2);
+      cell1.innerHTML = '<input name="artist" type="text" value="'+arr_artist[i]+'" style="width:100%""></input>';
+      cell1=row.insertCell(3);
+      cell1.innerHTML = '<input name="year" type="text" value="'+arr_year[i]+'" style="width:100%""></input>';
+      cell1=row.insertCell(4);
+      cell1.innerHTML = '<select name="language"><option value="english">English</option><option value="hindi">Hindi</option><option value="telugu">Telugu</option></select>';
+   }
+}
 function delete_info(str){
    str = str.replace(/\([0-9]+\)/gi,""); //for format (1234)
    str = str.replace(/\[[0-9 a-z _ : , @ .]+\]/gi,""); //for anything beetween [word]

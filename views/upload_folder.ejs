@@ -2,53 +2,43 @@
 <html>
    <head>
       <title>Upload music</title>
-      <script src="/javascripts/admin.js"></script>
-      <script src="/javascripts/musicmetadata.js"></script>
       <script src="/javascripts/jquery.min.js"></script>
       <script src="/javascripts/jquery/jquery-ui.js"></script>
+      <script src="/javascripts/upload_songs.js"></script>
+      <script src="/javascripts/musicmetadata.js"></script>
       <script src="/bootstrap/js/bootstrap.min.js"></script>
       <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+      <link rel="stylesheet" href="/stylesheets/upload_table.css">
    </head>
    <body>
       <form role="form" id="uploadForm"
                         enctype="multipart/form-data"
-                        action="/lanify/admin/upload"
+                        action="/lanify/admin/upload_folder"
                         method="post">
          <div class="form-group">
-            <label for="music">Select Music File(mp3 only):</label>
-            <input type="file" required class="form-control" id="myFile" name="music" onchange="myFunction()">
+            <label for="music">Select Music File(mp3 only,please give correct name ):</label>
+            <input type="file" required multiple="" class="form-control" id="myFile" name="music" onchange="myFunction()" >
          </div>
-         <p id="demo"></p>
-         <span id = "status"></span>
-         <div class="form-group">
-            <label for="title">Title:</label>
-            <input type="text" required class="form-control" id="title" name="title">
-         </div>
-         <div class="form-group">
-            <label for="album">Album:</label>
-            <input type="text" required class="form-control" id="album" name="album">
-         </div>
-         <div class="form-group">
-            <label for="artist">Artist(for multiple artist separate with a comma):</label>
-            <input type="text" required class="form-control" id="artist" name="artist">
-         </div>
-         <div class="form-group">
-            <label for="year">Year Of Release:</label>
-            <input type="text" required class="form-control" id="year" name="year">
-         </div>
-         <div class="checkbox">
-            <input type="radio" name="language" id="" value="english" required> English<br>
-         </div>
-         <div class="checkbox">
-            <input type="radio" name="language" value="hindi"> Hindi<br>
-         </div>
-         <div class="checkbox disabled">
-            <input type="radio" name="language" value="telugu"> Telugu<br>
-         </div>
-         <input type="submit" value="Upload music" name="submit"><br>
+            <p id="demo"></p>
+            <span id = "status"></span>
+            <div class="song_upload_div">
+               <table class="table  table-striped" id="song_upload">
+                  <thead id="song_upload_head">
+                     <tr class="success">
+                        <td>Title</td>
+                        <td>Album</td>
+                        <td>Artist</td>
+                        <td>Year</td>
+                        <td>Language</td>
+                     </tr>
+                  </thead>
+                  <tbody id="song_upload_body"></tbody>
+               </table>
+            </div>
+            <input type="submit" value="Upload music" name="submit"><br>
       </form>
       <label >Cover Image if available</label>
-      <img id="myImg"></img>
+      <img style="width:100px;height:100px" id="myImg"></img>
       <!--<div id="info"></div>-->
    </body>
 </html>
