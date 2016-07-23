@@ -273,6 +273,9 @@ setTimeout(function(){
    $('h1').css('color','#222222');
    $('.navbar-fixed-bottom').css('position','fixed');
    $('.navbar-fixed-top').css('position','fixed');
+   setTimeout(function(){
+      $("#openingModal").modal('show');
+   },1000);
 }, 2000);
 //});
 function submit_request(){

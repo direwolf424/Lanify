@@ -59,6 +59,7 @@ $(document).ready(function(){
 });
 
 function mswitch(val){
+   $("#openingModal").modal('hide');
    if(val == 1){
       $("#signupModal").modal('hide');
       $("#signinModal").modal('show');
