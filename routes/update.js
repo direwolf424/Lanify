@@ -23,7 +23,7 @@ router.get('/',function(req,res,next){
    var q1 = function(fn) {
       db.update({"title":x},{$inc:{views:1}}, function(err, songs) {
          if (err) throw err;
-         console.log("Updated ---->",req.ip);
+         console.log("Updated ---->",req.ip+" ",req.user.username);
          return fn && fn(null,"Updated");
       });
    };
