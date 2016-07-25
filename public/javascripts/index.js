@@ -99,9 +99,8 @@ $(function () {
    $("#bar").autocomplete({
       source: function (request, response) {
          $.ajax({
-            //url: "http://192.168.159.28:1234/search",
-            url: "http://192.168.109.66:1234/search",
-            //url: "http://localhost:1234/search",
+            //url: "http://192.168.109.66:1234/search",
+            url: "http://192.168.109.66:3000/search",
             type: "GET",
             data: request,  // request is the value of search input
             success: function (data) {
@@ -273,8 +272,8 @@ $.ajax({
       bugs:e3,
       features:e4
    },
-   url: "http://192.168.109.66:1234/request",
-   //url: "http://192.168.159.28:1234/request",
+   //url: "http://192.168.109.66:1234/request",
+   url: "http://192.168.159.28:3000/request",
 });
 }
 
