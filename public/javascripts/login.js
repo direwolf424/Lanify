@@ -47,7 +47,6 @@ $(document).ready(function(){
       var elog = 1;
       /* Alerts the results */
       posting.done(function( data ) {
-         //alert(data);
          window.location="http://192.168.109.66:1234/lanify";
       })
          .fail(function(){
