@@ -42,7 +42,7 @@ router.get('/',function(req,res,next){
          res.send('');
       }
       else if(req.query.flag == 'remove'){
-         console.log(req.query);
+         //console.log(req.query);
          var id = req.query.id;
          var pname = req.query.pname;
          var q11= function() {
@@ -110,7 +110,7 @@ router.get('/',function(req,res,next){
       }
       else if(req.query.flag=='songs'){
          var q3 = function(fn){
-            playlist.find({"name":req.query.name}).exec(function(err,plist){
+            playlist.find({"_id":req.query.id}).exec(function(err,plist){
                if(err)
                   console.log('Error occured',err);
                //console.log(plist);
@@ -123,8 +123,8 @@ router.get('/',function(req,res,next){
             songs.find({
                '_id': { $in: play[0].song_id}
             }, function(err, docs){
-               //console.log(docs);
-
+               if(err)
+                  console.log(err);
                res.send(docs);
             });
          });
@@ -144,7 +144,7 @@ router.get('/',function(req,res,next){
             songs.find({
                '_id': { $in: play[0].song}
             }, function(err, docs){
-               console.log(docs);
+               //console.log(docs);
 
                res.send(docs);
             });
@@ -216,7 +216,7 @@ router.get('/',function(req,res,next){
    else{
       if(req.query.flag=='songs'){
          var q31 = function(fn){
-            playlist.find({shared:true,"name":req.query.name}).exec(function(err,plist){
+            playlist.find({shared:true,"_id":req.query.id}).exec(function(err,plist){
                if(err)
                   console.log('Error occured',err);
                return fn && fn(null,plist);

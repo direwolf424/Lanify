@@ -264,6 +264,20 @@ $(document).ready(function() {
    $("#jquery_jplayer_1").bind($.jPlayer.event.ended, function(event) {
       play_next();
    });
+   $('#jquery_jplayer_1').bind($.jPlayer.event.volumechange, function(event){
+      //alert(event.jPlayer.options.volume);
+      var new_vol=event.jPlayer.options.volume;
+      new_vol=Math.round(new_vol * 100) / 100;
+      localStorage.setItem('volume', new_vol);
+   });
+
+   //set default volume
+   if(localStorage.getItem("volume")===null)
+   {
+      $("#jquery_jplayer_1").jPlayer("volume", 0.5);
+   }
+   else
+      $("#jquery_jplayer_1").jPlayer("volume", parseFloat(localStorage.getItem("volume")));
 
 });
 
@@ -462,8 +476,8 @@ function now_playing(song){
 
    cell1=row.insertCell(5);
    cell1.innerHTML = '<a href="" class="add_tags" data-id="'+song._id+'" data-toggle="modal" data-target="#myModal">Add Tags</a>';
-            cell1=row.insertCell(6);
-            cell1.innerHTML = '<a href="" class="add_playlist" data-id1="'+song._id+'" data-toggle="modal" data-target="#myPlaylist"><span class="glyphicon glyphicon-list"></span></a>';
+   cell1=row.insertCell(6);
+   cell1.innerHTML = '<a href="" class="add_playlist" data-id1="'+song._id+'" data-toggle="modal" data-target="#myPlaylist"><span class="glyphicon glyphicon-list"></span></a>';
 
    cell1=row.insertCell(7);
    pass = JSON.stringify("remove_song(this); return false;");

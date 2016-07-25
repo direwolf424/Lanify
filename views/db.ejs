@@ -180,6 +180,33 @@ fjs.parentNode.insertBefore(js, fjs);
 
          </div>
       </div>
+      <!--opening popup window-->
+      <div class="modal fade" id="openingModal" role="dialog">
+         <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+               <div class="modal-header" >
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4><span class="glyphicon glyphicon-lock"></span> Feature Update</h4>
+               </div>
+               <div class="modal-body">
+                  <ul class="list-group">
+                  <l class="list-group-item">Now create your own Private Playlist by clicking on the <span class="glyphicon glyphicon-list"> </span> button left to the <span class="glyphicon glyphicon-plus"> </span> sign</l>
+                  <l class="list-group-item">You can share your Private Playlist with others</l>
+                  <l class="list-group-item">Just send a request if any Song or Album is not there and we will upload it. </l>
+                  <l class="list-group-item">Login and get your Auto Generated playlist</l>
+                  <l class="list-group-item">The Songs classified in Genre tab is user contributed. For assigning genre to any song click on Add tags and classify it.</l>
+                  <l class="list-group-item">The song are shown in Sorted Order in the Songs Tab . For random you can click on Random.</l>
+                  <l class="list-group-item">Spread the word. Stay tuned .</l>
+                  </ul>
+               </div>
+               <div class="modal-footer">
+                  <p>Not a member? <button onclick="mswitch(2)">Sign Up</button></p>
+               </div>
+            </div>
+         </div>
+      </div>
       <div class="content row area_content">
 
          <div class="col-md-2 side_content">
@@ -632,6 +659,9 @@ fjs.parentNode.insertBefore(js, fjs);
                         <label><input type="checkbox" value="electronic" name="tags">Electronic</label>
                      </div>
                      <div class="checkbox">
+                     <div class="checkbox">
+                        <label><input type="checkbox" value="marathi" name="tags">Marathi</label>
+                     </div>
                         <label><input type="checkbox" value="punjabi" name="tags">Punjabi</label>
                      </div>
                      <div class="checkbox">
