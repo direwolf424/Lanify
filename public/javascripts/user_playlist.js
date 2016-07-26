@@ -297,7 +297,7 @@ function play_psong(data,tag,check,pid,currentRating){
    var temp_arr = [];
    elem.innerHTML = "<img class ='image_size' src='image/image.jpg'>";
    elem = document.getElementById("playlist_name");
-   elem.innerHTML = capitalizeFirstLetter(tag);
+   elem.innerHTML = tag;
    //elem.innerHTML = tag;
    if(loggedin&&!pub_priv){
       elem = document.getElementById("rename_playlist");

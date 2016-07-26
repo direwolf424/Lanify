@@ -199,7 +199,7 @@ router.get('/',function(req,res,next){
                console.log('updated');
             else{
                console.log(' updated playlist '+old_playlist+' '+new_playlist);
-               res.status(200).send('Done');
+               res.status(200).send('renamed succesfully');
             }
          });
       }
