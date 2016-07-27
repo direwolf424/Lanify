@@ -11,9 +11,9 @@ var http = require('http');
 /**
  * Get port from environment and store in Express.
  */
-
-//var port = normalizePort(process.env.PORT || '1234');
-var port = normalizePort(process.env.PORT || '3000');
+//This port number should be same as lanify_port in configuration.js
+var port_no = '3000';
+var port = normalizePort(process.env.PORT || port_no);
 app.set('port', port);
 
 /**

@@ -6,8 +6,7 @@ $(document).ready(function(){
       $("#signupModal").modal();
    });
    $("#logoutBtn").click(function(){
-      //window.location="http://192.168.109.66:1234/logout";
-      window.location="http://192.168.109.66:3000/logout";
+      window.location=lanify_logout_url;
    });
    $("#register_form").submit(function(event) {
 
@@ -48,8 +47,7 @@ $(document).ready(function(){
       var elog = 1;
       /* Alerts the results */
       posting.done(function( data ) {
-         //window.location="http://192.168.109.66:1234/lanify";
-         window.location="http://192.168.109.66:3000/lanify";
+         window.location=lanify_home_url;
       })
          .fail(function(){
             var ele=document.getElementById("elogin");
