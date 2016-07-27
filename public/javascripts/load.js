@@ -400,6 +400,49 @@ function load_more_song()
             cell1.innerHTML = "<a href='' onclick='add_to_queue("+song_json+"); return false;'>  <span class='glyphicon glyphicon-plus'> </span> </a>";
 
          }
+         var x =  JSON.stringify("new_songs_added");
+         alpha.innerHTML += "<a href='' class='filter_letter' onclick='filter_char("+x+"); return false;' > Songs(Request) </a> ";
+         flag_song = false;
+         var songs = data[0];
+         song_data = songs;
+         songs_all = songs;
+         var table = document.getElementById("table_songs");
+         var count = table.rows.length;
+         for (var i=count;i<count+20 && i<songs.length;i++)
+         {
+            var row=table.insertRow(table.rows.length);
+            var song = songs[i];
+
+            var cell1=row.insertCell(0);
+            var song_json = JSON.stringify(song);
+            cell1.innerHTML = "<a href='' onclick='play1("+song_json+"); return false;'>  <span class='glyphicon glyphicon-play'> </span> </a>";
+
+            cell1=row.insertCell(1);
+            cell1.innerHTML = "<a href='' onclick='play1("+song_json+"); return false;'>"+song.title+"</a>";
+
+            cell1=row.insertCell(2);
+            var pass = JSON.stringify("load_album('/album/"+song.album+"'); return false;");
+            cell1.innerHTML = "<a class='album_click' href='' onclick="+pass+">"+song.album+"</a>";
+
+            cell1=row.insertCell(3);
+            cell1.innerHTML = "";
+            for (var j=0;j< song.artist.length;j++)
+            {
+               cell1.innerHTML += " <a href='' onclick='load_artist("+JSON.stringify('/artist/'+song.artist[j])+"); return false;'>"+song.artist[j]+"</a> ";
+            }
+
+            cell1=row.insertCell(4);
+            cell1.innerHTML = song.length;
+
+            cell1=row.insertCell(5);
+            cell1.innerHTML = '<a href="" class="add_tags" data-id="'+song._id+'" data-toggle="modal" data-target="#myModal">Add Tags</a>';
+            cell1=row.insertCell(6);
+            cell1.innerHTML = '<a title="Add to Playlist" href="" class="add_playlist" data-id1="'+song._id+'" data-toggle="modal" data-target="#myPlaylist"><span class="glyphicon glyphicon-list"></span></a>';
+
+            cell1=row.insertCell(7);
+            cell1.innerHTML = "<a href='' onclick='add_to_queue("+song_json+"); return false;'>  <span class='glyphicon glyphicon-plus'> </span> </a>";
+
+         }
       });
    }
    else{
@@ -688,10 +731,64 @@ function filter_char(letter)
 
                cell1=row.insertCell(5);
                cell1.innerHTML = '<a href="" class="add_tags" data-id="'+song._id+'" data-toggle="modal" data-target="#myModal">Add Tags</a>';
-               cell1=row.insertCell(7);
+               cell1=row.insertCell(6);
                cell1.innerHTML = '<a title="Add to Playlist" href="" class="add_playlist" data-id1="'+song._id+'" data-toggle="modal" data-target="#myPlaylist"><span class="glyphicon glyphicon-list"></span></a>';
 
+               cell1=row.insertCell(7);
+               cell1.innerHTML = "<a href='' onclick='add_to_queue("+song_json+"); return false;'>  <span class='glyphicon glyphicon-plus'> </span> </a>";
+            }
+            check_song_song();
+         }
+      });
+      return;
+   }
+   if(letter=="new_songs_added")
+   {
+      var url="/users/songs";
+      $.ajax({
+         type:"GET",
+         url:url,
+         data:{flag:'random',value:'new'},
+         success:function(data){
+            filter = data[0];
+            //console.log("data  ",filter);
+            var songs = filter;
+            songs_all = songs;
+            var table = document.getElementById("table_songs");
+            $("#table_songs tr").remove();
+            //console.log("adsasdasd --->",songs.length);
+            for (var i=0;i<20 && i<songs.length;i++)
+            {
+               var row=table.insertRow(table.rows.length);
+               var song = songs[i];
+               var cell1=row.insertCell(0);
+               var song_json = JSON.stringify(song);
+               cell1.innerHTML = "<a href='' onclick='play1("+song_json+"); return false;'>  <span class='glyphicon glyphicon-play'> </span> </a>";
+
+               cell1=row.insertCell(1);
+               cell1.innerHTML = "<a href='' onclick='play1("+song_json+"); return false;'>"+song.title+"</a>";
+
+               cell1=row.insertCell(2);
+               var pass = JSON.stringify("load_album('/album/"+song.album+"'); return false;");
+               cell1.innerHTML = "<a class='album_click' href='' onclick="+pass+">"+song.album+"</a>";
+
+               cell1=row.insertCell(3);
+               cell1.innerHTML = "";
+
+               for (var j=0;j<song.artist.length;j++)
+               {
+                  cell1.innerHTML += " <a href='' onclick='load_artist("+JSON.stringify('/artist/'+song.artist[j])+"); return false;'>"+song.artist[j]+"</a> ";
+               }
+
+               cell1=row.insertCell(4);
+               cell1.innerHTML = song.length;
+
+               cell1=row.insertCell(5);
+               cell1.innerHTML = '<a href="" class="add_tags" data-id="'+song._id+'" data-toggle="modal" data-target="#myModal">Add Tags</a>';
                cell1=row.insertCell(6);
+               cell1.innerHTML = '<a title="Add to Playlist" href="" class="add_playlist" data-id1="'+song._id+'" data-toggle="modal" data-target="#myPlaylist"><span class="glyphicon glyphicon-list"></span></a>';
+
+               cell1=row.insertCell(7);
                cell1.innerHTML = "<a href='' onclick='add_to_queue("+song_json+"); return false;'>  <span class='glyphicon glyphicon-plus'> </span> </a>";
             }
             check_song_song();
