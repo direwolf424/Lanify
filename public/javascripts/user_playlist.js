@@ -182,14 +182,16 @@ function load_playlist_songs(play){
 
    $.ajax({
       type: "GET",
-      data: {flag:'songs',id:play._id},
+      data: {flag:'songs',id:play._id,key:pub_priv,play_user:play.user_name},
       url: url,
       success: function (data,status) {
-         //console.log(data);
-         //console.log('hello world');
+         console.log('hello world1');
+         console.log(data);
+         console.log('hello world');
          current_name = play.name;
          var currentRating = Math.floor(play.rating/play.rating_count);
-         play_psong(data,play.name,play.shared,play._id,currentRating);
+         var hit_count=play.hits;
+         play_psong(data,play.name,play.shared,play._id,currentRating,hit_count);
       },
       error: function (data,status) {
       },
@@ -291,13 +293,15 @@ function play_auto_psong(data,tag){
 /*
  This function populates the song table for a playlist.
  */
-function play_psong(data,tag,check,pid,currentRating){
+function play_psong(data,tag,check,pid,currentRating,hit_count){
    var elem = document.getElementById("playlist_image");
    $("#playlist_id").val(pid);
    var temp_arr = [];
    elem.innerHTML = "<img class ='image_size' src='image/image.jpg'>";
    elem = document.getElementById("playlist_name");
    elem.innerHTML = tag;
+   elem = document.getElementById("playlist_hits");
+   elem.innerHTML = '<label>Hits--> '+hit_count+'</label>';
    //elem.innerHTML = tag;
    if(loggedin&&!pub_priv){
       elem = document.getElementById("rename_playlist");
@@ -392,8 +396,8 @@ function delete_playlist_confirm(){
 }
 
 /*
-This function initialises rating widget for a playlist. Rating is set to zero initially.
-*/
+ This function initialises rating widget for a playlist. Rating is set to zero initially.
+ */
 function show_playlist_rating(){
    var playlist_rating = document.querySelector('#playlist_rating');
    var rating_status = document.getElementById("rating_status");
@@ -411,7 +415,7 @@ function show_playlist_rating(){
 
 /*
  This function rates the playlist whenever user clicks on rating widget and changes the rating.
-*/
+ */
 function rate_playlist(rating){
 
    var txt = document.getElementById("rating_status");

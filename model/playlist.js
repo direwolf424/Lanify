@@ -12,6 +12,7 @@ var playlist_scheme = new Schema({
    user_name:String,
    rating:Number,
    rating_count:Number,
+   hits:Number,
    users:Array
 },{collections:'playlist'});
 

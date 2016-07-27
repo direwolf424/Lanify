@@ -81,7 +81,7 @@ router.get('/',function(req,res,next){
             if(err)
                console.log(err);
             //console.log(play);
-           f_def(play);
+            f_def(play);
             //res.send(play);
          });
       }
@@ -94,21 +94,37 @@ router.get('/',function(req,res,next){
                //{$addToSet:{"song":{"song_id":sid,count:0},$slice:100 }},
                {$addToSet:{"song":sid,$slice:100 }},
                {upsert:true,new:true}, function(err, result) {
-               if (err) console.log(err);
-               console.log("Updated");
+                  if (err) console.log(err);
+                  console.log("Updated");
 
-               dplaylist.update({"name":ct,"user_name":uname},
-                  {$push:{"song":{$each:[],$slice:100 }}},
-                  {upsert:true,new:true}, function(err, result) {
-                  if(err)
-                     console.log('error in slicing');
-                  res.status(200).send('');
+                  dplaylist.update({"name":ct,"user_name":uname},
+                     {$push:{"song":{$each:[],$slice:100 }}},
+                     {upsert:true,new:true}, function(err, result) {
+                        if(err)
+                           console.log('error in slicing');
+                        res.status(200).send('');
+                     });
                });
-            });
          };
          default_playlist(req.user.username);
       }
       else if(req.query.flag=='songs'){
+         var playlist_hit = function(fn){
+            var ct;
+            if(req.user){
+               if(req.query.key == "true" && req.query.play_user != req.user.username)
+                  ct=1;
+               else
+                  ct=0;
+            }
+            else
+               ct=1;
+            playlist.update({"_id":req.query.id},{$inc:{hits:ct}},function(err,result){
+               if(err)
+                  console.log("error in increasing hits for playlist");
+               return fn && fn(null,result);
+            });
+         };
          var q3 = function(fn){
             playlist.find({"_id":req.query.id}).exec(function(err,plist){
                if(err)
@@ -117,15 +133,19 @@ router.get('/',function(req,res,next){
                return fn && fn(null,plist);
             });
          };
-         q3(function(err,play){
-            if(err)
-               console.log(err);
-            songs.find({
-               '_id': { $in: play[0].song_id}
-            }, function(err, docs){
+         playlist_hit(function(err,hit){
+            q3(function(err,play){
+               console.log('yo hits --> ',play[0].hits);
                if(err)
                   console.log(err);
-               res.send(docs);
+               songs.find({
+                  '_id': { $in: play[0].song_id}
+               }, function(err, docs){
+                  if(err)
+                     console.log(err);
+                  docs.hits=play[0].hits;
+                  res.send(docs);
+               });
             });
          });
       }
@@ -195,13 +215,13 @@ router.get('/',function(req,res,next){
          console.log('renaming playlist-----. ',old_playlist,new_playlist);
          playlist.update({"name":old_playlist,"user_name":req.user.username}, 
             {"name":new_playlist},function(err,write){
-            if(err)
-               console.log('updated');
-            else{
-               console.log(' updated playlist '+old_playlist+' '+new_playlist);
-               res.status(200).send('renamed succesfully');
-            }
-         });
+               if(err)
+                  console.log('updated');
+               else{
+                  console.log(' updated playlist '+old_playlist+' '+new_playlist);
+                  res.status(200).send('renamed succesfully');
+               }
+            });
       }
       if(req.query.flag == "delete"){
          var del_playlist = req.query.name;
@@ -215,6 +235,22 @@ router.get('/',function(req,res,next){
    }
    else{
       if(req.query.flag=='songs'){
+         var playlist_hit = function(fn){
+            var ct;
+            if(req.user){
+               if(req.query.key == "true" && req.query.play_user != req.user.username)
+                  ct=1;
+               else
+                  ct=0;
+            }
+            else
+               ct=1;
+            playlist.update({"_id":req.query.id},{$inc:{hits:ct}},function(err,result){
+               if(err)
+                  console.log("error in increasing hits for playlist");
+               return fn && fn(null,result);
+            });
+         };
          var q31 = function(fn){
             playlist.find({shared:true,"_id":req.query.id}).exec(function(err,plist){
                if(err)
@@ -222,13 +258,15 @@ router.get('/',function(req,res,next){
                return fn && fn(null,plist);
             });
          };
-         q31(function(err,play){
-            if(err)
-               console.log(err);
-            songs.find({
-               '_id': { $in: play[0].song_id}
-            }, function(err, docs){
-               res.send(docs);
+         playlist_hit(function(err,hit){
+            q31(function(err,play){
+               if(err)
+                  console.log(err);
+               songs.find({
+                  '_id': { $in: play[0].song_id}
+               }, function(err, docs){
+                  res.send(docs);
+               });
             });
          });
       }
