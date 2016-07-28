@@ -2,6 +2,20 @@ var current_name;
 var pub_priv;
 
 /*
+ This function refreshes the playlist tab.
+ */
+function refresh_playlist() {
+   if($('#playlist_public_div').hasClass('active'))
+   {
+      load_public_playlist();
+   }
+   if($('#playlist_private_div').hasClass('active'))
+   {
+      load_private_playlist();
+   }
+}
+
+/*
  This function removes song from playlist.
  */
 function remove_from_playlist(song_json,elem){
@@ -9,7 +23,6 @@ function remove_from_playlist(song_json,elem){
    var table = document.getElementById('playlist_songs');
    var index = elem.parentNode.parentNode.rowIndex;
    table.deleteRow(index);
-   //console.log(id);
    var url="/playlist/";
    $.ajax({
       type:"GET",
@@ -41,9 +54,6 @@ $(document).ready(function(){
    $.fn.bootstrapSwitch.defaults.size = 'small';
    $("[name='my-checkbox']").bootstrapSwitch();
    $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event, state) {
-      //console.log(this); // DOM element
-      //console.log(event); // jQuery event
-      //console.log(state); // true | false
       var url="/playlist/";
       $.ajax({
          type:"GET",
@@ -56,7 +66,7 @@ $(document).ready(function(){
                   exit: 'animated fadeOutRight'
                },
                newest_on_top: false,
-               delay: 100,
+               delay: 100
             });
          }
       });
@@ -71,12 +81,24 @@ $(document).ready(function(){
             type: 'get',
             dataType: 'json'
          },
+         display : false,
          autotext:'never',
          params: function(params) {
             //originally params contain pk, name and value
             params.flag = 'rename';
             params.playlist_name = $("#playlist_name").html();
+            params.playlist_id = document.getElementById('playlist_id').value;
             return params;
+         },
+         success: function(response) {
+            if(response.status == 'success') {
+               var elem = document.getElementById("playlist_name");
+               elem.innerHTML = response.playlist_name;
+            }
+         },
+         error: function(response) {
+            alert("Error");
+            return response.msg;
          }
       });
    }
@@ -88,18 +110,14 @@ $(document).ready(function(){
 function load_public_playlist()
 {
    var url="/playlist/";
-   //console.log("Loading Playlist");
    $.ajax({
       type:"GET",
       data:{flag:'fetch',share:'true'},
       url:url,
       success:function(data){
-         //alert('hello',data);
-         //console.log(data);
          pub_priv=true;
          $("#playlist_public_div").empty();
          var elem = document.getElementById("playlist_public_div");
-         var x = JSON.stringify('/image/image.jpg');
          for(var i=0;i<data.length;i++){
             addRatingWidget(buildPlaylistItem(data[i],elem), data[i]);
          }
@@ -141,15 +159,12 @@ function addRatingWidget(playlistItem, data) {
 function load_private_playlist()
 {
    var url="/playlist/";
-   //console.log("Loading Playlist");
    if(loggedin){
       $.ajax({
          type:"GET",
          data:{flag:'fetch'},
          url:url,
          success:function(data){
-            //alert('hello',data);
-            //console.log(data);
             pub_priv=false;
             $("#playlist_private_div").empty();
             var elem = document.getElementById("playlist_private_div");
@@ -178,19 +193,16 @@ function load_private_playlist()
 function load_playlist_songs(play){
 
    var url="/playlist/";
-   console.log(play);
-
    $.ajax({
       type: "GET",
       data: {flag:'songs',id:play._id,key:pub_priv,play_user:play.user_name},
       url: url,
       success: function (data,status) {
-         console.log('hello world1');
-         console.log(data);
-         console.log('hello world');
          current_name = play.name;
          var currentRating = Math.floor(play.rating/play.rating_count);
          var hit_count=play.hits;
+         if(hit_count==null)
+            hit_count=0;
          play_psong(data,play.name,play.shared,play._id,currentRating,hit_count);
       },
       error: function (data,status) {
@@ -216,8 +228,6 @@ function load_auto_playlist_songs(play){
       data: {flag:'auto_songs',name:play.name},
       url: url,
       success: function (data,status) {
-         //console.log(data);
-         //console.log('hello world');
          current_name = play.name;
          play_auto_psong(data,play.name);
       },
@@ -236,8 +246,6 @@ function load_auto_playlist_songs(play){
  This function populates the song table for an automatically generated playlist.
  */
 function play_auto_psong(data,tag){
-   //console.log('tagging');
-   //console.log(data);
    var elem = document.getElementById("playlist_image");
    var temp_arr = [];
    elem.innerHTML = "<img class ='image_size' src='image/image.jpg'>";
@@ -252,9 +260,7 @@ function play_auto_psong(data,tag){
    $("#playlist_songs tr").remove();
    for(var song=0;song<data.length;song++)
    {
-      //var song = data[i].song[0];
       temp_arr.push(data[song]);
-      //console.log(data[song]);
       var table = document.getElementById("playlist_songs");
       var row=table.insertRow(table.rows.length);
 
@@ -305,9 +311,9 @@ function play_psong(data,tag,check,pid,currentRating,hit_count){
    //elem.innerHTML = tag;
    if(loggedin&&!pub_priv){
       elem = document.getElementById("rename_playlist");
-      elem.innerHTML = " <a href=''> <span class='glyphicon glyphicon-play'></span> Rename Playlist </a>";
+      elem.innerHTML = " <a href=''> <span class='glyphicon glyphicon-pencil'></span> Rename Playlist </a>";
       elem = document.getElementById("delete_playlist");
-      elem.innerHTML = " <a onclick='delete_playlist_confirm();return false;'> <span class='glyphicon glyphicon-play'></span> Delete Playlist </a>";
+      elem.innerHTML = " <a onclick='delete_playlist_confirm();return false;'> <span class='glyphicon glyphicon-remove'></span> Delete Playlist </a>";
       var element = document.getElementById("share_checkbox");
       element.style.display = 'inline-block';
       if(check)
@@ -325,9 +331,7 @@ function play_psong(data,tag,check,pid,currentRating,hit_count){
    show_playlist_rating();
    for(var song=0;song<data.length;song++)
    {
-      //var song = data[i].song[0];
       temp_arr.push(data[song]);
-      //console.log(data[song]);
       var table = document.getElementById("playlist_songs");
       var row=table.insertRow(table.rows.length);
 
@@ -363,7 +367,7 @@ function play_psong(data,tag,check,pid,currentRating,hit_count){
    elem = document.getElementById("play_playlist");
    elem.innerHTML = " <a href='' onclick='play_album("+JSON.stringify(temp_arr)+"); return false;'> <span class='glyphicon glyphicon-play'></span> Play </a>";
    elem = document.getElementById("add_to_queue_playlist");
-   elem.innerHTML = " <a href='' onclick='add_to_queue_album("+JSON.stringify(temp_arr)+"); return false;'> <span class='glyphicon glyphicon-play'></span> Add To Queue </a>";
+   elem.innerHTML = " <a href='' onclick='add_to_queue_album("+JSON.stringify(temp_arr)+"); return false;'> <span class='glyphicon glyphicon-plus'></span> Add To Queue </a>";
 
    $('.nav-stacked a[href="#playlist_single"]').tab('show');
    //return false;
@@ -375,12 +379,12 @@ function play_psong(data,tag,check,pid,currentRating,hit_count){
  */
 function delete_playlist_confirm(){
    var name=$("#playlist_name").html();
-   console.log(name);
+   var playlist_id = document.getElementById('playlist_id').value;
    if(confirm('Once deleted the playlist cannot be recovered . Are you sure you want to proceed? ')){
       $.ajax({
          type:"GET",
          url:"/playlist/",
-         data:{flag:'delete',name:name},
+         data:{flag:'delete',name:name,playlist_id:playlist_id},
          success:function(){
             $.notify("Playlist Removed "+name, {
                animate: {
@@ -390,6 +394,8 @@ function delete_playlist_confirm(){
                newest_on_top: false,
                delay: 100,
             });
+            $('.nav-stacked a[href="#playlist"]').tab('show');
+            refresh_playlist();
          }
       });
    }

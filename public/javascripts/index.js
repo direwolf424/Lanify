@@ -24,6 +24,7 @@ $(document).ready(function(){
    load_more_album1('/users/album/english');
    load_more_album2('/users/album/hindi');
    load_more_album3('/users/album/telugu');
+   load_private_playlist();
    load_public_playlist();
    load_playlist();
    dragdrop();
@@ -99,8 +100,7 @@ $(function () {
    $("#bar").autocomplete({
       source: function (request, response) {
          $.ajax({
-            //url: "http://192.168.109.66:1234/search",
-            url: "http://192.168.109.66:3000/search",
+            url: lanify_search_url,
             type: "GET",
             data: request,  // request is the value of search input
             success: function (data) {
@@ -272,8 +272,7 @@ $.ajax({
       bugs:e3,
       features:e4
    },
-   //url: "http://192.168.109.66:1234/request",
-   url: "http://192.168.159.28:3000/request",
+   url: lanify_request_url,
 });
 }
 
