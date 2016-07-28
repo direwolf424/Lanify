@@ -101,14 +101,6 @@ fjs.parentNode.insertBefore(js, fjs);
                <div id="search_artist" class=" ui-front ui-menu ui-widget ui-widget-content col-md-4">  </div>
             </div>
          </div>
-         <div id="search_bar">
-            <input type="text" id="bar" class="form-control ui-autocomplete-input" placeholder="Search for Arijit Singh, Sunidhi Chauhan, 2 States..."/>
-         </div>
-         <div id="search_result" class="row ">
-            <div id="search_song" class="ui-front ui-menu ui-widget ui-widget-content col-md-4"> </div>
-            <div id="search_album" class=" ui-front ui-menu ui-widget ui-widget-content col-md-4"> </div>
-            <div id="search_artist" class=" ui-front ui-menu ui-widget ui-widget-content col-md-4">  </div>
-         </div>
       </nav>
 
 
@@ -241,7 +233,7 @@ fjs.parentNode.insertBefore(js, fjs);
                   <a href="#tags" onclick="load_tags()" data-toggle="tab"> <span class='glyphicon glyphicon-book'></span> Genre </a>
                </li>
                <li>
-                  <a href="#playlist" data-toggle="tab"> <span class='glyphicon glyphicon-list-alt'></span> Playlist</a>
+                  <a href="#playlist" onclick="refresh_playlist()" data-toggle="tab"> <span class='glyphicon glyphicon-list-alt'></span> Playlist</a>
                </li>
                <li>
                   <a href="#now_playing" data-toggle="tab"> <span class='glyphicon glyphicon-headphones'></span> Now Playing</a>

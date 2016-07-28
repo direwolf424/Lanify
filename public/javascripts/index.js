@@ -24,6 +24,7 @@ $(document).ready(function(){
    load_more_album1('/users/album/english');
    load_more_album2('/users/album/hindi');
    load_more_album3('/users/album/telugu');
+   load_private_playlist();
    load_public_playlist();
    load_playlist();
    dragdrop();

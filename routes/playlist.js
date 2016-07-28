@@ -210,22 +210,26 @@ router.get('/',function(req,res,next){
          }
       }
       if(req.query.flag == "rename"){
+         var playlist_id = req.query.playlist_id;
          var old_playlist = req.query.playlist_name;
          var new_playlist = req.query.value;
-         console.log('renaming playlist-----. ',old_playlist,new_playlist);
-         playlist.update({"name":old_playlist,"user_name":req.user.username}, 
+         console.log('renaming playlist-----. '+old_playlist+' '+playlist_id+' '+new_playlist);
+         playlist.update({"_id":playlist_id,"user_name":req.user.username},
             {"name":new_playlist},function(err,write){
-               if(err)
-                  console.log('updated');
+               if(err){
+                  console.log('Error');
+                  res.status(400).json({status:'error',msg:'Error in renaming'});
+               }
                else{
-                  console.log(' updated playlist '+old_playlist+' '+new_playlist);
-                  res.status(200).send('renamed succesfully');
+                  console.log(' updated playlist '+old_playlist+' '+playlist_id+' '+new_playlist);
+                  res.status(200).json({status:'success',msg:'Renamed Successfully', playlist_name:new_playlist});
                }
             });
       }
       if(req.query.flag == "delete"){
          var del_playlist = req.query.name;
-         playlist.remove({name:del_playlist,user_name:req.user.username},function(err,result){
+         var playlist_id = req.query.playlist_id;
+         playlist.remove({_id:playlist_id,user_name:req.user.username},function(err,result){
             if(err)
                console.log("error in deleting playlist");
             console.log("playlist deleted succesfully ",del_playlist);
@@ -289,11 +293,6 @@ router.post('/',function(req,res,next){
          if( typeof s_arr === 'string' ) {
             s_arr = [ s_arr ];
          }
-         //console.log("*****"+name);
-         //db.students.update(
-         //{ name: "joe" },
-         //{ $push: { scores: { $each: [ 90, 92, 85 ] } } }
-         //)
          var q1 = function(variable) {
             var ct = variable;
             playlist.update(
