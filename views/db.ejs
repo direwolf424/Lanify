@@ -10,8 +10,14 @@
       <link rel="stylesheet" href="/stylesheets/loader.css">
       <link rel="stylesheet" href="/stylesheets/jquery.webui-popover.min.css">
       <script src="/javascripts/jquery.min.js"></script>
+      <script src="/socket.io/socket.io.js"></script>
       <script src="/javascripts/configuration.js"></script>
       <script src="/javascripts/authenticate.js"></script>
+      <script src="/javascripts/moment.js"></script>
+      <script src="/bootstrap/js/bootstrap.min.js"></script>
+      <script src="/javascripts/bootstrap-datetimepicker.js"></script>
+      <script src="/javascripts/jquery.dataTables.min.js"></script>
+      <script src="/javascripts/analytics.js"></script>
       <script src="/javascripts/jquery-sortable.js"></script>
       <script src="/javascripts/index.js"></script>
       <script src="/javascripts/album.js"></script>
@@ -22,7 +28,6 @@
       <script src="/javascripts/tags.js"></script>
       <script src="/javascripts/player.js"></script>
       <script src="/javascripts/user_playlist.js"></script>
-      <script src="/bootstrap/js/bootstrap.min.js"></script>
       <script src="/javascripts/jquery/jquery-ui.js"></script>
       <script src="/javascripts/modernizr-2.6.2.min.js"></script>
       <script src="/javascripts/tablednd.js"></script>
@@ -212,16 +217,16 @@ fjs.parentNode.insertBefore(js, fjs);
          <div class="col-md-2 side_content">
             <ul  class="nav nav-pills nav-stacked">
                <li class="active">
-                  <a  href="#home" onclick="hack()" data-toggle="tab"> <span class='glyphicon glyphicon-home'></span> Home</a>
+                  <a href="#home" onclick="hack(); analytics_actions('home');" data-toggle="tab"> <span class='glyphicon glyphicon-home'></span> Home</a>
                </li>
                <li>
-                  <a href="#albums" data-toggle="tab"> <span class='glyphicon glyphicon-cd'></span> Albums</a>
+                  <a href="#albums" onclick="analytics_actions('albums')" data-toggle="tab"> <span class='glyphicon glyphicon-cd'></span> Albums</a>
                </li>
                <li>
-                  <a href="#artist" data-toggle="tab"> <span class='glyphicon glyphicon-user'></span> Artists </a>
+                  <a href="#artist" onclick="analytics_actions('artist')" data-toggle="tab"> <span class='glyphicon glyphicon-user'></span> Artists </a>
                </li>
                <li>
-                  <a href="#songs" onclick = "check_song_song()" data-toggle="tab"> <span class='glyphicon glyphicon-music'></span> Songs</a>
+                  <a href="#songs" onclick="check_song_song(); analytics_actions('songs')" data-toggle="tab"> <span class='glyphicon glyphicon-music'></span> Songs</a>
                </li>
                <li style="visibility: hidden; display: none;">
                   <a href="#album_single" data-toggle="tab"> <span class='glyphicon glyphicon-music'></span> Album Single</a>
@@ -230,19 +235,19 @@ fjs.parentNode.insertBefore(js, fjs);
                   <a href="#artist_single" data-toggle="tab"> <span class='glyphicon glyphicon-music'></span> Artist Single</a>
                </li>
                <li>
-                  <a href="#tags" onclick="load_tags()" data-toggle="tab"> <span class='glyphicon glyphicon-book'></span> Genre </a>
+                  <a href="#tags" onclick="load_tags(); analytics_actions('tags');" data-toggle="tab"> <span class='glyphicon glyphicon-book'></span> Genre </a>
                </li>
                <li>
-                  <a href="#playlist" onclick="refresh_playlist()" data-toggle="tab"> <span class='glyphicon glyphicon-list-alt'></span> Playlist</a>
+                  <a href="#playlist" onclick="refresh_playlist(); analytics_actions('playlist');" data-toggle="tab"> <span class='glyphicon glyphicon-list-alt'></span> Playlist</a>
                </li>
                <li>
-                  <a href="#now_playing" data-toggle="tab"> <span class='glyphicon glyphicon-headphones'></span> Now Playing</a>
+                  <a href="#now_playing" onclick="analytics_actions('now_playing')" data-toggle="tab"> <span class='glyphicon glyphicon-headphones'></span> Now Playing</a>
                </li>
                <li>
-                  <a href="#request" data-toggle="tab"> <span class='glyphicon glyphicon-envelope'></span> Request</a>
+                  <a href="#request" onclick="analytics_actions('request')" data-toggle="tab"> <span class='glyphicon glyphicon-envelope'></span> Request</a>
                </li>
                <li>
-                  <a href="#own_info" data-toggle="tab"> <span class='glyphicon glyphicon-th-large'></span> Info</a>
+                  <a href="#own_info" onclick="analytics_actions('own')" data-toggle="tab"> <span class='glyphicon glyphicon-th-large'></span> Info</a>
                </li>
                <li style="visibility: hidden; display: none;">
                   <a href="#tags_single" data-toggle="tab"> <span class='glyphicon glyphicon-music'></span> Tags Single</a>
@@ -466,7 +471,7 @@ fjs.parentNode.insertBefore(js, fjs);
                </div>
 
 
-               <div class="tab-pane active" id="playlist_single">
+               <div class="tab-pane" id="playlist_single">
                   <div id="playlist_image" class="album_image">
                   </div>
                   <div class="tag_name">

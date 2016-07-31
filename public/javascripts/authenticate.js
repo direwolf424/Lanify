@@ -1,7 +1,7 @@
 /**
  * Created by Saurabh on 19-Jul-16.
  */
-var loggedin=false,adminp;
+var loggedin=false,adminp,userName,socket_id;
 
 $.ajax({
     type:"GET",
@@ -23,5 +23,16 @@ $.ajax({
             adminp=true;
         else
             adminp=false;
+    }
+});
+$.ajax({
+    type:"GET",
+    url:'/getUserName',
+    success:function(data){
+        console.log("getUsername"+data);
+        if(data=="false")
+            userName="Lanify_Default";
+        else
+            userName=data;
     }
 });

@@ -14,6 +14,15 @@ function hack(){
 
 $(document).ready(function(){
 
+   var socket = io.connect();
+   socket.on('connect', function() {
+      socket.emit('user', {'loggedin':loggedin,'userName':userName});
+   });
+
+   socket.on('session_info', function(data){
+      socket_id = data.socket_id;
+   });
+
    repeat();
    //load_tags();
    //load_user_playlist();

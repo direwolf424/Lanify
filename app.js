@@ -19,6 +19,7 @@ var admin = require('./routes/admin');
 var register = require('./routes/register');
 var user = require('./model/user').user;
 var tags = require('./routes/tags');
+var analytics = require('./routes/analytics').router;
 var mongoose = require('mongoose');
 var flash = require('connect-flash');
 var app = express();
@@ -95,7 +96,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(flash());
 app.use(express.static('public'));
 app.use(express.static('/myfile/dc/lanify'));
-//app.use(express.static('E://Music//Music World'));
+app.use(express.static('E://Music//Music World'));
 
 //app.use('/', routes);
 app.use(new RegExp('^\/album\/.*$'), album);
@@ -104,6 +105,7 @@ app.use(new RegExp('^\/users\/.*$'), users);
 app.use(new RegExp('^\/update\/.*$'), update);
 app.use(new RegExp('^\/tags\/.*$'), tags);
 app.use(new RegExp('^\/playlist\/.*$'), playlist);
+app.use(new RegExp('^\/analytics\/.*$'), analytics);
 app.use('/request',request);
 app.use('/lanify',db.Route);
 app.use('/search',search);
@@ -187,9 +189,16 @@ function(req, res) {
    res.redirect('/lanify');
 });
 
-app.get('/status',function(req,res,next){
+app.get('/status',function(req,res){
    if(req.user)
       res.send('true');
+   else
+      res.send('false');
+});
+
+app.get('/getUserName',function(req,res){
+   if(req.user)
+      res.send(req.user.username);
    else
       res.send('false');
 });
@@ -243,6 +252,5 @@ app.use(function(err, req, res, next) {
       error: {}
    });
 });
-
 
 module.exports = app;
