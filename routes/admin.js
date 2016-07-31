@@ -99,13 +99,16 @@ function write_song(title,album,artist,year,language,file,callback){
 }
 
 router.get('/',function(req, res, next) {
-   res.render('index');
+   res.render('admin');
 });
 router.get('/upload',function(req, res, next) {
    res.render('upload');
 });
 router.get('/upload_folder',function(req,res,next){
    res.render('upload_folder');
+});
+router.get('/analytics',function(req,res,next){
+   res.render('analytics');
 });
 router.post('/upload', upload.single('music'), function (req, res, next) {
    var tmp_path = 'upload/added/'+req.file.originalname;

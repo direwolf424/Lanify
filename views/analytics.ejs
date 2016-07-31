@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <title>Analytics</title>
+        <script src="/javascripts/jquery.min.js"></script>
+        <script src="/javascripts/moment.js"></script>
+        <script src="/bootstrap/js/bootstrap.min.js"></script>
+        <script src="/javascripts/bootstrap-datetimepicker.js"></script>
+        <script src="/javascripts/jquery.dataTables.min.js"></script>
+        <script src="/javascripts/analytics.js"></script>
+        <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+    </head>
+    <body>
+        <br> <br>
+        <div class="container">
+            <div class='col-md-2'>
+                <a href="#" id="get_active_sessions">Active Sessions</a>
+            </div>
+            <div class='col-md-2'>
+                <a href="#" id="get_all_sessions">Total Sessions</a>
+            </div>
+            <div class='col-md-2' id="number_sessions"></div>
+            <div class='col-md-3'>
+                <div class="form-group">
+                    <div class='input-group date' id='start_date'>
+                        <input type='text' class="form-control" />
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+                    </div>
+                </div>
+            </div>
+            <div class='col-md-3'>
+                <div class="form-group">
+                    <div class='input-group date' id='end_date'>
+                        <input type='text' class="form-control" />
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <table class="table table-striped" id="table_active_sessions">
+                <thead>
+                <tr>
+                    <td>Username</td>
+                    <td>Logged In</td>
+                    <td>IP Address</td>
+                    <td>Visit Time</td>
+                    <td>Exit Time</td>
+                    <td>Browser</td>
+                    <td>Operating System</td>
+                    <td>Socket ID</td>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </body>
+</html>

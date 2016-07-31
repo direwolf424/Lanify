@@ -7,6 +7,7 @@
 var app = require('../app');
 var debug = require('debug')('Express:server');
 var http = require('http');
+var session_disconnect_all = require('../routes/analytics').session_disconnect_all;
 
 /**
  * Get port from environment and store in Express.
@@ -21,12 +22,21 @@ app.set('port', port);
  */
 
 var server = http.createServer(app);
-
+var io = require('../routes/socket').socket(server);
 /**
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(port);
+server.listen(port,function(error) {
+  if(error)
+    console.log("Error in starting the server");
+  session_disconnect_all(function(err){
+    if(err)
+      console.log("Error in disconnecting all sockets"+err);
+    console.log("All sockets disconnected");
+  });
+  console.log("Server is up and working");
+});
 server.on('error', onError);
 server.on('listening', onListening);
 

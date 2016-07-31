@@ -13,7 +13,6 @@ var user_scheme = new Schema({
    admin_rights:Boolean
 },{collections:'user'});
 
-// methods ======================
 // generating a hash
 user_scheme.methods.generateHash = function(password) {
    return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
