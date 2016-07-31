@@ -3,7 +3,7 @@
  */
 
 var lanify_protocol = "http";
-var lanify_address = "192.168.109.211";
+var lanify_address = "192.168.109.66";
 var lanify_port = "3000";
 var lanify_home_path = "lanify";
 var lanify_logout_path = "logout";
