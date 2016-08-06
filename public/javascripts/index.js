@@ -123,6 +123,10 @@ $(function () {
                res.style.visibility="visible";
                res.style.display='block';
                res.innerHTML = "";
+               if(songs.length===0)
+               {
+                  res.innerHTML = "<label>Song not found in Lanify</label><label>Put a Request and we will upload it by the end of the day<label>";
+               }
                for(var i in songs)
                {
                   var song_json = JSON.stringify(songs[i]);
@@ -137,7 +141,7 @@ $(function () {
                res.innerHTML = "";
                if(albums.length===0)
                {
-                  res.innerHTML = "No Albums Found";
+                  res.innerHTML = "<label>No Albums present</label>";
                }
                for(i in albums)
                {
