@@ -22,6 +22,35 @@ $(document).ready(function(){
    socket.on('session_info', function(data){
       socket_id = data.socket_id;
    });
+   $('#submitmsg').click(function(){
+      var text=$('#usermsg').val();
+      if(text.length==0)
+         alert('Please type something and then send :) ');
+      else{
+      socket.emit('chat message',{'nick':userName,'msg':text});
+      $('#usermsg').val('');
+      }
+      return false;
+   });
+   socket.on('chat message',function(data){
+      var html='<span style="font-size:80%;font-family:Comic Sans MS, cursive, sans-serif;color:#4A4792">'+data.nick+' :</span><span style="font-size:75%;font-style:italic">'+data.msg+'</span><br>';
+      $('#messages').append(html);
+      var objDiv = document.getElementById("chatbox");
+      objDiv.scrollTop = objDiv.scrollHeight;
+   });
+   socket.on('online user',function(data){
+      console.log(data);
+      var html="";
+      var user_nick;
+      var obj_online= document.getElementById('online-users');
+      for(var i=0;i<data.length;i++){
+         user_nick=data[i];
+         console.log(user_nick.nick);
+         html+='<span style="font-size:90%;font-family:cursive">'+user_nick.nick+'</span><br>';
+      }
+      obj_online.innerHTML=html;
+
+   });
 
    repeat();
    //load_tags();
@@ -269,24 +298,24 @@ setTimeout(function(){
 }, 2000);
 //});
 function submit_request(){
-var e1 = $('#name').val();
-var e2 = $('#songname').val();
-var e3 = $('#bugs').val();
-var e4 = $('#features').val();
-alert("Thanks for your feedback");
-//$('#name').val('');
-$('#songname').val('');
-$('#bugs').val('');
-$('#features').val('');
-$.ajax({
-   type: "POST",
-   data: {username:e1,
-      songname:e2,
-      bugs:e3,
-      features:e4
-   },
-   url: lanify_request_url,
-});
+   var e1 = $('#name').val();
+   var e2 = $('#songname').val();
+   var e3 = $('#bugs').val();
+   var e4 = $('#features').val();
+   alert("Thanks for your feedback");
+   //$('#name').val('');
+   $('#songname').val('');
+   $('#bugs').val('');
+   $('#features').val('');
+   $.ajax({
+      type: "POST",
+      data: {username:e1,
+         songname:e2,
+         bugs:e3,
+         features:e4
+      },
+      url: lanify_request_url,
+   });
 }
 
 

@@ -13,7 +13,7 @@ var session_disconnect_all = require('../routes/analytics').session_disconnect_a
  * Get port from environment and store in Express.
  */
 //This port number should be same as lanify_port in configuration.js
-var port_no = '3000';
+var port_no = '1234';
 var port = normalizePort(process.env.PORT || port_no);
 app.set('port', port);
 
