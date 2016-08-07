@@ -11,7 +11,18 @@
    padding:1%;
    background:#fff;
    height:80%;
-   width:95%;
+   border:1px solid #ACD8F0;
+overflow-y:auto;
+word-wrap:break-word;}
+
+#chat_online {
+   text-align:left;
+   margin:0 auto;
+   margin-top:1%;
+   margin-bottom:1%;
+   padding:1%;
+   background:#fff;
+   height:80%;
    border:1px solid #ACD8F0;
 overflow-y:auto;
 word-wrap:break-word;}
@@ -22,7 +33,5 @@ border:1px solid #ACD8F0; }
 
 #submitmsg { width: 10%; }
 
-
-.welcome { float:left; }
 
 .msgln { margin:0 0 2px 0; }

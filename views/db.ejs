@@ -202,7 +202,8 @@ fjs.parentNode.insertBefore(js, fjs);
                </div>
                <div class="modal-body">
                   <ul class="list-group">
-                     <l class="list-group-item">If you are facing any problem, then try logging out and then logging in again. If problem still persists, clear your browser's cache or ping us.</l>
+                     <l class="list-group-item">Now chat while listening to song @Lanify's Official Chatroom. </l>
+                     <!--<l class="list-group-item">If you are facing any problem, then try logging out and then logging in again. If problem still persists, clear your browser's cache or ping us.</l>-->
                      <!--<l class="list-group-item">View recently added songs by clicking on Songs Tab and then on Songs(Request) menu on top.</l>-->
                      <!--<l class="list-group-item">Now create your own Private Playlist by clicking on the <span class="glyphicon glyphicon-list"> </span> button left to the <span class="glyphicon glyphicon-plus"> </span> sign</l>-->
                      <!--<l class="list-group-item">You can share your Private Playlist with others</l>-->
@@ -534,9 +535,9 @@ fjs.parentNode.insertBefore(js, fjs);
                </div>
 
                <div class="tab-pane" id="chatroom">
-                  <div id="chat-area" style="width:80%;height:100%;float:left;border:1px solid #000">
+                  <div id="chat-area" style="height:100%;float:left;border:1px solid #9A9090;background:rgba(0, 0, 0, 0.1)" class="col-sm-9">
                      <div style="margin-top: 1%;margin-left:3%">
-                        <label>Welcome to Official ChatRoom of Lanify. Its filled with Qtiyapa :P .(Its not logged)</label>
+                        <label>Welcome to Official ChatRoom of Lanify.Its filled with Qtiyapa and Its not logged.</label>
                      </div>
                      <div id="chatbox">
                         <div id="messages"></div>
@@ -546,13 +547,17 @@ fjs.parentNode.insertBefore(js, fjs);
                         <input name="submitmsg" type="submit"  id="submitmsg" value="Send" />
                      </form>
                   </div>
-                  <div  style="width:19%;height:100%;float:left;border:1px solid #000">
+                  <div  id="user-area" style="height:100%;float:left;border:1px solid #9A9090;background:rgba(0, 0, 0, 0.1)" class="col-sm-3">
                      <div style="margin-top: 1%;margin-left:3%">
-                        <label >Users Online</label>
-                        <div id="online-users" style="overflow-y:auto"></div>
+                        <label id="total_status">Users Online</label><br>
+                        <span id="user_status" style="font-size:85%"></span>
+                        <div id="sound"></div>
+                     </div>
+                        <div id="chat_online" >
+                           <div id="online-users"></div>
+                        </div>
                      </div>
                   </div>
-               </div>
                <div class="tab-pane" id="own_info">
                   <ul class="list-group" style="margin-top:20px">
                      <li class="list-group-item">The Database consist of <%= count %> Songs . If you are still unable to find the song you can request and we will upload the songs for you .</li>

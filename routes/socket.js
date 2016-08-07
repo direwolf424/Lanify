@@ -9,8 +9,17 @@ function remove_user(user_array,socket_id,callback){
    for(var i=0;i<user_array.length;i++){
       console.log(user_array[i].socket_id+'  ',socket_id);
       if(user_array[i].socket_id==socket_id)
-         callback(null,i);
+         return callback(null,i);
    }
+}
+function unique_user(user_array,username,callback){
+   if(username=='Lanify_Default')
+      callback(null,true);
+   for(var i= 0;i<user_array.length;i++){
+      if(user_array[i].nick==username)
+         return callback(null,false);
+   }
+   return callback(null,true);
 }
 var connect_function = function(server) {
 
@@ -28,8 +37,12 @@ var connect_function = function(server) {
          socket.emit('session_info', {'socket_id': socket.id});
          default_txt={'nick':user.userName,'msg':'new user connected to Lanify'};
          listener.sockets.emit('chat message',default_txt);
-         online_user.push({'nick':user.userName,'socket_id':socket.id});
-         listener.sockets.emit('online user',online_user);
+         unique_user(online_user,user.userName,function(err,value){
+            if(value){
+               online_user.push({'nick':user.userName,'socket_id':socket.id});
+               listener.sockets.emit('online user',online_user);
+            }
+         });
       });
 
       socket.on('disconnect', function () {
