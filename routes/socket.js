@@ -7,7 +7,7 @@ var session_disconnect = require('./analytics').session_disconnect;
 
 function remove_user(user_array,socket_id,callback){
    for(var i=0;i<user_array.length;i++){
-      console.log(user_array[i].socket_id+'  ',socket_id);
+      //console.log(user_array[i].socket_id+'  ',socket_id);
       if(user_array[i].socket_id==socket_id)
          return callback(null,i);
    }
@@ -60,7 +60,7 @@ var connect_function = function(server) {
          });
       });
       socket.on('chat message',function(msg){
-         console.log(msg);
+         //console.log(msg);
          listener.sockets.emit('chat message',msg);
       });
    });

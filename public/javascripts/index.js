@@ -1,4 +1,4 @@
-var currentSong='';
+var currentSong='',send_nick='';
 function load_home(){
    $('.nav-stacked a[href="#home"]').tab('show');
    return false;
@@ -38,7 +38,12 @@ $(document).ready(function(){
             help_msg();
             return false;
          }
-         if(text=='@listen' || text=='@listen '){
+         if(text=='@clear'){
+            $('#messages').html('');
+            $('#usermsg').val('');
+            return false;
+         }
+         if(text=='@listen'){
             color='green';
             text = 'Listening to song '+currentSong.title+' from album '+currentSong.album;
          }
@@ -76,7 +81,8 @@ $(document).ready(function(){
          if(user_nick.nick=="Lanify_Default")
             loggout_cnt++;
          else{
-            html='<span class="glyphicon glyphicon-user" style="cursor:pointer">&nbsp;<span style="font-size:90%;font-family:cursive">'+user_nick.nick+'</span></span><br>';
+            send_nick = user_nick.nick;
+            html='<span class="glyphicon glyphicon-user" onclick="user_chat(); return false;" style="cursor:pointer">&nbsp;<span style="font-size:90%;font-family:cursive">'+user_nick.nick+'</span></span><br>';
             $('#online-users').append(html);
          }
       }
@@ -408,10 +414,15 @@ function playSound(){
    return false;
 }
 function help_msg(){
-   var msg='<ul style="font-size:85%;font-family:cursive"><li>type @listen and flash your current playing song to everyone </li><li>type @username <msg >to ping other user </li><li>(y) for sending like as in FaceBook</li><li>@help for seeing this help message</li><li>We made this stuff because we were jobless,actually one is placed :P </li><li>This chat is not logged and it vanishes as soon as the page refreshes :D</li></ul>';
+   var msg='<ul style="font-size:85%;font-family:cursive"><li>type @listen and flash your current playing song to everyone </li><li>type @username <msg >to ping other user </li><li>(y) for sending like as in FaceBook</li><li>@help for seeing this help message</li><li>@clear for clearing the chat history</li><li>We made this stuff because we were jobless,actually one is placed :P </li><li>This chat is not logged and it vanishes as soon as the page refreshes :D</li></ul>';
    //var html='<span style="font-size:80%;font-family:Comic Sans MS, cursive, sans-serif;color:#4A4792">'+userName+' :</span><span style="font-size:75%;font-style:italic;color:inherit">'+msg+'</span><br>';
    $('#messages').append(msg);
    var objDiv = document.getElementById("chatbox");
    objDiv.scrollTop = objDiv.scrollHeight;
    $('#usermsg').val('');
+}
+function user_chat(){
+   var text = '@'+send_nick+' ';
+   $('#usermsg').val(text);
+   return false;
 }
