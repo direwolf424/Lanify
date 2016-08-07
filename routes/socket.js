@@ -35,8 +35,8 @@ var connect_function = function(server) {
             console.log("Socket connected"+socket.id);
          });
          socket.emit('session_info', {'socket_id': socket.id});
-         default_txt={'nick':user.userName,'msg':'new user connected to Lanify'};
-         listener.sockets.emit('chat message',default_txt);
+         //default_txt={'nick':user.userName,'msg':'new user connected to Lanify'};
+         //listener.sockets.emit('chat message',default_txt);
          unique_user(online_user,user.userName,function(err,value){
             if(value){
                online_user.push({'nick':user.userName,'socket_id':socket.id});

@@ -25,6 +25,7 @@ $(document).ready(function(){
    });
    $('#submitmsg').click(function(){
       var text=$('#usermsg').val();
+      text=text.trim();
       if(!loggedin){
          alert('You need to Be logged in to Chat , It will take just 20 sec :P');
          mswitch();
@@ -32,13 +33,16 @@ $(document).ready(function(){
       else if(text.length==0)
          alert('Please type something and then send :) ');
       else{
+         var color='inherit'
          if(text=='@help'){
             help_msg();
             return false;
          }
-         if(text=='@listen')
+         if(text=='@listen' || text=='@listen '){
+            color='green';
             text = 'Listening to song '+currentSong.title+' from album '+currentSong.album;
-         socket.emit('chat message',{'nick':userName,'msg':text});
+         }
+         socket.emit('chat message',{'nick':userName,'msg':text,'color':color});
          $('#usermsg').val('');
       }
       return false;
@@ -54,6 +58,8 @@ $(document).ready(function(){
             color='red';
          }
       }
+      if(data.color=='green')
+         color=data.color;
 
       var html='<span style="font-size:80%;font-family:Comic Sans MS, cursive, sans-serif;color:#4A4792">'+data.nick+' :</span><span style="font-size:75%;font-family:cursive;color:'+color+'">'+data.msg+'</span><br>';
       $('#messages').append(html);
@@ -61,7 +67,7 @@ $(document).ready(function(){
       objDiv.scrollTop = objDiv.scrollHeight;
    });
    socket.on('online user',function(data){
-      console.log(data);
+      //console.log(data);
       var html="";
       var user_nick,loggout_cnt=0;
       $('#online-users').empty();
@@ -319,9 +325,9 @@ setTimeout(function(){
    $('h1').css('color','#222222');
    $('.navbar-fixed-bottom').css('position','fixed');
    $('.navbar-fixed-top').css('position','fixed');
-   setTimeout(function(){
-      $("#openingModal").modal('show');
-   },1000);
+   //setTimeout(function(){
+      //$("#openingModal").modal('show');
+   //},1000);
 }, 2000);
 //});
 function submit_request(){
