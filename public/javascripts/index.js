@@ -1,4 +1,4 @@
-var currentSong='',send_nick='';
+var currentSong='';
 function load_home(){
    $('.nav-stacked a[href="#home"]').tab('show');
    return false;
@@ -81,8 +81,7 @@ $(document).ready(function(){
          if(user_nick.nick=="Lanify_Default")
             loggout_cnt++;
          else{
-            send_nick = user_nick.nick;
-            html='<span class="glyphicon glyphicon-user" onclick="user_chat(); return false;" style="cursor:pointer">&nbsp;<span style="font-size:90%;font-family:cursive">'+user_nick.nick+'</span></span><br>';
+            html='<span class="glyphicon glyphicon-user" onclick="user_chat(\''+user_nick.nick+'\'); return false;" style="cursor:pointer">&nbsp;<span style="font-size:90%;font-family:cursive">'+user_nick.nick+'</span></span><br>';
             $('#online-users').append(html);
          }
       }
@@ -421,8 +420,10 @@ function help_msg(){
    objDiv.scrollTop = objDiv.scrollHeight;
    $('#usermsg').val('');
 }
-function user_chat(){
-   var text = '@'+send_nick+' ';
+function user_chat(nick){
+   console.log('da',nick);
+   var text = '@'+nick+' ';
    $('#usermsg').val(text);
+   $('#usermsg').focus();
    return false;
 }
