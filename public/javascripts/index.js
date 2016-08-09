@@ -1,4 +1,4 @@
-var currentSong='';
+var currentSong='',cnt=0;
 function load_home(){
    $('.nav-stacked a[href="#home"]').tab('show');
    return false;
@@ -24,6 +24,8 @@ $(document).ready(function(){
       socket_id = data.socket_id;
    });
    $('#submitmsg').click(function(){
+      $('#notify_chat').html('');
+      cnt=0;
       var text=$('#usermsg').val();
       text=text.trim();
       if(!loggedin){
@@ -45,7 +47,8 @@ $(document).ready(function(){
          }
          if(text=='@listen'){
             color='green';
-            text = 'Listening to song '+currentSong.title+' from album '+currentSong.album;
+            currentSong={'title':$('#jp-song-name').html(),'album':$('#jp-album-name').html()};
+            text = 'Listening to song '+currentSong.title+' from album '+currentSong.album+'';
          }
          socket.emit('chat message',{'nick':userName,'msg':text,'color':color});
          $('#usermsg').val('');
@@ -53,6 +56,8 @@ $(document).ready(function(){
       return false;
    });
    socket.on('chat message',function(data){
+      cnt++;
+      $('#notify_chat').html(cnt);
       var color='inherit';
       if(data.msg =='(y)' || data.msg =='(Y)')
          data.msg='<span class="glyphicon glyphicon-thumbs-up"></span>';

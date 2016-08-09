@@ -106,7 +106,6 @@ function repeat(){
 }
 
 function play1(song){
-   currentSong=song;
    var loc = song.path;
    var title = song.title;
    var album = song.album;
