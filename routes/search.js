@@ -22,7 +22,7 @@ router.get('/',function(req,res,next){
       res.send(result,{ 'Content-Type' : 'application/json' } ,200);
    };
    var q1=function(fn){
-      db.Song.find({title: {'$regex':x,$options: 'i'}}).limit(7).exec(function(err,users){
+      db.Song.find({title: {'$regex':x,$options: 'i'}}).limit(20).exec(function(err,users){
          if(err) throw err;
          songs = buildResultSet(users);
          return fn && fn(null,songs);
@@ -30,14 +30,14 @@ router.get('/',function(req,res,next){
    };
 
    var q2=function(fn){
-      db.Song.collection.distinct("album",{album: {'$regex':x,$options: 'i'} } , { limit: 5 } ,function(err, results){
+      db.Song.collection.distinct("album",{album: {'$regex':x,$options: 'i'} } , { limit: 20} ,function(err, results){
          if (err) throw err;
          albums = buildResultSet(results);
          return fn && fn(null,albums);
       });
    };
    var q3=function(fn){
-      db.Song.collection.distinct("artist",{artist: {'$regex':x,$options: 'i'} }, { limit: 5 } , function(err, results){
+      db.Song.collection.distinct("artist",{artist: {'$regex':x,$options: 'i'} }, { limit: 20 } , function(err, results){
          if (err) throw err;
          artists = buildResultSet(results);
          return fn && fn(null,artists);
