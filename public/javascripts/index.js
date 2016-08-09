@@ -198,8 +198,8 @@ $(function () {
                {
                   var song_json = JSON.stringify(songs[i]);
 
-                  res.innerHTML += "<div class=' search_line  ui-menu-item'> <div onclick='play1("+song_json+"); return false;' class='search_name'> <span>"+songs[i].title+" </span> </div> <div class='search_plus'> <a href='' onclick='add_to_queue("+song_json+"); return false;'>  <span class=' search_block glyphicon glyphicon-plus'></span> </a> </div>  </div>";
-                  if(i>5)
+                  res.innerHTML += "<div class=' search_line  ui-menu-item'> <div onclick='play1("+song_json+"); return false;' class='search_name'> <span style='font-size:90%;font-family:cursive' >"+songs[i].title+" </span> </div> <div class='search_plus'> <a href='' onclick='add_to_queue("+song_json+"); return false;'>  <span class=' search_block glyphicon glyphicon-plus'></span> </a> </div>  </div>";
+                  if(i>20)
                      break;
                }
                res = document.getElementById('search_album');
@@ -213,8 +213,8 @@ $(function () {
                for(i in albums)
                {
                   var pass = JSON.stringify("load_album('/album/"+albums[i]+"')");
-                  res.innerHTML += "<p class='ui-menu-item' onclick="+pass+">"+albums[i]+"<p>";
-                  if(i>5)
+                  res.innerHTML += "<div class='search_line ui-menu-item' onclick="+pass+"><span style='font-size:90%;font-family:cursive' >"+albums[i]+"</span></div>";
+                  if(i>20)
                      break;
                }
                res = document.getElementById('search_artist');
@@ -223,8 +223,8 @@ $(function () {
                res.innerHTML = "";
                for(i in artists)
                {
-                  res.innerHTML += "<p class='ui-menu-item' onclick='load_artist("+JSON.stringify('/artist/'+artists[i])+"); return false;'>"+artists[i]+"<p>";
-                  if(i>5)
+                  res.innerHTML += "<div class=' search_line ui-menu-item' onclick='load_artist("+JSON.stringify('/artist/'+artists[i])+"); return false;'><span style='font-size:90%;font-family:cursive'>"+artists[i]+"</span></div>";
+                  if(i>20)
                      break;
                }
             }
