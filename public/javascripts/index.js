@@ -65,8 +65,9 @@ $(document).ready(function(){
       }
       if(data.color=='green')
          color=data.color;
-
-      var html='<span style="font-size:80%;font-family:Comic Sans MS, cursive, sans-serif;color:#4A4792">'+data.nick+' :</span><span style="font-size:75%;font-family:cursive;color:'+color+'">'+data.msg+'</span><br>';
+      
+      var time='('+get_time()+')';
+      var html='<span style="font-family: -webkit-body;font-size: 70%;color: black;">'+time+'</span><span style="font-size:80%;font-family:Comic Sans MS, cursive, sans-serif;color:#4A4792">'+data.nick+' :</span><span style="font-size:75%;font-family:cursive;color:'+color+'">'+data.msg+'</span><br>';
       $('#messages').append(html);
       var objDiv = document.getElementById("chatbox");
       objDiv.scrollTop = objDiv.scrollHeight;
@@ -426,4 +427,9 @@ function user_chat(nick){
    $('#usermsg').val(text);
    $('#usermsg').focus();
    return false;
+}
+function get_time(){
+   var x=new Date($.now());
+   var time = x.getHours()+':'+x.getMinutes();
+   return time;
 }
