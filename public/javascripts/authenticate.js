@@ -7,7 +7,6 @@ $.ajax({
     type:"GET",
     url:'/status',
     success:function(data){
-        console.log(data);
         if(data=="true")
             loggedin=true;
         else
@@ -18,7 +17,6 @@ $.ajax({
     type:"GET",
     url:'/status1',
     success:function(data){
-        console.log(data);
         if(data=="true")
             adminp=true;
         else
@@ -29,7 +27,6 @@ $.ajax({
     type:"GET",
     url:'/getUserName',
     success:function(data){
-        console.log("getUsername"+data);
         if(data=="false")
             userName="Lanify_Default";
         else

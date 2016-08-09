@@ -21,8 +21,8 @@ var songScheme = new Schema({
    likes:Number,
    dislikes:Number,
    lastModified: { type: Date, default: Date.now }
-},{ collection: 'songs' });
-//},{ collection: 'new' });
+//},{ collection: 'songs' });
+},{ collection: 'new' });
 
 
 songScheme.index({ title: 1, album: 1}, { unique: true });

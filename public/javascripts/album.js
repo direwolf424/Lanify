@@ -37,25 +37,24 @@ function load_album(url)
       elem = document.getElementById("album_single_name");
       elem.innerHTML = data[0].album;
 
-      elem = document.getElementById("play_album");
-      elem.innerHTML = " <a href='' onclick='play_album("+JSON.stringify(data)+"); return false;'> <span class='glyphicon glyphicon-play'></span> Play </a>";
-      elem = document.getElementById("add_to_queue_album");
-      elem.innerHTML = " <a href='' onclick='add_to_queue_album("+JSON.stringify(data)+"); return false;'> <span class='glyphicon glyphicon-play'></span> Add To Queue </a>";
       elem = document.getElementById("add_to_playlist");
-      elem.innerHTML = " <a href='' onclick=''> <span class='glyphicon glyphicon-play'></span> Add To Playlist </a>";
+      elem.innerHTML = " <a href='' onclick=''> <span class='glyphicon glyphicon-plus'></span> Add To Playlist </a>";
       elem = document.getElementById("create_new_playlist");
-      elem.innerHTML = " <a href='' onclick=''> <span class='glyphicon glyphicon-play'></span> Create New Playlist </a>";
+      elem.innerHTML = " <a href='' onclick=''> <span class='glyphicon glyphicon-plus-sign'></span> Create New Playlist </a>";
       elem = document.getElementById("rename_album");
-      elem.innerHTML = " <a href='' onclick=''> <span class='glyphicon glyphicon-play'></span> Rename Album </a>";
+      elem.innerHTML = " <a href='' onclick=''> <span class='glyphicon glyphicon-pencil'></span> Rename Album </a>";
       $("#album_single_songs tr").remove();
       song_id_arr=[];
+      var temp_arr=[];
       for(var i in data)
       {
          var song = data[i];
          var table = document.getElementById("album_single_songs");
          var row=table.insertRow(table.rows.length);
          var cell1=row.insertCell(0);
-         var song_json=JSON.stringify(song);
+         var song_json = encodeSong(song);
+         var song_parsed = JSON.parse(song_json);
+         temp_arr.push(song_parsed);
          song_id_arr.push(data[i]._id);
          cell1.innerHTML = "<a href='' onclick='play1("+song_json+"); return false;'>  <span class='glyphicon glyphicon-play'> </span> </a>";
 
@@ -64,8 +63,8 @@ function load_album(url)
          cell1.innerHTML = "<a href='' onclick='play1("+song_json+"); return false'>"+song.title+"</a>";
 
          cell1=row.insertCell(2);
-         for(var j=0;j<song.artist.length;j++){
-            cell1.innerHTML += "<a href='' onclick='load_artist("+JSON.stringify('/artist/'+song.artist[j])+");return false;'>"+song.artist[j]+" </a>";
+         for(var j=0;j<song_parsed.artist.length;j++){
+            cell1.innerHTML += "<a href='' onclick='load_artist("+JSON.stringify('/artist/'+song_parsed.artist[j])+");return false;'>"+song.artist[j]+" </a>";
          }
 
          cell1=row.insertCell(3);
@@ -73,16 +72,21 @@ function load_album(url)
 
          cell1=row.insertCell(4);
          cell1.innerHTML = '<a href="" class="add_tags" data-id="'+song._id+'" data-toggle="modal" data-target="#myModal">Add Tags</a>';
+
          cell1=row.insertCell(5);
-            cell1.innerHTML = '<a  title="Add to Playlist" href="" class="add_playlist" data-id1="'+song._id+'" data-toggle="modal" data-target="#myPlaylist"><span class="glyphicon glyphicon-list"></span></a>';
+         cell1.innerHTML = '<a  title="Add to Playlist" href="" class="add_playlist" data-id1="'+song._id+'" data-toggle="modal" data-target="#myPlaylist"><span class="glyphicon glyphicon-list"></span></a>';
 
          cell1=row.insertCell(6);
          cell1.innerHTML = "<a href='' onclick='add_to_queue("+song_json+"); return false;'>  <span class='glyphicon glyphicon-plus'> </span> </a>";
 
          cell1=row.insertCell(7);
          cell1.innerHTML = "<input type='checkbox' value=''>";
-
       }
+
+      elem = document.getElementById("play_album");
+      elem.innerHTML = " <a href='' onclick='play_album("+JSON.stringify(temp_arr)+"); return false;'> <span class='glyphicon glyphicon-play'></span> Play </a>";
+      elem = document.getElementById("add_to_queue_album");
+      elem.innerHTML = " <a href='' onclick='add_to_queue_album("+JSON.stringify(temp_arr)+"); return false;'> <span class='glyphicon glyphicon-plus'></span> Add To Queue </a>";
       $('.nav-stacked a[href="#album_single"]').tab('show');
       check_album_song();
    });
