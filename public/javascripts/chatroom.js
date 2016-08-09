@@ -6,6 +6,8 @@ $(document).ready(function(){
    });
 
    $('#submitmsg').click(function(){
+      $('#notify_chat').html('');
+      cnt=0;
       var text=$('#usermsg').val();
       text=text.trim();
       if(!loggedin){
@@ -27,7 +29,8 @@ $(document).ready(function(){
          }
          if(text=='@listen'){
             color='green';
-            text = 'Listening to song '+currentSong.title+' from album '+currentSong.album;
+            currentSong={'title':$('#jp-song-name').html(),'album':$('#jp-album-name').html()};
+            text = 'Listening to song '+currentSong.title+' from album '+currentSong.album+'';
          }
          socket.emit('chat message',{'nick':userName,'msg':text,'color':color});
          $('#usermsg').val('');
@@ -35,6 +38,8 @@ $(document).ready(function(){
       return false;
    });
    socket.on('chat message',function(data){
+      cnt++;
+      $('#notify_chat').html(cnt);
       var color='inherit';
       if(data.msg =='(y)' || data.msg =='(Y)')
          data.msg='<span class="glyphicon glyphicon-thumbs-up"></span>';
@@ -48,7 +53,8 @@ $(document).ready(function(){
       if(data.color=='green')
          color=data.color;
 
-      var html='<span style="font-size:80%;font-family:Comic Sans MS, cursive, sans-serif;color:#4A4792">'+data.nick+' :</span><span style="font-size:75%;font-family:cursive;color:'+color+'">'+data.msg+'</span><br>';
+      var time='('+get_time()+')';
+      var html='<span style="font-family: -webkit-body;font-size: 70%;color: black;">'+time+'</span><span style="font-size:80%;font-family:Comic Sans MS, cursive, sans-serif;color:#4A4792">'+data.nick+' :</span><span style="font-size:75%;font-family:cursive;color:'+color+'">'+data.msg+'</span><br>';
       $('#messages').append(html);
       var objDiv = document.getElementById("chatbox");
       objDiv.scrollTop = objDiv.scrollHeight;
@@ -71,29 +77,31 @@ $(document).ready(function(){
       $('#total_status').html('Users Online{'+data.length+'}');
 
    });
-
-   function playSound(){
-      filename='alert';
-      document.getElementById("sound").innerHTML='<audio autoplay="autoplay"><source src="' + filename + '.mp3" type="audio/mpeg" /><source src="' + filename + '.ogg" type="audio/ogg" /><embed hidden="true" autostart="true" loop="false" src="' + filename +'.mp3" /></audio>';
-      return false;
-   }
-
-   function help_msg(){
-      var msg='<ul style="font-size:85%;font-family:cursive"><li>type @listen and flash your current playing song to everyone </li><li>type @username <msg >to ping other user </li><li>(y) for sending like as in FaceBook</li><li>@help for seeing this help message</li><li>@clear for clearing the chat history</li><li>We made this stuff because we were jobless,actually one is placed :P </li><li>This chat is not logged and it vanishes as soon as the page refreshes :D</li></ul>';
-      //var html='<span style="font-size:80%;font-family:Comic Sans MS, cursive, sans-serif;color:#4A4792">'+userName+' :</span><span style="font-size:75%;font-style:italic;color:inherit">'+msg+'</span><br>';
-      $('#messages').append(msg);
-      var objDiv = document.getElementById("chatbox");
-      objDiv.scrollTop = objDiv.scrollHeight;
-      $('#usermsg').val('');
-   }
-
-   function user_chat(nick){
-      console.log('da',nick);
-      var text = '@'+nick+' ';
-      $('#usermsg').val(text);
-      $('#usermsg').focus();
-      return false;
-   }
-
 });
 
+
+
+function playSound(){
+   filename='alert';
+   document.getElementById("sound").innerHTML='<audio autoplay="autoplay"><source src="' + filename + '.mp3" type="audio/mpeg" /><source src="' + filename + '.ogg" type="audio/ogg" /><embed hidden="true" autostart="true" loop="false" src="' + filename +'.mp3" /></audio>';
+   return false;
+}
+function help_msg(){
+   var msg='<ul style="font-size:85%;font-family:cursive"><li>type @listen and flash your current playing song to everyone </li><li>type @username <msg >to ping other user </li><li>(y) for sending like as in FaceBook</li><li>@help for seeing this help message</li><li>@clear for clearing the chat history</li><li>We made this stuff because we were jobless,actually one is placed :P </li><li>This chat is not logged and it vanishes as soon as the page refreshes :D</li></ul>';
+   //var html='<span style="font-size:80%;font-family:Comic Sans MS, cursive, sans-serif;color:#4A4792">'+userName+' :</span><span style="font-size:75%;font-style:italic;color:inherit">'+msg+'</span><br>';
+   $('#messages').append(msg);
+   var objDiv = document.getElementById("chatbox");
+   objDiv.scrollTop = objDiv.scrollHeight;
+   $('#usermsg').val('');
+}
+function user_chat(nick){
+   var text = '@'+nick+' ';
+   $('#usermsg').val(text);
+   $('#usermsg').focus();
+   return false;
+}
+function get_time(){
+   var x=new Date($.now());
+   var time = x.getHours()+':'+x.getMinutes();
+   return time;
+}

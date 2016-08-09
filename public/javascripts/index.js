@@ -1,4 +1,4 @@
-var currentSong='';
+var currentSong='',cnt=0;
 var socket;
 function load_home(){
    $('.nav-stacked a[href="#home"]').tab('show');
@@ -131,8 +131,7 @@ $(function () {
                }
                for(var i in songs)
                {
-                  var song_json = JSON.stringify(songs[i]);
-
+                  var song_json = encodeSong(songs[i]);
                   res.innerHTML += "<div class=' search_line  ui-menu-item'> <div onclick='play1("+song_json+"); return false;' class='search_name'> <span style='font-size:90%;font-family:cursive' >"+songs[i].title+" </span> </div> <div class='search_plus'> <a href='' onclick='add_to_queue("+song_json+"); return false;'>  <span class=' search_block glyphicon glyphicon-plus'></span> </a> </div>  </div>";
                   if(i>20)
                      break;
@@ -147,7 +146,8 @@ $(function () {
                }
                for(i in albums)
                {
-                  var pass = JSON.stringify("load_album('/album/"+albums[i]+"')");
+                  var album=replaceAll(albums[i],"'", "%27");
+                  var pass = JSON.stringify("load_album('/album/"+album+"')");
                   res.innerHTML += "<div class='search_line ui-menu-item' onclick="+pass+"><span style='font-size:90%;font-family:cursive' >"+albums[i]+"</span></div>";
                   if(i>20)
                      break;
@@ -158,7 +158,8 @@ $(function () {
                res.innerHTML = "";
                for(i in artists)
                {
-                  res.innerHTML += "<div class=' search_line ui-menu-item' onclick='load_artist("+JSON.stringify('/artist/'+artists[i])+"); return false;'><span style='font-size:90%;font-family:cursive'>"+artists[i]+"</span></div>";
+                  var artist=replaceAll(artists[i],"'", "%27");
+                  res.innerHTML += "<div class=' search_line ui-menu-item' onclick='load_artist("+JSON.stringify('/artist/'+artist)+"); return false;'><span style='font-size:90%;font-family:cursive'>"+artists[i]+"</span></div>";
                   if(i>20)
                      break;
                }
@@ -341,3 +342,21 @@ $('html').on('mouseup', function(e) {
       });
    }
 });
+
+function encodeSong(song) {
+   var song_json = JSON.parse(JSON.stringify(song));
+   song_json.title=replaceAll(song_json.title,"'", "%27");
+   song_json.path=replaceAll(song_json.path,"'", "%27");
+   song_json.album=replaceAll(song_json.album,"'", "%27");
+   for(var j=0;j<song_json.artist.length;j++)
+   {
+      song_json.artist[j]=replaceAll(song_json.artist[j],"'", "%27");
+   }
+   song_json = JSON.stringify(song_json);
+   return song_json;
+}
+
+function replaceAll(string, search, replacement) {
+   var new_string = string.replace(new RegExp(search, 'g'), replacement);
+   return new_string;
+}

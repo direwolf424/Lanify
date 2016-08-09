@@ -14,7 +14,8 @@ function remove_song(element){
    {
       for(var i=0;i<playlist.length;i++)
       {
-         if(title==playlist[i].title)
+         var playlist_title = replaceAll(playlist[i].title,"%27", "'");
+         if(title==playlist_title)
          {
             index = i;
             break;
@@ -109,8 +110,6 @@ function play1(song){
    var loc = song.path;
    var title = song.title;
    var album = song.album;
-   var artist = song.artist;
-   var length = song.length;
    player = $("#jquery_jplayer_1");
    $("#jquery_jplayer_1").jPlayer({
       ready: function () {
@@ -127,7 +126,7 @@ function play1(song){
       smoothPlayBar: true,
       keyEnabled: true,
       remainingDuration: true,
-      toggleDuration: true,
+      toggleDuration: true
    });
    var index;
    var current_queue = [];
@@ -183,11 +182,7 @@ function play1(song){
       now_playing(song);
    }
    player.jPlayer("play");
-   var name = document.getElementById("jp-song-name");
-   var player_album = document.getElementById("jp-album-name");
-   name.innerHTML = title;
-   var pass = JSON.stringify("load_album('/album/"+album+"'); return false;");
-   player_album.innerHTML = "<a class='album_click' href='' onclick="+pass+">"+album+"</a>";
+   display_player(song);
    check_album_song();
    check_song_song();
    $.ajax({
@@ -196,6 +191,18 @@ function play1(song){
       data:{flag:'default_playlist',song:song._id}
    });
    return false;
+}
+
+function display_player(song)
+{
+   var name = document.getElementById("jp-song-name");
+   var title_display = replaceAll(song.title,"%27", "'");
+   name.innerHTML = title_display;
+
+   var album_display = replaceAll(song.album,"%27", "'");
+   var pass = JSON.stringify("load_album('/album/"+album_display+"'); return false;");
+   var player_album = document.getElementById("jp-album-name");
+   player_album.innerHTML = "<a class='album_click' href='' onclick="+pass+">"+song.album+"</a>";
 }
 
 $(document).ready(function() {
@@ -222,12 +229,8 @@ $(document).ready(function() {
    if(playlist.length>0)
    {
       var title = playlist[0].title;
-      var album = playlist[0].album;
       var loc = playlist[0].path;
-      var name = document.getElementById("jp-song-name");
-      var player_album = document.getElementById("jp-album-name");
-      name.innerHTML = title;
-      player_album.innerHTML = album;
+      display_player(playlist[0]);
       player = $("#jquery_jplayer_1");
       highlight(title,"pause",playlist[0]);
 
@@ -250,18 +253,17 @@ $(document).ready(function() {
       });
    }
 
-   $("#jquery_jplayer_1").bind($.jPlayer.event.play, function(event) {
+   $("#jquery_jplayer_1").bind($.jPlayer.event.play, function() {
       var name = document.getElementById("jp-song-name");
-      var player_album = document.getElementById("jp-album-name");
       view(name.innerHTML);
       highlight(name.innerHTML,"play",playlist[playlist_index]);
    });
-   $("#jquery_jplayer_1").bind($.jPlayer.event.pause, function(event) {
+   $("#jquery_jplayer_1").bind($.jPlayer.event.pause, function() {
       var name = document.getElementById("jp-song-name");
       highlight(name.innerHTML,"pause",playlist[playlist_index]);
    });
 
-   $("#jquery_jplayer_1").bind($.jPlayer.event.ended, function(event) {
+   $("#jquery_jplayer_1").bind($.jPlayer.event.ended, function() {
       play_next();
    });
    $('#jquery_jplayer_1').bind($.jPlayer.event.volumechange, function(event){
@@ -437,7 +439,7 @@ function add_to_queue(song) {
          exit: 'animated fadeOutRight'
       },
       newest_on_top: false,
-      delay: 100,
+      delay: 100
    });
    return false;
 }
@@ -445,30 +447,33 @@ function add_to_queue(song) {
 function now_playing(song){
 
    var path,title,artist,album,length;
-   path = song.path;
    title = song.title;
    artist = song.artist;
    album = song.album;
    length = song.length;
 
+   var title_display = replaceAll(title,"%27", "'");
+   var album_display = replaceAll(album,"%27", "'");
+
    var table = document.getElementById('table_now_playing_body');
    var row=table.insertRow(table.rows.length);
 
-   var song_json = JSON.stringify(song);
+   var song_json = encodeSong(song);
 
    var cell1=row.insertCell(0);
    cell1.innerHTML = "<a href='' onclick='play1("+song_json+"); return false;'>  <span class='glyphicon glyphicon-play'> </span> </a>";
 
    cell1=row.insertCell(1);
-   cell1.innerHTML = "<a href='' onclick='play1("+song_json+"); return false;'>"+title+"</a>";
+   cell1.innerHTML = "<a href='' onclick='play1("+song_json+"); return false;'>"+title_display+"</a>";
 
    cell1=row.insertCell(2);
    var pass = JSON.stringify("load_album('/album/"+album+"'); return false;");
-   cell1.innerHTML = "<a class='album_click' href='' onclick="+pass+">"+album+"</a>";
+   cell1.innerHTML = "<a class='album_click' href='' onclick="+pass+">"+album_display+"</a>";
 
    cell1=row.insertCell(3);
    for (var j=0;j< artist.length;j++) {
-      cell1.innerHTML += "<a href='' onclick='load_artist(" + JSON.stringify('/artist/' + artist[j]) + ");return false;'>" + artist[j] + "</a> ";
+      var artist_display = replaceAll(artist[j],"%27", "'");
+      cell1.innerHTML += "<a href='' onclick='load_artist(" + JSON.stringify('/artist/' + artist[j]) + ");return false;'>" + artist_display + "</a> ";
    }
 
    cell1=row.insertCell(4);

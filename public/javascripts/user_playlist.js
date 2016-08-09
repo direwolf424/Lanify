@@ -23,13 +23,14 @@ function remove_from_playlist(song_json,elem){
    var table = document.getElementById('playlist_songs');
    var index = elem.parentNode.parentNode.rowIndex;
    table.deleteRow(index);
+   var title_display = replaceAll(song_json.title,"%27", "'");
    var url="/playlist/";
    $.ajax({
       type:"GET",
       data:{flag:'remove',id:id,pname:current_name},
       url:url,
       success:function(data){
-         $.notify("Song Removed "+song_json.title, {
+         $.notify("Song Removed "+title_display, {
             animate: {
                enter: 'animated fadeInRight',
                exit: 'animated fadeOutRight'
@@ -260,24 +261,25 @@ function play_auto_psong(data,tag){
    $("#playlist_songs tr").remove();
    for(var song=0;song<data.length;song++)
    {
-      temp_arr.push(data[song]);
+      var song_json = encodeSong(data[song]);
+      var song_parsed = JSON.parse(song_json);
+      temp_arr.push(song_parsed);
       var table = document.getElementById("playlist_songs");
       var row=table.insertRow(table.rows.length);
 
       var cell1=row.insertCell(0);
-      var song_json=JSON.stringify(data[song]);
       cell1.innerHTML = "<a href='' onclick='play1("+song_json+"); return false;'>  <span class='glyphicon glyphicon-play'> </span> </a>";
 
       cell1=row.insertCell(1);
       cell1.innerHTML = "<a href='' onclick='play1("+song_json+"); return false'>"+data[song].title+"</a>";
 
       cell1=row.insertCell(2);
-      var pass = JSON.stringify("load_album('/album/"+data[song].album+"'); return false;");
+      var pass = JSON.stringify("load_album('/album/"+song_parsed.album+"')");
       cell1.innerHTML = "<a class='album_click' href='' onclick="+pass+">"+data[song].album+"</a>";
 
       cell1=row.insertCell(3);
-      for(var j=0;j<data[song].artist.length;j++){
-         cell1.innerHTML += "<a href='' onclick='load_artist("+JSON.stringify('/artist/'+data[song].artist[j])+");return false;'>"+data[song].artist[j]+" </a>";
+      for(var j=0;j<song_parsed.artist.length;j++){
+         cell1.innerHTML += "<a href='' onclick='load_artist("+JSON.stringify('/artist/'+song_parsed.artist[j])+");return false;'>"+data[song].artist[j]+" </a>";
       }
 
       cell1=row.insertCell(4);
@@ -331,24 +333,26 @@ function play_psong(data,tag,check,pid,currentRating,hit_count){
    show_playlist_rating();
    for(var song=0;song<data.length;song++)
    {
-      temp_arr.push(data[song]);
+      var song_json = encodeSong(data[song]);
+      var song_parsed = JSON.parse(song_json);
+      console.log(song_parsed);
+      temp_arr.push(song_parsed);
       var table = document.getElementById("playlist_songs");
       var row=table.insertRow(table.rows.length);
 
       var cell1=row.insertCell(0);
-      var song_json=JSON.stringify(data[song]);
       cell1.innerHTML = "<a href='' onclick='play1("+song_json+"); return false;'>  <span class='glyphicon glyphicon-play'> </span> </a>";
 
       cell1=row.insertCell(1);
       cell1.innerHTML = "<a href='' onclick='play1("+song_json+"); return false'>"+data[song].title+"</a>";
 
       cell1=row.insertCell(2);
-      var pass = JSON.stringify("load_album('/album/"+data[song].album+"'); return false;");
+      var pass = JSON.stringify("load_album('/album/"+song_parsed.album+"'); return false;");
       cell1.innerHTML = "<a class='album_click' href='' onclick="+pass+">"+data[song].album+"</a>";
 
       cell1=row.insertCell(3);
-      for(var j=0;j<data[song].artist.length;j++){
-         cell1.innerHTML += "<a href='' onclick='load_artist("+JSON.stringify('/artist/'+data[song].artist[j])+");return false;'>"+data[song].artist[j]+" </a>";
+      for(var j=0;j<song_parsed.artist.length;j++){
+         cell1.innerHTML += "<a href='' onclick='load_artist("+JSON.stringify('/artist/'+song_parsed.artist[j])+");return false;'>"+data[song].artist[j]+" </a>";
       }
 
       cell1=row.insertCell(4);
